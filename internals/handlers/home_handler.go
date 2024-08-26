@@ -1,10 +1,16 @@
 package handlers
 
 import (
-	"fmt"
+	"html/template"
 	"net/http"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the gropie-tracker")
+	tmpl, err := template.ParseFiles("../../static/index.html")
+	if err != nil {
+		http.Error(w, "Opps! Something went wrong", http.StatusInternalServerError)
+		return
+	}
+
+	tmpl.Execute(w, nil)
 }
