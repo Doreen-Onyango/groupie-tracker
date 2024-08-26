@@ -5,8 +5,12 @@ import (
 	"net/http"
 )
 
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome to the gropie-tracker")
+}
+
 func main() {
-	fmt.Println("Welcome to the gropie-tracker")
+	http.HandleFunc("/", HomeHandler)
 
 	server := &http.Server{
 		Addr: ":8080",
