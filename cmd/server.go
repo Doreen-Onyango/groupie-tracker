@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/Doreen-Onyango/groupie-tracker/internals/routers"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the gropie-tracker")
-}
-
 func main() {
-	http.HandleFunc("/", HomeHandler)
+	routers.RegisterRoutes()
 
 	server := &http.Server{
 		Addr: ":8080",
