@@ -12,5 +12,6 @@ func main() {
 		Addr: ":8080",
 	}
 
+	fmt.Println("Server running @http://localhost:8080")
 	server.ListenAndServe()
 }
