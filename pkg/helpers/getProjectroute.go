@@ -3,9 +3,15 @@ package helpers
 import (
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func Getprojectroute(path string) string {
-	basepath, _ := os.Getwd()
-	return filepath.Join(basepath, path)
+	cwd, _ := os.Getwd()
+	basedir := cwd
+
+	if strings.HasSuffix(basedir, "cmd") {
+		basedir = filepath.Join(cwd, "../")
+	}
+	return filepath.Join(basedir, path)
 }
