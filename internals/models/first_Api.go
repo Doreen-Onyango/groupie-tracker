@@ -1,7 +1,6 @@
 package models
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
@@ -27,6 +26,5 @@ func FetchData(urlpath string) (interface{}, error) {
 		return nil, err
 	}
 
-	resbody, _ := json.Marshal(res)
-	return resbody, nil
+	return res, nil
 }
