@@ -9,10 +9,33 @@
             background-color: #444;
             color: antiquewhite;
         }
+
+        ul {
+            background-color: blue;
+            color: aliceblue;
+            box-shadow: 1px 2px 2 rgb(red, green, blue);
+        }
     </style>
 </head>
 <body>
     <h1>I am an artist</h1>
-    {{.}}    
+    {{ .Title}}
+    {{ range .Artists }}
+    <div>
+        <ul>
+        
+        <li>creation date: {{ .creationDate}}</li>
+        <li>first album: {{ .firstAlbum}}</li>
+        <li>name: {{ .name}}</li>
+        <li><img src="{{ .image}}" alt="artist"></li>
+        <p>Members</p>
+        {{range .members}}
+         <li>{{.}}</li>
+        {{ end }}
+      
+    </ul></div>
+     {{ end }} 
+    
+      
 </body>
 </html>
