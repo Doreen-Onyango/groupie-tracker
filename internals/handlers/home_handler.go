@@ -7,7 +7,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker/pkg/helpers"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Repo) HomeHandler(w http.ResponseWriter, r *http.Request) {
 	tmplPath := helpers.Getprojectroute("static/index.html")
 
 	tmpl, err := template.ParseFiles(tmplPath)
