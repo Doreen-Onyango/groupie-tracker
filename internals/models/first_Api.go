@@ -1,6 +1,7 @@
 package models
 
 import (
+	"io"
 	"net/http"
 )
 
@@ -20,11 +21,12 @@ func NewMainApi() *MainApi {
 	}
 }
 
-func FetchData(urlpath string) (interface{}, error) {
+func FetchData(urlpath string) ([]byte, error) {
 	res, err := http.Get(urlpath)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	body, _ := io.ReadAll(res.Body)
+	return body, nil
 }
