@@ -6,26 +6,25 @@ import (
 )
 
 type MainApi struct {
-	artists   string
-	locations string
-	dates     string
-	relations string
+	apiMap map[string]string
 }
 
 func NewMainApi() *MainApi {
-	return &MainApi{
-		"https://groupietrackers.herokuapp.com/api/artists",
-		"https://groupietrackers.herokuapp.com/api/locations",
-		"https://groupietrackers.herokuapp.com/api/dates",
-		"https://groupietrackers.herokuapp.com/api/relation",
+	apiMap := map[string]string{
+		"artists":   "https://groupietrackers.herokuapp.com/api/artists",
+		"locations": "https://groupietrackers.herokuapp.com/api/locations",
+		"dates":     "https://groupietrackers.herokuapp.com/api/dates",
+		"relation":  "https://groupietrackers.herokuapp.com/api/relation",
 	}
+	return &MainApi{apiMap}
 }
 
-func FetchData(urlpath string) ([]byte, error) {
-	res, err := http.Get(urlpath)
+func (a *MainApi) FetchData(apitype string) ([]byte, error) {
+	res, err := http.Get(a.apiMap[apitype])
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	body, _ := io.ReadAll(res.Body)
 	return body, nil
