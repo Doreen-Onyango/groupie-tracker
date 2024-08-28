@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"html/template"
 	"net/http"
 
@@ -10,8 +11,10 @@ import (
 
 func GetData(w http.ResponseWriter, r *http.Request) {
 	models.NewMainApi()
-	data, _ := models.FetchData("https://groupietrackers.herokuapp.com/api/artists")
-	// fmt.Println(data)
+	res, _ := models.FetchData("https://groupietrackers.herokuapp.com/api/artists")
+
+	var dataInfo interface{}
+	_ = json.Unmarshal(res, &dataInfo)
 
 	tmplPath := helpers.Getprojectroute("static/data.html")
 
@@ -19,6 +22,14 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Opps! Something went wrong", http.StatusInternalServerError)
 		return
+	}
+
+	data := struct {
+		Title   string
+		Artists interface{}
+	}{
+		Title:   "artists",
+		Artists: dataInfo,
 	}
 
 	tmpl.Execute(w, data)
