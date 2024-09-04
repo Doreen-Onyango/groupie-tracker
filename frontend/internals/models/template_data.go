@@ -50,3 +50,12 @@ func (t *TemplateData) CreateTemplateCache() error {
 	}
 	return nil
 }
+
+// GetTemplate returns the cached template by name.
+func (t *TemplateData) GetTemplate(name string) (*template.Template, error) {
+	ts, ok := t.PageCache[name]
+	if !ok {
+		return nil, fmt.Errorf("template %s not found", name)
+	}
+	return ts, nil
+}
