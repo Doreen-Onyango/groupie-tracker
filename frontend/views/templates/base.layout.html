@@ -1,22 +1,30 @@
+{{ define "base"}}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groupie | Home</title>
-    <style>
-        body{
-            background-color: #444;
-            color: antiquewhite;
-        }
-    </style>
-</head>
-<body>
-    <h1>
-        Welcome to Groupie-Tracker
-    </h1>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo dolores, illo eaque maiores consectetur facilis repudiandae. Enim itaque facilis dignissimos fugiat non eligendi minima tempora fugit, perspiciatis totam id modi!
-    </p>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<link
+			rel="icon"
+			href="/static/images/favicon.ico"
+			type="image/x-icon"
+		/>
+		<link
+			rel="stylesheet"
+			href="/static/styles/base.css"
+			type="text/css"
+		/>
+		{{block "css" .}} {{end}}
+		<title>Groupie-Tracker | {{block "title" .}}{{end}}</title>
+	</head>
+	<body>
+		<div>{{block "navbar" .}} {{end}}</div>
+		<div>{{block "content" .}} {{end}}</div>
+		<div>{{block "footer" .}} {{end}}</div>
+		{{block "js" .}} {{end}}
+	</body>
 </html>
+{{ end }}
