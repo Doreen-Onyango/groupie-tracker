@@ -59,3 +59,14 @@ func (t *TemplateData) GetTemplate(name string) (*template.Template, error) {
 	}
 	return ts, nil
 }
+
+// getProjectRoute returns the project root path and joins it with the provided paths.
+func (t *TemplateData) GetProjectRoute(paths ...string) string {
+	cwd, _ := os.Getwd()
+	baseDir := cwd
+	if strings.HasSuffix(baseDir, "/cmd") || strings.HasSuffix(baseDir, "/tests") {
+		baseDir = filepath.Join(cwd, "../")
+	}
+	allPaths := append([]string{baseDir}, paths...)
+	return filepath.Join(allPaths...)
+}
