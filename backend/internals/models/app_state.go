@@ -2,7 +2,11 @@ package models
 
 import "sync"
 
-type App struct{}
+type App struct {
+	Api *MainApi
+	Res *ResponseData
+	Err error
+}
 
 var (
 	instance *App
@@ -11,7 +15,12 @@ var (
 
 func AppState() *App {
 	once.Do(func() {
-		instance = &App{}
+		instance = &App{
+			Api: NewMainApi(),
+			Res: NewResponseData(),
+			Err: nil,
+		}
+		instance.Res.SetData(instance.Api)
 	})
 	return instance
 }
