@@ -1,15 +1,15 @@
 package handlers
 
 import (
-	"github.com/Doreen-Onyango/groupie-tracker-client-client/internals/models"
-	"github.com/Doreen-Onyango/groupie-tracker-client-client/internals/renders"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/renders"
 )
 
 type Repo struct {
-	app *models.ModelState
+	app *models.App
 	res *renders.Renders
 }
 
-func NewRepo(app *models.ModelState, res *renders.Renders) *Repo {
+func NewRepo(app *models.App, res *renders.Renders) *Repo {
 	return &Repo{app: app, res: res}
 }
