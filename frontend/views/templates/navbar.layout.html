@@ -1,0 +1,48 @@
+{{define "navbar"}}
+<link
+	rel="stylesheet"
+	href="/static/styles/navbar.css"
+	type="text/css"
+/>
+<div class="navbar">
+	<!-- Hamburger Icon -->
+	<input
+		type="checkbox"
+		id="menu-toggle"
+		class="menu-toggle"
+	/>
+	<label
+		for="menu-toggle"
+		class="hamburger"
+	>
+		<div
+			id="bar1"
+			class="bar"
+		></div>
+		<div
+			id="bar2"
+			class="bar"
+		></div>
+		<div
+			id="bar3"
+			class="bar"
+		></div>
+	</label>
+
+	<!-- Navigation Menu -->
+	<ul id="nav-menu">
+		<li id="home">
+			<a href="/">Home</a>
+		</li>
+		<li id="members">
+			<a href="/members">Members</a>
+		</li>
+		<li id="about">
+			<a href="/about">About</a>
+		</li>
+		<li id="contact">
+			<a href="/contact">Contact</a>
+		</li>
+	</ul>
+</div>
+{{end}}
