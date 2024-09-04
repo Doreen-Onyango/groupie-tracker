@@ -1,15 +1,28 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/handlers"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/renders"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/routers"
 )
 
-func main() {
-	server := &http.Server{
-		Addr: ":8080",
-	}
+const webPort = ":8080"
 
-	fmt.Println("Server running @http://localhost:8080")
-	server.ListenAndServe()
+type Config struct {
+	appState *models.App
+	repo     *handlers.Repo
+	routes   *routers.Routes
+}
+
+func NewConfig() *Config {
+	appState := models.GetApp()
+	renders := renders.NewRenders(appState)
+	repo := handlers.NewRepo(appState, renders)
+
+	return &Config{
+		appState: appState,
+		repo:     repo,
+		routes:   routers.NewRoutes(repo),
+	}
 }
