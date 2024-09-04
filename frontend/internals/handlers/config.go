@@ -1,6 +1,6 @@
 package handlers
 
-import "github.com/Doreen-Onyango/groupie-tracker/internals/models"
+import "github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
 
 type Repo struct {
 	api *models.MainApi
