@@ -2,17 +2,20 @@ package routers
 
 import (
 	"net/http"
-	"path/filepath"
 
-	"github.com/Doreen-Onyango/groupie-tracker/internals/handlers"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/handlers"
+	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
 )
 
-func RegisterRoutes(repo *handlers.Repo) {
-	http.HandleFunc("/", repo.HomeHandler)
-	http.HandleFunc("/data", repo.GetData)
+type Routes struct {
+	app  *models.App
+	repo *handlers.Repo
+}
 
-	staticDir := http.Dir(filepath.Join("../../static"))
-	staticHandler := http.StripPrefix("/static/", http.FileServer(staticDir))
-
-	http.Handle("/static/", staticHandler)
+// NewRoutes creates a new Routes instance with the given handlers.
+func NewRoutes(repo *handlers.Repo) *Routes {
+	return &Routes{
+		repo: repo,
+		app:  models.GetApp(),
+	}
 }
