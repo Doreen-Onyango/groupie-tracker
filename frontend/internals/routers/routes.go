@@ -19,3 +19,13 @@ func NewRoutes(repo *handlers.Repo) *Routes {
 		app:  models.GetApp(),
 	}
 }
+
+// RegisterRoutes registers the routes for the application.
+func (r *Routes) RegisterRoutes(mux *http.ServeMux) *http.ServeMux {
+	staticDir := r.app.TemplateData.GetProjectRoute("views/static")
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
+
+	mux.HandleFunc("/", r.repo.HomeHandler)
+
+	return mux
+}
