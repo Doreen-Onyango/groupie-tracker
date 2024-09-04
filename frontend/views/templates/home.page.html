@@ -1,41 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groupie | Data</title>
-    <style>
-        body{
-            background-color: #444;
-            color: antiquewhite;
-        }
+{{template "base" . }} {{define "css"}}
+<link
+	rel="stylesheet"
+	href="/static/styles/home.css"
+	type="text/css"
+/>
+{{end}} {{define "title"}} Home {{end}} {{define "content"}}
+<div class="home-page">
+	<h1 id="home-page">Welcome to the Groupie Tracker</h1>
+	<p>
+		This is a simple web application designed to help track groupies and their
+		members.
+	</p>
+</div>
 
-        ul {
-            background-color: blue;
-            color: aliceblue;
-            box-shadow: 1px 2px 2 rgb(red, green, blue);
-        }
-    </style>
-</head>
-<body>
-    <h1>I am an artist</h1>
-    {{ .Title}}
-    {{ range .Artists }}
-    <div>
-        <ul>
-        
-        <li>creation date: {{ .creationDate}}</li>
-        <li>first album: {{ .firstAlbum}}</li>
-        <li>name: {{ .name}}</li>
-        <li><img src="{{ .image}}" alt="artist"></li>
-        <p>Members</p>
-        {{range .members}}
-         <li>{{.}}</li>
-        {{ end }}
-      
-    </ul></div>
-     {{ end }} 
-    
-      
-</body>
-</html>
+<div class="artists">
+	<h1>Artists</h1>
+	<form id="searchForm">
+		<input
+			name="searchForm"
+			type="text"
+			id="search"
+			placeholder="Search for artists..."
+		/>
+	</form>
+
+	<table id="artistsTable">
+		<thead>
+			<tr>
+				<th>Artist Name</th>
+				<th>Image</th>
+				<th>Members</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{range .Artists}}
+			<tr>
+				<td>{{.Name}}</td>
+				<td>
+					<img
+						src="{{.Image}}"
+						alt="{{.Name}} image"
+						width="100"
+					/>
+				</td>
+				<td>
+					<ul>
+						{{range .Members}}
+						<li>{{.}}</li>
+						{{end}}
+					</ul>
+				</td>
+			</tr>
+			{{end}}
+		</tbody>
+	</table>
+</div>
+{{end}} {{define "js"}}
+<script src="/static/scripts/artistsdata.js"></script>
+<script src="/static/scripts/renders.js"></script>
+<script src="/static/scripts/app.js"></script>
+{{end}}
