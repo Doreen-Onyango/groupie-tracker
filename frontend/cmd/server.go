@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/handlers"
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/renders"
@@ -25,4 +29,29 @@ func NewConfig() *Config {
 		repo:     repo,
 		routes:   routers.NewRoutes(repo),
 	}
+}
+
+func runServer() (*http.Server, error) {
+	cfg := NewConfig()
+	mux := http.NewServeMux()
+
+	cfg.routes.RegisterRoutes(mux)
+
+	server := &http.Server{
+		Addr:    webPort,
+		Handler: mux,
+	}
+
+	return server, nil
+}
+
+func main() {
+	server, err := runServer()
+	if err != nil {
+		fmt.Println("Something went wrong... the port is possibly in use.")
+		return
+	}
+
+	log.Printf("Starting client server...@http://localhost%s", webPort)
+	server.ListenAndServe()
 }
