@@ -1,16 +1,9 @@
-html,
+/* base.css */
 body {
-	background-color: #4a7f86;
 	font-family: Arial, sans-serif;
-	text-align: center;
 	margin: 0;
 	padding: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	height: 100vh;
-	color: rgb(82, 47, 1);
-	font-size: 1.2em;
+	background-color: #a09d9d;
 }
 
 h1,
@@ -19,10 +12,11 @@ h2 {
 }
 
 h1 {
-	transform: scale(90%);
+	font-size: 1.5em;
 }
 
 .btn {
+	display: inline-block;
 	height: fit-content;
 	position: relative;
 	text-decoration: none;
@@ -32,10 +26,11 @@ h1 {
 	background-color: #4a7f86;
 	margin: 2% auto;
 	padding: 2% 5%;
-	width: 30%;
+	width: auto;
 	border: none;
 	border-radius: 4px;
 	box-shadow: 0 3px 10px rgb(1, 2, 19);
+	text-align: center;
 }
 
 .btn:hover {
@@ -43,4 +38,28 @@ h1 {
 	color: rgb(1, 2, 19);
 	text-decoration: none;
 	box-shadow: 0 2px 15px rgb(1, 2, 19);
+}
+
+.footer {
+	background-color: rgb(14, 37, 40);
+	color: #fff;
+	text-align: center;
+	padding: 20px;
+	position: relative;
+	bottom: 0;
+	width: 100%;
+}
+
+.footer p {
+	margin: 0;
+	font-size: 0.9em;
+}
+
+.footer a {
+	color: rgb(167, 96, 3);
+	text-decoration: none;
+}
+
+.footer a:hover {
+	color: #fff;
 }
