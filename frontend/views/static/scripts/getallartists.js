@@ -1,9 +1,9 @@
-const url = "http://localhost:4000/api/artistsdata";
+const url = "http://localhost:4000/api/getallartists";
 const headers = new Headers({
 	"Content-Type": "application/json",
 });
 
-const getArtistsData = async (query) => {
+const getAllArtists = async (query) => {
 	const body = JSON.stringify({ request: query });
 
 	try {

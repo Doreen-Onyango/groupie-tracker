@@ -1,5 +1,5 @@
 const updateHomePage = async (queryParams) => {
-	const { error, message, data } = await getArtistsData(queryParams);
+	const { error, message, data } = await getAllArtists(queryParams);
 	return {
 		err: error,
 		msg: message,
