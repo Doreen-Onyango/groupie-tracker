@@ -1,35 +1,30 @@
 // Functions to render different types of data
-const renderAllArtists = (artists) => {
-	const tableBody = document.querySelector("#artistsTable tbody");
-	tableBody.innerHTML = ""; // Clear the table body
+export const renderAllArtists = (artists) => {
+	const container = document.querySelector("#artistsContainer");
+	const template = document.getElementById("artistCardTemplate");
+
+	container.innerHTML = ""; // Clear the container
 
 	artists.forEach((artist) => {
-		const row = document.createElement("tr");
+		// Clone the template content
+		const card = template.content.cloneNode(true);
 
-		const nameCell = document.createElement("td");
-		nameCell.textContent = artist.name;
+		// Populate the card with artist data
+		card.querySelector(".artist-name").textContent = artist.name;
 
-		const imageCell = document.createElement("td");
-		const img = document.createElement("img");
-		img.src = artist.image;
-		img.alt = `${artist.name} image`;
-		img.width = 100;
-		imageCell.appendChild(img);
+		const image = card.querySelector(".artist-image");
+		image.src = artist.image;
+		image.alt = `${artist.name} image`;
 
-		const membersCell = document.createElement("td");
-		const ul = document.createElement("ul");
+		const membersList = card.querySelector(".artist-members");
 		artist.members.forEach((member) => {
 			const li = document.createElement("li");
 			li.textContent = member;
-			ul.appendChild(li);
+			membersList.appendChild(li);
 		});
-		membersCell.appendChild(ul);
 
-		row.appendChild(nameCell);
-		row.appendChild(imageCell);
-		row.appendChild(membersCell);
-
-		tableBody.appendChild(row);
+		// Append the populated card to the container
+		container.appendChild(card);
 	});
 };
 
