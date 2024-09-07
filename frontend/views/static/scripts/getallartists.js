@@ -3,8 +3,8 @@ const headers = new Headers({
 	"Content-Type": "application/json",
 });
 
-const getAllArtists = async (query) => {
-	const body = JSON.stringify({ request: query });
+const getAllArtists = async () => {
+	const body = JSON.stringify({});
 
 	try {
 		const response = await fetch(url, {
@@ -17,7 +17,6 @@ const getAllArtists = async (query) => {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		const data = await response.json();
-
 		return data;
 	} catch (error) {
 		console.error("Error fetching artists:", error);
