@@ -1,12 +1,20 @@
-const updateHomePage = async (queryParams) => {
-	const { error, message, data } = await getAllArtists(queryParams);
-	return {
-		err: error,
-		msg: message,
-		data: data,
-	};
+// Define the updateHomePage function without parameters
+const updateHomePage = async () => {
+	const data = await getAllArtists();
+	return { data };
 };
 
+// Add the event listener to the document
+document.addEventListener("DOMContentLoaded", async function () {
+	try {
+		const { data } = await updateHomePage();
+		console.log(data);
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+// Assuming searchForm and its handler should remain for other purposes
 const searchForm = document.querySelector("form");
 
 searchForm.addEventListener("submit", async function (e) {
@@ -15,9 +23,5 @@ searchForm.addEventListener("submit", async function (e) {
 	const queryParams = document.getElementById("search").value.trim();
 	searchForm.reset();
 
-	updateHomePage(queryParams)
-		.then(({ data }) => {
-			console.log(data);
-		})
-		.catch((err) => console.log(err));
+	// You can add other update functions here if needed
 });
