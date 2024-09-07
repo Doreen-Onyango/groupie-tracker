@@ -2,7 +2,7 @@
 .home-page {
 	text-align: center;
 	padding: 20px;
-	background-color: #fff;
+	background-color: #bfbcbc;
 	margin-bottom: 20px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -16,16 +16,46 @@ h1 {
 	color: #333;
 }
 
+/* Style the search form */
 #searchForm {
 	margin-bottom: 20px;
+	display: flex;
+	justify-content: center;
 }
 
-#search {
-	width: 100%;
+/* Style the search input */
+input #search {
+	width: 300px;
 	padding: 10px;
+	margin: 20px auto;
+	border: 2px solid #ccc;
+	border-radius: 25px;
 	font-size: 16px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
+	outline: none;
+	transition: border-color 0.3s;
+}
+
+/* Change the border color when the input is focused */
+#search:focus {
+	border-color: #007bff;
+}
+
+/* Add a shadow to the search input when focused */
+#search:focus {
+	box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Placeholder text styling */
+#search::placeholder {
+	color: #999;
+	font-style: italic;
+}
+
+/* Adjust the width on smaller screens */
+@media (max-width: 400px) {
+	#search {
+		width: 100%;
+	}
 }
 
 .artists-container {
@@ -39,7 +69,7 @@ h1 {
 	border-radius: 8px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
-	width: calc(33% - 20px); /* Adjust width and gap as needed */
+	width: calc(33% - 20px);
 	box-sizing: border-box;
 	padding: 10px;
 	text-align: center;
@@ -72,12 +102,12 @@ h1 {
 
 @media (max-width: 768px) {
 	.artist-card {
-		width: calc(50% - 20px); /* Adjust width for smaller screens */
+		width: calc(50% - 20px);
 	}
 }
 
 @media (max-width: 480px) {
 	.artist-card {
-		width: 100%; /* Full width on small screens */
+		width: 100%;
 	}
 }
