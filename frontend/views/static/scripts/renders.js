@@ -3,13 +3,11 @@ export const renderAllArtists = (artists) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
 
-	container.innerHTML = ""; // Clear the container
+	container.innerHTML = "";
 
 	artists.forEach((artist) => {
-		// Clone the template content
 		const card = template.content.cloneNode(true);
 
-		// Populate the card with artist data
 		card.querySelector(".artist-name").textContent = artist.name;
 
 		const image = card.querySelector(".artist-image");
@@ -23,7 +21,6 @@ export const renderAllArtists = (artists) => {
 			membersList.appendChild(li);
 		});
 
-		// Append the populated card to the container
 		container.appendChild(card);
 	});
 };
