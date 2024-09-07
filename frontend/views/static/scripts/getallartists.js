@@ -4,7 +4,7 @@ const headers = new Headers({
 });
 const body = JSON.stringify({});
 
-const getAllArtists = async () => {
+export const getAllArtists = async () => {
 	try {
 		const response = await fetch(url, {
 			method: "POST",
