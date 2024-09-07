@@ -24,40 +24,42 @@
 		/>
 	</form>
 
-	<table id="artistsTable">
-		<thead>
-			<tr>
-				<th>Artist Name</th>
-				<th>Image</th>
-				<th>Members</th>
-			</tr>
-		</thead>
-		<tbody>
-			{{range .Artists}}
-			<tr>
-				<td>{{.Name}}</td>
-				<td>
-					<img
-						src="{{.Image}}"
-						alt="{{.Name}} image"
-						width="100"
-					/>
-				</td>
-				<td>
-					<ul>
-						{{range .Members}}
-						<li>{{.}}</li>
-						{{end}}
-					</ul>
-				</td>
-			</tr>
-			{{end}}
-		</tbody>
-	</table>
+	<div
+		id="artistsContainer"
+		class="artists-container"
+	>
+		<!-- Cards will be injected here -->
+	</div>
 </div>
+
+<!-- Template for artist card -->
+<template id="artistCardTemplate">
+	<div class="artist-card">
+		<img
+			class="artist-image"
+			src=""
+			alt=""
+			width="100"
+		/>
+		<div class="artist-info">
+			<h2 class="artist-name"></h2>
+			<ul class="artist-members"></ul>
+		</div>
+	</div>
+</template>
+
 {{end}} {{define "js"}}
-<script src="/static/scripts/getallartists.js"></script>
-<script src="/static/scripts/helpers.js"></script>
-<script src="/static/scripts/renders.js"></script>
-<script src="/static/scripts/app.js"></script>
+<script type="module">
+	import { getAllArtists } from "/static/scripts/getallartists.js";
+	import { handleData } from "/static/scripts/helpers.js";
+
+	document.addEventListener("DOMContentLoaded", async function () {
+		try {
+			const data = await getAllArtists();
+			handleData(data.data);
+		} catch (err) {
+			console.log(err);
+		}
+	});
+</script>
 {{end}}
