@@ -2,10 +2,9 @@ const url = "http://localhost:4000/api/getallartists";
 const headers = new Headers({
 	"Content-Type": "application/json",
 });
+const body = JSON.stringify({});
 
 const getAllArtists = async () => {
-	const body = JSON.stringify({});
-
 	try {
 		const response = await fetch(url, {
 			method: "POST",
@@ -16,8 +15,8 @@ const getAllArtists = async () => {
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		const data = await response.json();
-		return data;
+
+		return await response.json();
 	} catch (error) {
 		console.error("Error fetching artists:", error);
 		throw error;

@@ -8,7 +8,9 @@ const updateHomePage = async () => {
 document.addEventListener("DOMContentLoaded", async function () {
 	try {
 		const { data } = await updateHomePage();
-		console.log(data);
+		if (data) {
+			handleData(data.data || []);
+		}
 	} catch (err) {
 		console.log(err);
 	}
