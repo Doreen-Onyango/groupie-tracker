@@ -1,12 +1,13 @@
-// Helper function to determine the type of data returned
+import { renderAllArtists } from "./renders.js";
+
 const determineDataType = (data) => {
 	if (data.locations) return "locations";
 	if (data.dates) return "dates";
 	if (data.members) return "members";
-	if (data) return "artists";
+	return "artists";
 };
 
-const handleData = (data) => {
+export const handleData = (data) => {
 	const dataType = determineDataType(data);
 
 	switch (dataType) {
@@ -14,13 +15,13 @@ const handleData = (data) => {
 			renderAllArtists(data);
 			break;
 		case "locations":
-			renderLocations(data.locations);
+			renderLocations(data.locations); // Define renderLocations similarly
 			break;
 		case "dates":
-			renderDates(data.dates);
+			renderDates(data.dates); // Define renderDates similarly
 			break;
 		case "members":
-			renderMembers(data.members);
+			renderMembers(data.members); // Define renderMembers similarly
 			break;
 		default:
 			console.log("Unknown data type");
