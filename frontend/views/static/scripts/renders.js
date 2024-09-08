@@ -55,16 +55,20 @@ export function showModal(artistData) {
 
 	// Populate the modal with artist details
 	artistDetailsSection.innerHTML = `
-		<h2>${artistData.name}</h2>
-		<p><strong>Creation Date:</strong> ${artistData.creationDate || "Unknown"}</p>
-		<p><strong>First Album:</strong> ${artistData.firstAlbum || "Unknown"}</p>
-		<p><strong>Locations:</strong> ${artistData.locations || "No Locations"}</p>
-		<p><strong>Concert Dates:</strong> ${
-			artistData.concertDates || "No Concert Dates"
-		}</p>
-		<p><strong>Relations:</strong> ${artistData.relations || "No Relations"}</p>
+		<div>
+			<img src="${artistData.image}" alt="${artistData.name} image" />
+			<h2>${artistData.name}</h2>
+			<p><strong>Creation Date:</strong> ${artistData.creationDate || "Unknown"}</p>
+			<p><strong>First Album:</strong> ${artistData.firstAlbum || "Unknown"}</p>
+		</div>
+		<div>
+			<p><strong>Locations:</strong> ${artistData.locations || "No Locations"}</p>
+			<p><strong>Concert Dates:</strong> 
+				${artistData.concertDates || "No Concert Dates"}
+			</p>
+			<p><strong>Relations:</strong> ${artistData.relations || "No Relations"}</p>
+		</div>
 	`;
-
 	// Show the modal
 	modal.style.display = "block";
 
