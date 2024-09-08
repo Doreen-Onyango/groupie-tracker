@@ -8,6 +8,10 @@ export const renderAllArtists = (artists) => {
 	artists.forEach((artist) => {
 		const card = template.content.cloneNode(true);
 
+		card
+			.querySelector(".artist-card")
+			.setAttribute("data-artist-id", artist.id);
+
 		card.querySelector(".artist-name").textContent = artist.name;
 
 		const image = card.querySelector(".artist-image");
@@ -46,14 +50,4 @@ export const renderAllArtists = (artists) => {
 const renderLocations = (locations) => {
 	console.log("Rendering locations:", locations);
 	// TODO: Update the DOM with locations data
-};
-
-const renderDates = (dates) => {
-	console.log("Rendering dates:", dates);
-	// TODO: Update the DOM with dates data
-};
-
-const renderMembers = (members) => {
-	console.log("Rendering members:", members);
-	// TODO: Update the DOM with members data
 };
