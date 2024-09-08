@@ -1,9 +1,9 @@
-// Functions to render different types of data
+// Function to render all artists
 export const renderAllArtists = (artists) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
 
-	container.innerHTML = "";
+	container.innerHTML = ""; // Clear existing cards
 
 	artists.forEach((artist) => {
 		const card = template.content.cloneNode(true);
@@ -20,6 +20,24 @@ export const renderAllArtists = (artists) => {
 			li.textContent = member;
 			membersList.appendChild(li);
 		});
+
+		card.querySelector(".artist-creationDate").textContent =
+			artist.creationDate || "Unknown Creation Date";
+		card.querySelector(".artist-firstAlbum").textContent =
+			artist.firstAlbum || "Unknown First Album";
+
+		card.querySelector(".artist-locations").textContent = artist.locations
+			.length
+			? artist.locations
+			: "No Locations";
+		card.querySelector(".artist-concertDates").textContent = artist.concertDates
+			.length
+			? artist.concertDates
+			: "No Concert Dates";
+		card.querySelector(".artist-relations").textContent = artist.relations
+			.length
+			? artist.relations
+			: "No Relations";
 
 		container.appendChild(card);
 	});
