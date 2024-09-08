@@ -27,3 +27,21 @@ export const handleData = (data) => {
 			console.log("Unknown data type");
 	}
 };
+
+export function showModal(artistData) {
+	// Assuming you have a section in your HTML to display artist details
+	const artistDetailsSection = document.querySelector("#artistDetails");
+
+	// Clear any existing content
+	artistDetailsSection.innerHTML = "";
+
+	// Populate the section with the artist's details
+	artistDetailsSection.innerHTML = `
+		<h2>${artistData.artist.name}</h2>
+		<p><strong>Creation Date:</strong> ${artistData.artist.creationDate}</p>
+		<p><strong>First Album:</strong> ${artistData.artist.firstAlbum}</p>
+		<p><strong>Locations:</strong> ${artistData.locations.join(", ")}</p>
+		<p><strong>Concert Dates:</strong> ${artistData.concertDates.join(", ")}</p>
+		<p><strong>Relations:</strong> ${artistData.relations.join(", ")}</p>
+	`;
+}
