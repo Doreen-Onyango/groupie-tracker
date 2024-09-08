@@ -50,10 +50,8 @@ export function showModal(artistData) {
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
 
-	// Clear any existing content
 	artistDetailsSection.innerHTML = "";
 
-	// Populate the modal with artist details
 	artistDetailsSection.innerHTML = `
 		<div>
 			<img src="${artistData.image}" alt="${artistData.name} image" />
@@ -62,6 +60,10 @@ export function showModal(artistData) {
 			<p><strong>First Album:</strong> ${artistData.firstAlbum || "Unknown"}</p>
 		</div>
 		<div>
+			<strong>Members:</strong>
+			<ul id="artistMembersList">
+				${artistData.members.map((member) => `<li>${member}</li>`).join("")}
+			</ul>
 			<p><strong>Locations:</strong> ${artistData.locations || "No Locations"}</p>
 			<p><strong>Concert Dates:</strong> 
 				${artistData.concertDates || "No Concert Dates"}
@@ -69,19 +71,22 @@ export function showModal(artistData) {
 			<p><strong>Relations:</strong> ${artistData.relations || "No Relations"}</p>
 		</div>
 	`;
-	// Show the modal
-	modal.style.display = "block";
 
-	// Close the modal when the close button is clicked
+	modal.classList.add("show");
+
+	const modalContent = document.querySelector(".modal-content");
+	modalContent.classList.add("show");
+
 	const closeButton = document.querySelector(".close-button");
 	closeButton.onclick = function () {
-		modal.style.display = "none";
+		modal.classList.remove("show");
+		modalContent.classList.remove("show");
 	};
 
-	// Close the modal when clicking outside of it
 	window.onclick = function (event) {
 		if (event.target == modal) {
-			modal.style.display = "none";
+			modal.classList.remove("show");
+			modalContent.classList.remove("show");
 		}
 	};
 }
