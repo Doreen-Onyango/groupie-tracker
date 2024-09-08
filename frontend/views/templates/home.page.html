@@ -33,32 +33,42 @@
 </div>
 
 <!-- Template for artist card -->
+<!-- Template for artist card -->
 <template id="artistCardTemplate">
-	<div class="artist-card">
-		<img
-			class="artist-image"
-			src=""
-			alt=""
-			width="100"
-		/>
-		<div class="artist-info">
-			<h2 class="artist-name"></h2>
-			<ul class="artist-members"></ul>
-			<p>
-				<strong>Creation Date:</strong>
-				<span class="artist-creationDate"></span>
-			</p>
-			<p>
-				<strong>First Album:</strong> <span class="artist-firstAlbum"></span>
-			</p>
-			<p><strong>Locations:</strong> <span class="artist-locations"></span></p>
-			<p>
-				<strong>Concert Dates:</strong>
-				<span class="artist-concertDates"></span>
-			</p>
-			<p><strong>Relations:</strong> <span class="artist-relations"></span></p>
+	<a
+		href="#"
+		class="artist-card-link"
+	>
+		<div class="artist-card">
+			<img
+				class="artist-image"
+				src=""
+				alt=""
+				width="100"
+			/>
+			<div class="artist-info">
+				<h2 class="artist-name"></h2>
+				<ul class="artist-members"></ul>
+				<p>
+					<strong>Creation Date:</strong>
+					<span class="artist-creationDate"></span>
+				</p>
+				<p>
+					<strong>First Album:</strong> <span class="artist-firstAlbum"></span>
+				</p>
+				<p>
+					<strong>Locations:</strong> <span class="artist-locations"></span>
+				</p>
+				<p>
+					<strong>Concert Dates:</strong>
+					<span class="artist-concertDates"></span>
+				</p>
+				<p>
+					<strong>Relations:</strong> <span class="artist-relations"></span>
+				</p>
+			</div>
 		</div>
-	</div>
+	</a>
 </template>
 
 {{end}} {{define "js"}}
