@@ -1,61 +1,11 @@
 /* home.css */
 .home-page {
 	text-align: center;
-	padding: 20px;
-	background-color: #bfbcbc;
 	margin-bottom: 20px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .artists {
-	width: 80%;
-	margin: 0 auto;
-}
-
-h1 {
-	color: #333;
-}
-
-/* Style the search form */
-#searchForm {
-	margin-bottom: 20px;
-	display: flex;
-	justify-content: center;
-}
-
-/* Style the search input */
-input #search {
-	width: 300px;
-	padding: 10px;
-	margin: 20px auto;
-	border: 2px solid #ccc;
-	border-radius: 25px;
-	font-size: 16px;
-	outline: none;
-	transition: border-color 0.3s;
-}
-
-/* Change the border color when the input is focused */
-#search:focus {
-	border-color: #007bff;
-}
-
-/* Add a shadow to the search input when focused */
-#search:focus {
-	box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
-}
-
-/* Placeholder text styling */
-#search::placeholder {
-	color: #999;
-	font-style: italic;
-}
-
-/* Adjust the width on smaller screens */
-@media (max-width: 400px) {
-	#search {
-		width: 100%;
-	}
+	padding: 20px;
 }
 
 .artists-container {
@@ -65,49 +15,39 @@ input #search {
 }
 
 .artist-card {
-	background-color: #fff;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
 	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	overflow: hidden;
-	width: calc(33% - 20px);
-	box-sizing: border-box;
 	padding: 10px;
+	max-width: 300px;
 	text-align: center;
 }
 
-.artist-card img {
-	border-radius: 8px;
+.artist-image {
+	border-radius: 50%;
+	margin-bottom: 10px;
 }
 
 .artist-info {
-	margin-top: 10px;
-}
-
-.artist-info h2 {
-	font-size: 18px;
-	color: #333;
-	margin: 10px 0;
-}
-
-.artist-members {
-	list-style: none;
-	padding: 0;
-	margin: 0;
 	text-align: left;
 }
 
-.artist-members li {
+.artist-name {
+	font-size: 1.2em;
 	margin-bottom: 5px;
 }
 
-@media (max-width: 768px) {
-	.artist-card {
-		width: calc(50% - 20px);
-	}
+.artist-members {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
-@media (max-width: 480px) {
-	.artist-card {
-		width: 100%;
-	}
+.artist-creationDate,
+.artist-firstAlbum,
+.artist-locations,
+.artist-concertDates,
+.artist-relations {
+	margin: 5px 0;
+	font-size: 0.9em;
 }
