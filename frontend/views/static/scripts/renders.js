@@ -29,25 +29,19 @@ export const renderAllArtists = (artists) => {
 			artist.creationDate || "Unknown Creation Date";
 		card.querySelector(".artist-firstAlbum").textContent =
 			artist.firstAlbum || "Unknown First Album";
-
-		card.querySelector(".artist-locations").textContent = artist.locations
-			.length
-			? artist.locations
-			: "No Locations";
-		card.querySelector(".artist-concertDates").textContent = artist.concertDates
-			.length
-			? artist.concertDates
-			: "No Concert Dates";
-		card.querySelector(".artist-relations").textContent = artist.relations
-			.length
-			? artist.relations
-			: "No Relations";
-
 		container.appendChild(card);
 	});
 };
 
-const renderLocations = (locations) => {
-	console.log("Rendering locations:", locations);
-	// TODO: Update the DOM with locations data
-};
+export function showModal(artistData) {
+	const artistDetailsSection = document.querySelector("#artistDetails");
+	artistDetailsSection.innerHTML = "";
+	artistDetailsSection.innerHTML = `
+		<h2>${artistData.artist.name}</h2>
+		<p><strong>Creation Date:</strong> ${artistData.artist.creationDate}</p>
+		<p><strong>First Album:</strong> ${artistData.artist.firstAlbum}</p>
+		<p><strong>Locations:</strong> ${artistData.locations.join(", ")}</p>
+		<p><strong>Concert Dates:</strong> ${artistData.concertDates.join(", ")}</p>
+		<p><strong>Relations:</strong> ${artistData.relations.join(", ")}</p>
+	`;
+}
