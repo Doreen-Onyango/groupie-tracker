@@ -1,10 +1,4 @@
-{{template "base" . }} {{define "css"}}
-<link
-	rel="stylesheet"
-	href="/static/styles/home.css"
-	type="text/css"
-/>
-{{end}} {{define "title"}} Home {{end}} {{define "content"}}
+{{template "base" . }} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-page">
 	<h1 id="home-page">Welcome to the Groupie Tracker</h1>
 	<p>
@@ -32,6 +26,7 @@
 	</div>
 </div>
 
+<!-- Template for artist card -->
 <template id="artistCardTemplate">
 	<a
 		href="#"
@@ -43,24 +38,59 @@
 		>
 			<img
 				class="artist-image"
-				src=""
-				alt=""
+				src="{{.Image}}"
+				alt="{{.Name}} image"
 				width="100"
 			/>
 			<div class="artist-info">
-				<h2 class="artist-name"></h2>
-				<ul class="artist-members"></ul>
+				<h2 class="artist-name">{{.Name}}</h2>
+				<ul class="artist-members">
+					{{range .Members}}
+					<li>{{.}}</li>
+					{{end}}
+				</ul>
 				<p>
 					<strong>Creation Date:</strong>
-					<span class="artist-creationDate"></span>
+					<span class="artist-creationDate">{{.CreationDate}}</span>
 				</p>
 				<p>
-					<strong>First Album:</strong> <span class="artist-firstAlbum"></span>
+					<strong>First Album:</strong>
+					<span class="artist-firstAlbum">{{.FirstAlbum}}</span>
+				</p>
+				<p>
+					<strong>Locations:</strong>
+					<span class="artist-locations"
+						>{{range .Locations}}{{.}}, {{end}}</span
+					>
+				</p>
+				<p>
+					<strong>Concert Dates:</strong>
+					<span class="artist-concertDates"
+						>{{range .ConcertDates}}{{.}}, {{end}}</span
+					>
+				</p>
+				<p>
+					<strong>Relations:</strong>
+					<span class="artist-relations"
+						>{{range .Relations}}{{.}}, {{end}}</span
+					>
 				</p>
 			</div>
 		</div>
 	</a>
 </template>
+
+<!-- Modal Template -->
+<div
+	id="artistDetailsModal"
+	class="modal"
+>
+	<div class="modal-content">
+		<span class="close-button">&times;</span>
+		<div id="artistDetails"></div>
+	</div>
+</div>
+<!-- end of Modal -->
 
 {{end}} {{define "js"}}
 <script
