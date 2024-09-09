@@ -1,14 +1,17 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"sync"
 )
 
 type ResponseData struct {
-	res  map[string]string
-	keys []string
-	mu   sync.RWMutex
+	Artists   map[int]Artist
+	Locations map[int]Locations `json:"locations"`
+	Concerts  map[int]Concerts  `json:"concertDates"`
+	Relations map[int]Relations `json:"relations"`
+	mu        sync.RWMutex
 }
 
 func NewResponseData() *ResponseData {
@@ -71,5 +74,29 @@ func (r *ResponseData) SetData(api *MainApi) error {
 		instance.Err = err
 		return fmt.Errorf("oops something went wrong: %v", err)
 	}
+	return nil
+}
+
+func (r *ResponseData) GetArtistData(api *MainApi) error {
+	data, err := api.fetchData("artists")
+	if err != nil {
+		return fmt.Errorf("failed to fetch data: %w", err)
+	}
+
+	var artists []Artist
+
+	if err := json.Unmarshal(data, &artists); err != nil {
+		return fmt.Errorf("failed to unmarshal: %w", err)
+	}
+
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	for _, arts := range artists {
+		r.Artist[arts.ID] = arts
+	}
+
+	go r.SetData(api)
+	allArtists <- struct{}{}
 	return nil
 }
