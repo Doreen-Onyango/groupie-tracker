@@ -35,7 +35,7 @@ document.addEventListener("click", async function (event) {
 
 	try {
 		const data = await getArtistById(artistId);
-		showModal(data.data);
+		showModal(data);
 	} catch (err) {
 		console.error("Error fetching artist details:", err);
 	}
