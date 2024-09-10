@@ -3,7 +3,7 @@ export const renderAllArtists = (artists) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
 
-	container.innerHTML = ""; // Clear existing cards
+	container.innerHTML = "";
 
 	artists.forEach((artist) => {
 		const card = template.content.cloneNode(true);
@@ -28,20 +28,6 @@ export const renderAllArtists = (artists) => {
 			artist.creationDate || "Unknown Creation Date";
 		card.querySelector(".artist-firstAlbum").textContent =
 			artist.firstAlbum || "Unknown First Album";
-
-		card.querySelector(".artist-locations").textContent = artist.locations
-			.length
-			? artist.locations
-			: "No Locations";
-		card.querySelector(".artist-concertDates").textContent = artist.concertDates
-			.length
-			? artist.concertDates
-			: "No Concert Dates";
-		card.querySelector(".artist-relations").textContent = artist.relations
-			.length
-			? artist.relations
-			: "No Relations";
-
 		container.appendChild(card);
 	});
 };
@@ -54,21 +40,102 @@ export function showModal(artistData) {
 
 	artistDetailsSection.innerHTML = `
 		<div>
-			<img src="${artistData.image}" alt="${artistData.name} image" />
-			<h2>${artistData.name}</h2>
-			<p><strong>Creation Date:</strong> ${artistData.creationDate || "Unknown"}</p>
-			<p><strong>First Album:</strong> ${artistData.firstAlbum || "Unknown"}</p>
+			<img src="${artistData.artist.image}" alt="${artistData.artist.name} image" />
+			<h2>${artistData.artist.name}</h2>
+			<p><strong>Creation Date:</strong> ${
+				artistData.artist.creationDate || "Unknown"
+			}</p>
+			<p><strong>First Album:</strong> ${
+				artistData.artist.firstAlbum || "Unknown"
+			}</p>
 		</div>
 		<div>
 			<strong>Members:</strong>
 			<ul id="artistMembersList">
-				${artistData.members.map((member) => `<li>${member}</li>`).join("")}
+				${artistData.artist.members.map((member) => `<li>${member}</li>`).join("")}
 			</ul>
-			<p><strong>Locations:</strong> ${artistData.locations || "No Locations"}</p>
-			<p><strong>Concert Dates:</strong> 
-				${artistData.concertDates || "No Concert Dates"}
+			<p><strong>Locations:</strong>
+				${
+					artistData.locations.locations
+						.map((location) => {
+							let formattedLocation = location
+								.split("-")
+								.map((part) =>
+									part
+										.split("_")
+										.map(
+											(word) =>
+												word.charAt(0).toUpperCase() +
+												word.slice(1).toLowerCase()
+										)
+										.join(" ")
+								)
+								.join(" in ");
+
+							return `<li>${formattedLocation}</li>`;
+						})
+						.join("") || "<li>Come down. No locations set at the moment</li>"
+				}
 			</p>
-			<p><strong>Relations:</strong> ${artistData.relations || "No Relations"}</p>
+
+			<p><strong>Concert Dates:</strong></p>
+			<ul>
+				${
+					artistData.concertDates.dates
+						.map((date) => {
+							const [day, month, year] = date.split("-");
+							const longDate = new Date(
+								`${year}-${month}-${day}`
+							).toLocaleDateString("en-US", {
+								weekday: "long",
+								year: "numeric",
+								month: "long",
+								day: "numeric",
+							});
+							return `<li>${longDate}</li>`;
+						})
+						.join("") ||
+					"<li>Come down. No concert dates set at the moment</li>"
+				}
+			</ul>
+
+			<p><strong>Relations:</strong></p>
+				<ul>
+					${
+						Object.entries(artistData.relations.datesLocations)
+							.map(([location, dates]) => {
+								let formattedLocation = location
+									.split("-")
+									.map((part) =>
+										part
+											.split("_")
+											.map(
+												(word) =>
+													word.charAt(0).toUpperCase() +
+													word.slice(1).toLowerCase()
+											)
+											.join(" ")
+									)
+									.join(" in ");
+
+								return `<li>${formattedLocation}: ${dates
+									.map((date) => {
+										const [day, month, year] = date.split("-");
+										const longDate = new Date(
+											`${year}-${month}-${day}`
+										).toLocaleDateString("en-US", {
+											weekday: "long",
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										});
+										return longDate;
+									})
+									.join(", ")}</li>`;
+							})
+							.join("") || "<li>No concert dates set at the moment</li>"
+					}
+				</ul>
 		</div>
 	`;
 
