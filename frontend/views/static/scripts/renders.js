@@ -45,9 +45,34 @@ export function showModal(artistData) {
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
 
-	artistDetailsSection.innerHTML = "";
+	artistDetailsSection.innerHTML = generateArtistDetailsHTML(artistData);
 
-	artistDetailsSection.innerHTML = `
+	modal.classList.add("show");
+
+	const modalContent = document.querySelector(".modal-content");
+	modalContent.classList.add("show");
+
+	const closeButton = document.querySelector(".close-button");
+	closeButton.onclick = function () {
+		modal.classList.remove("show");
+		modalContent.classList.remove("show");
+	};
+
+	window.onclick = function (event) {
+		if (event.target == modal) {
+			modal.classList.remove("show");
+			modalContent.classList.remove("show");
+		}
+	};
+}
+
+/**
+ * Generates HTML content for artist details.
+ * @param {Object} artistData - Contains details about the artist and associated data
+ * @returns {string} - The HTML string to be inserted into the modal
+ */
+function generateArtistDetailsHTML(artistData) {
+	return `
 		<div>
 			<img src="${artistData.artist.image}" alt="${artistData.artist.name} image" />
 			<h2>${artistData.artist.name}</h2>
@@ -80,7 +105,6 @@ export function showModal(artistData) {
 										.join(" ")
 								)
 								.join(" in ");
-
 							return `<li>${formattedLocation}</li>`;
 						})
 						.join("") || "<li>Come down. No locations set at the moment</li>"
@@ -109,60 +133,41 @@ export function showModal(artistData) {
 			</ul>
 
 			<p><strong>Relations:</strong></p>
-				<ul>
-					${
-						Object.entries(artistData.relations.datesLocations)
-							.map(([location, dates]) => {
-								let formattedLocation = location
-									.split("-")
-									.map((part) =>
-										part
-											.split("_")
-											.map(
-												(word) =>
-													word.charAt(0).toUpperCase() +
-													word.slice(1).toLowerCase()
-											)
-											.join(" ")
-									)
-									.join(" in ");
-
-								return `<li>${formattedLocation}: ${dates
-									.map((date) => {
-										const [day, month, year] = date.split("-");
-										const longDate = new Date(
-											`${year}-${month}-${day}`
-										).toLocaleDateString("en-US", {
-											weekday: "long",
-											year: "numeric",
-											month: "long",
-											day: "numeric",
-										});
-										return longDate;
-									})
-									.join(", ")}</li>`;
-							})
-							.join("") || "<li>No concert dates set at the moment</li>"
-					}
-				</ul>
+			<ul>
+				${
+					Object.entries(artistData.relations.datesLocations)
+						.map(([location, dates]) => {
+							let formattedLocation = location
+								.split("-")
+								.map((part) =>
+									part
+										.split("_")
+										.map(
+											(word) =>
+												word.charAt(0).toUpperCase() +
+												word.slice(1).toLowerCase()
+										)
+										.join(" ")
+								)
+								.join(" in ");
+							return `<li>${formattedLocation}: ${dates
+								.map((date) => {
+									const [day, month, year] = date.split("-");
+									const longDate = new Date(
+										`${year}-${month}-${day}`
+									).toLocaleDateString("en-US", {
+										weekday: "long",
+										year: "numeric",
+										month: "long",
+										day: "numeric",
+									});
+									return longDate;
+								})
+								.join(", ")}</li>`;
+						})
+						.join("") || "<li>No concert dates set at the moment</li>"
+				}
+			</ul>
 		</div>
 	`;
-
-	modal.classList.add("show");
-
-	const modalContent = document.querySelector(".modal-content");
-	modalContent.classList.add("show");
-
-	const closeButton = document.querySelector(".close-button");
-	closeButton.onclick = function () {
-		modal.classList.remove("show");
-		modalContent.classList.remove("show");
-	};
-
-	window.onclick = function (event) {
-		if (event.target == modal) {
-			modal.classList.remove("show");
-			modalContent.classList.remove("show");
-		}
-	};
 }
