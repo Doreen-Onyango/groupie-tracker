@@ -1,15 +1,25 @@
 /**
- * Renders a list of artist cards into the DOM
- * @param {Array<Object>} artists - Array of artist objects to render
- * Each artist object should include id, name, image, members, creationDate, and firstAlbum properties.
+ * Renders all artists or displays an error message if there's an issue
+ * @param {Object} artistsData - The data object containing artists, message, and error status
  */
-export const renderAllArtists = (artists) => {
+export const renderAllArtists = (artistsData) => {
+	const { data, message, error } = artistsData;
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
 
 	container.innerHTML = "";
 
-	artists.forEach((artist) => {
+	if (error) {
+		container.innerHTML = `
+			<div class="error-message">
+				<h2>Oops, there is a network issue!</h2>
+				<p>${message}</p>
+			</div>
+		`;
+		return;
+	}
+
+	data.forEach((artist) => {
 		const card = template.content.cloneNode(true);
 
 		const artistCard = card.querySelector(".artist-card");
