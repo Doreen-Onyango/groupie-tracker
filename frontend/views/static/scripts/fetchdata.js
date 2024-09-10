@@ -28,3 +28,30 @@ export const getAllArtists = async () => {
 		throw error;
 	}
 };
+
+/**
+ * Fetches data for a specific artist by their ID
+ * @param {string} id - The ID of the artist to fetch
+ * @returns {Promise<Object>} - The JSON response from the server containing the artist's data
+ * Throws an error if the fetch request fails or the response is not ok.
+ */
+export const getArtistById = async (id) => {
+	const body = JSON.stringify({ artist_id: id });
+
+	try {
+		const response = await fetch(url, {
+			method: "POST",
+			headers,
+			body,
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching artist:", error);
+		throw error;
+	}
+};
