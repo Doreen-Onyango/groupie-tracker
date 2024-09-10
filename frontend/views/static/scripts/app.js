@@ -27,6 +27,9 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document
 		.getElementById("search")
 		.addEventListener("input", this.handleSearchInput.bind(this));
+	document
+		.getElementById("filter")
+		.addEventListener("change", this.handleFilterChange.bind(this));
 };
 
 /**
@@ -43,7 +46,6 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 	const artistId = artistLink
 		.querySelector(".artist-card")
 		.getAttribute("data-artist-id");
-
 	if (!artistId) return;
 
 	const data = await getArtistById(artistId);
@@ -64,6 +66,25 @@ ArtistApp.prototype.handleSearchInput = function () {
 			.textContent.toLowerCase();
 		card.style.display = artistName.includes(query) ? "block" : "none";
 	});
+};
+
+/**
+ * Handles change events on the filter dropdown
+ * Filters artist cards based on the selected filter criteria
+ */
+ArtistApp.prototype.handleFilterChange = function () {
+	const filterValue = document.getElementById("filter").value;
+	let filteredArtists;
+
+	if (filterValue === "all") {
+		filteredArtists = this.artistsData;
+	} else {
+		filteredArtists = this.artistsData.filter((artist) =>
+			artist.genre.toLowerCase().includes(filterValue.toLowerCase())
+		);
+	}
+
+	renderAllArtists(filteredArtists);
 };
 
 /**
