@@ -1,4 +1,8 @@
-// Function to render all artists
+/**
+ * Renders a list of artist cards into the DOM
+ * @param {Array<Object>} artists - Array of artist objects to render
+ * Each artist object should include id, name, image, members, creationDate, and firstAlbum properties.
+ */
 export const renderAllArtists = (artists) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
@@ -32,6 +36,11 @@ export const renderAllArtists = (artists) => {
 	});
 };
 
+/**
+ * Displays a modal with detailed information about an artist
+ * @param {Object} artistData - Contains details about the artist and associated data
+ * This function updates the modal's content with the artist's image, name, creation date, first album, members, locations, concert dates, and relations.
+ */
 export function showModal(artistData) {
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
