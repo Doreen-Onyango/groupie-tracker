@@ -7,8 +7,7 @@ const headers = new Headers({
  * Utility function to fetch data from the server
  * @param {string} endpoint - The API endpoint to send the request to
  * @param {Object} [bodyData] - Optional body data to send with the request
- * @returns {Promise<Object>} - The JSON response from the server
- * Throws an error if the fetch request fails or the response is not ok.
+ * @returns {Promise<Object>} - The JSON response from the server or an error object
  */
 const fetchData = async (endpoint, bodyData = {}) => {
 	const body = JSON.stringify(bodyData);
@@ -26,8 +25,11 @@ const fetchData = async (endpoint, bodyData = {}) => {
 
 		return await response.json();
 	} catch (error) {
-		console.error(`Error fetching data from ${endpoint}:`, error);
-		throw error;
+		return {
+			error: true,
+			message: `Failed to fetch data from ${endpoint}: ${error.message}`,
+			data: null,
+		};
 	}
 };
 
