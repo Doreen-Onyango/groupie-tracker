@@ -1,5 +1,4 @@
-import { getAllArtists } from "/static/scripts/getallartists.js";
-import { getArtistById } from "./getartistbyid.js";
+import { getAllArtists, getArtistById } from "/static/scripts/fetchdata.js";
 import { renderAllArtists, showModal } from "./renders.js";
 
 /**
