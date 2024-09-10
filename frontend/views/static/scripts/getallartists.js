@@ -6,6 +6,7 @@ const body = JSON.stringify({});
 
 /**
  * Fetches all artists' data from the server
+ * @param {JSON} body - an empty json body object
  * @returns {Promise<Object>} - The JSON response from the server containing artists' data
  * Throws an error if the fetch request fails or the response is not ok.
  */
