@@ -9,7 +9,7 @@ import { renderAllArtists, showModal } from "./renders.js";
 document.addEventListener("DOMContentLoaded", async function () {
 	try {
 		const data = await getAllArtists();
-		renderAllArtists(data.data);
+		renderAllArtists(data);
 	} catch (err) {
 		console.log(err);
 	}
