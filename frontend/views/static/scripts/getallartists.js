@@ -4,6 +4,11 @@ const headers = new Headers({
 });
 const body = JSON.stringify({});
 
+/**
+ * Fetches all artists' data from the server
+ * @returns {Promise<Object>} - The JSON response from the server containing artists' data
+ * Throws an error if the fetch request fails or the response is not ok.
+ */
 export const getAllArtists = async () => {
 	try {
 		const response = await fetch(url, {
