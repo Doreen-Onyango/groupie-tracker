@@ -19,7 +19,8 @@ export const renderAllArtists = (artistsData) => {
 		return;
 	}
 
-	data.forEach((artist) => {
+	const sortedArtistData = sortById(data);
+	sortedArtistData.forEach((artist) => {
 		const card = template.content.cloneNode(true);
 
 		const artistCard = card.querySelector(".artist-card");
@@ -172,4 +173,13 @@ function formatDate(date) {
 		}
 	);
 	return longDate;
+}
+
+/**
+ * Sorts an array of objects by the 'id' property.
+ * @param {Array<Object>} items - The array of objects to be sorted.
+ * @returns {Array<Object>} - The sorted array.
+ */
+function sortById(items) {
+	return items.sort((a, b) => a.id - b.id);
 }
