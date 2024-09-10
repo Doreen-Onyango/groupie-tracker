@@ -1,5 +1,5 @@
 import { getAllArtists, getArtistById } from "/static/scripts/fetchdata.js";
-import { renderAllArtists, showModal } from "./renders.js";
+import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 
 /**
  * ArtistApp class to handle artist-related functionalities
@@ -15,12 +15,8 @@ class ArtistApp {
  * Fetches and displays all artists when the DOM is fully loaded
  */
 ArtistApp.prototype.initialize = async function () {
-	try {
-		const data = await getAllArtists();
-		renderAllArtists(data);
-	} catch (err) {
-		console.log(err);
-	}
+	const data = await getAllArtists();
+	renderAllArtists(data);
 };
 
 /**
@@ -50,12 +46,8 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 
 	if (!artistId) return;
 
-	try {
-		const data = await getArtistById(artistId);
-		showModal(data);
-	} catch (err) {
-		console.error("Error fetching artist details:", err);
-	}
+	const data = await getArtistById(artistId);
+	showModal(data);
 };
 
 /**
