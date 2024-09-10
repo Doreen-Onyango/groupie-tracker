@@ -41,7 +41,7 @@ export const renderAllArtists = (artistsData) => {
 		card.querySelector(".artist-creationDate").textContent =
 			artist.creationDate || "Unknown Creation Date";
 		card.querySelector(".artist-firstAlbum").textContent =
-			artist.firstAlbum || "Unknown First Album";
+			formatDate(artist.firstAlbum) || "Unknown First Album";
 		container.appendChild(card);
 	});
 };
@@ -52,10 +52,20 @@ export const renderAllArtists = (artistsData) => {
  * This function updates the modal's content with the artist's image, name, creation date, first album, members, locations, concert dates, and relations.
  */
 export function showModal(artistData) {
+	const { data, message, error } = artistData;
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
 
-	artistDetailsSection.innerHTML = generateArtistDetailsHTML(artistData);
+	if (error) {
+		artistDetailsSection.innerHTML = `
+			<div class="error-message">
+				<h2>Oops, there is a network issue!</h2>
+				<p>${message}</p>
+			</div>
+		`;
+	} else {
+		artistDetailsSection.innerHTML = generateArtistDetailsHTML(data);
+	}
 
 	modal.classList.add("show");
 
@@ -77,107 +87,89 @@ export function showModal(artistData) {
 }
 
 /**
- * Generates HTML content for artist details.
- * @param {Object} artistData - Contains details about the artist and associated data
- * @returns {string} - The HTML string to be inserted into the modal
+ * Generates the HTML content for artist details.
+ * @param {Object} artist - The artist data to display.
+ * @returns {string} - The generated HTML string.
  */
-function generateArtistDetailsHTML(artistData) {
+function generateArtistDetailsHTML(data) {
 	return `
 		<div>
-			<img src="${artistData.artist.image}" alt="${artistData.artist.name} image" />
-			<h2>${artistData.artist.name}</h2>
-			<p><strong>Creation Date:</strong> ${
-				artistData.artist.creationDate || "Unknown"
-			}</p>
+			<img src="${data.artist.image}" alt="${data.artist.name} image" />
+			<h2>${data.artist.name}</h2>
+			<p><strong>Creation Date:</strong> ${data.artist.creationDate || "Unknown"}</p>
 			<p><strong>First Album:</strong> ${
-				artistData.artist.firstAlbum || "Unknown"
+				formatDate(data.artist.firstAlbum) || "Unknown"
 			}</p>
 		</div>
 		<div>
 			<strong>Members:</strong>
 			<ul id="artistMembersList">
-				${artistData.artist.members.map((member) => `<li>${member}</li>`).join("")}
+				${data.artist.members.map((member) => `<li>${member}</li>`).join("")}
 			</ul>
 			<p><strong>Locations:</strong>
 				${
-					artistData.locations.locations
-						.map((location) => {
-							let formattedLocation = location
-								.split("-")
-								.map((part) =>
-									part
-										.split("_")
-										.map(
-											(word) =>
-												word.charAt(0).toUpperCase() +
-												word.slice(1).toLowerCase()
-										)
-										.join(" ")
-								)
-								.join(" in ");
-							return `<li>${formattedLocation}</li>`;
-						})
-						.join("") || "<li>Come down. No locations set at the moment</li>"
+					data.locations.locations
+						.map((location) => formatLocation(location))
+						.join("") || "<li>No locations set at the moment</li>"
 				}
 			</p>
-
 			<p><strong>Concert Dates:</strong></p>
 			<ul>
 				${
-					artistData.concertDates.dates
-						.map((date) => {
-							const [day, month, year] = date.split("-");
-							const longDate = new Date(
-								`${year}-${month}-${day}`
-							).toLocaleDateString("en-US", {
-								weekday: "long",
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-							});
-							return `<li>${longDate}</li>`;
-						})
-						.join("") ||
-					"<li>Come down. No concert dates set at the moment</li>"
+					data.concertDates.dates.map((date) => formatDate(date)).join("") ||
+					"<li>No concert dates set at the moment</li>"
 				}
 			</ul>
-
 			<p><strong>Relations:</strong></p>
 			<ul>
 				${
-					Object.entries(artistData.relations.datesLocations)
+					Object.entries(data.relations.datesLocations)
 						.map(([location, dates]) => {
-							let formattedLocation = location
-								.split("-")
-								.map((part) =>
-									part
-										.split("_")
-										.map(
-											(word) =>
-												word.charAt(0).toUpperCase() +
-												word.slice(1).toLowerCase()
-										)
-										.join(" ")
-								)
-								.join(" in ");
-							return `<li>${formattedLocation}: ${dates
-								.map((date) => {
-									const [day, month, year] = date.split("-");
-									const longDate = new Date(
-										`${year}-${month}-${day}`
-									).toLocaleDateString("en-US", {
-										weekday: "long",
-										year: "numeric",
-										month: "long",
-										day: "numeric",
-									});
-									return longDate;
-								})
+							return `<li>${formatLocation(location)}: ${dates
+								.map((date) => formatDate(date))
 								.join(", ")}</li>`;
 						})
-						.join("") || "<li>No concert dates set at the moment</li>"
+						.join("") || "<li>No relations set at the moment</li>"
 				}
 			</ul>
 		</div>
 	`;
+}
+
+/**
+ * Formats the location string.
+ * @param {string} location - The location string to format.
+ * @returns {string} - The formatted location string.
+ */
+function formatLocation(location) {
+	return location
+		.split("-")
+		.map((part) =>
+			part
+				.split("_")
+				.map(
+					(word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+				)
+				.join(" ")
+		)
+		.join(" in ");
+}
+
+/**
+ * Formats the date string into a long date format.
+ * @param {string} date - The date string to format.
+ * @returns {string} - The formatted date string.
+ */
+function formatDate(date) {
+	const [day, month, year] = date.split("-");
+	const longDate = new Date(`${year}-${month}-${day}`).toLocaleDateString(
+		"en-US",
+		{
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		}
+	);
+	return longDate;
 }
