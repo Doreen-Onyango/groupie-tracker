@@ -10,14 +10,14 @@ const headers = new Headers({
  * @returns {Promise<Object>} - The JSON response from the server or an error object
  */
 const fetchData = async (endpoint, bodyData = {}) => {
-	const body = JSON.stringify(bodyData);
+	const options = {
+		method: "POST",
+		headers,
+		body: JSON.stringify(bodyData),
+	};
 
 	try {
-		const response = await fetch(`${baseUrl}${endpoint}`, {
-			method: "POST",
-			headers,
-			body,
-		});
+		const response = await fetch(`${baseUrl}${endpoint}`, options);
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,19 +33,6 @@ const fetchData = async (endpoint, bodyData = {}) => {
 	}
 };
 
-/**
- * Fetches all artists' data from the server
- * @returns {Promise<Object>} - The JSON response from the server containing artists' data
- */
-export const getAllArtists = () => {
-	return fetchData("getallartists");
-};
-
-/**
- * Fetches data for a specific artist by their ID
- * @param {string} id - The ID of the artist to fetch
- * @returns {Promise<Object>} - The JSON response from the server containing the artist's data
- */
-export const getArtistById = (id) => {
-	return fetchData("getartistbyid", { artist_id: id });
-};
+export const getAllArtists = () => fetchData("getallartists");
+export const getArtistById = (id) =>
+	fetchData("getartistbyid", { artist_id: id });
