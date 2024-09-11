@@ -30,6 +30,9 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document
 		.getElementById("rangeFilter")
 		.addEventListener("input", this.handleRangeFilter.bind(this));
+	document
+		.getElementById("filterType")
+		.addEventListener("change", this.updateRangeFilter.bind(this));
 };
 
 /**
@@ -83,6 +86,32 @@ ArtistApp.prototype.handleRangeFilter = function () {
 	});
 
 	renderAllArtists(filteredArtists);
+};
+
+/**
+ * Updates the range filter based on the selected filter type
+ * Adjusts the min and max range based on the artist data
+ */
+ArtistApp.prototype.updateRangeFilter = function () {
+	const filterType = document.getElementById("filterType").value;
+	let minYear = new Date().getFullYear();
+	let maxYear = 0;
+
+	this.artistsData.forEach((artist) => {
+		const dateValue = artist[filterType];
+		const year = new Date(dateValue).getFullYear();
+		if (year < minYear) minYear = year;
+		if (year > maxYear) maxYear = year;
+	});
+
+	const rangeFilter = document.getElementById("rangeFilter");
+	rangeFilter.min = minYear;
+	rangeFilter.max = maxYear;
+	rangeFilter.value = maxYear;
+
+	document.getElementById("rangeValue").textContent = maxYear;
+
+	this.handleRangeFilter();
 };
 
 /**
