@@ -35,6 +35,9 @@ ArtistApp.prototype.setupEventListeners = function () {
 		this.setRangeFilterDefaults();
 		this.handleRangeFilter();
 	});
+	document
+		.getElementById("membersFilter")
+		.addEventListener("change", this.handleMembersFilter.bind(this));
 };
 
 /**
@@ -95,6 +98,34 @@ ArtistApp.prototype.handleRangeFilter = function () {
 		}
 
 		return year <= rangeValue;
+	});
+
+	const filteredArtistsData = {
+		error: error,
+		message: message,
+		data: filteredData,
+	};
+
+	renderAllArtists(filteredArtistsData);
+};
+
+/**
+ * Handles changes to the members filter
+ * Filters artist cards based on the selected member sizes
+ */
+ArtistApp.prototype.handleMembersFilter = function () {
+	if (!this.artistsData) return;
+
+	const selectedSizes = Array.from(
+		document.querySelectorAll("#membersFilter input:checked")
+	).map((input) => parseInt(input.value, 10));
+
+	const { data, message, error } = this.artistsData;
+	const filteredData = data.filter((artist) => {
+		const memberCount = Array.isArray(artist.members)
+			? artist.members.length
+			: artist.members;
+		return selectedSizes.length === 0 || selectedSizes.includes(memberCount);
 	});
 
 	const filteredArtistsData = {
