@@ -85,11 +85,16 @@ ArtistApp.prototype.handleRangeFilter = function () {
 
 	const { data, message, error } = this.artistsData;
 	const filteredData = data.filter((artist) => {
-		const dateValue = artist[filterType];
+		let year = artist[filterType];
 
-		if (dateValue === null) return false;
+		if (year === null || year === undefined) return false;
 
-		return dateValue <= rangeValue;
+		if (filterType === "firstAlbum") {
+			const parts = year.split("-");
+			year = parseInt(parts[parts.length - 1], 10);
+		}
+
+		return year <= rangeValue;
 	});
 
 	const filteredArtistsData = {
@@ -112,7 +117,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	let minYear = Infinity;
 	let maxYear = -Infinity;
 
-	console.log("filterType: " + filterType);
 	this.artistsData.data.forEach((artist) => {
 		let year = artist[filterType];
 
