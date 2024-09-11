@@ -48,7 +48,7 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 
 func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
-		Request string `json:"request"`
+		Request string `json:"artist_id"`
 	}
 
 	err := m.res.ReadJSON(w, r, &requestData)
