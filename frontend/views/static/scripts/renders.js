@@ -112,7 +112,7 @@ function generateArtistDetailsHTML({
 			<p><strong>Locations:</strong>
 				${
 					locations.locations.length
-						? locations.locations.map(formatLocation).join("")
+						? locations.locations.map(formatLocation).join(", ")
 						: "<li>No locations set at the moment</li>"
 				}
 			</p>
