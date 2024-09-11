@@ -13,8 +13,8 @@ type Repo struct {
 	res *responses.JSONRes
 }
 
-func NewRepo(app *models.App, res *responses.JSONRes) *Repo {
-	return &Repo{app, res}
+func NewRepo(app *models.App) *Repo {
+	return &Repo{app, responses.NewJSONRes()}
 }
 
 func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
