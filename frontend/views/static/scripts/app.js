@@ -112,11 +112,17 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	let minYear = Infinity;
 	let maxYear = -Infinity;
 
+	console.log("filterType: " + filterType);
 	this.artistsData.data.forEach((artist) => {
-		const dateValue = artist[filterType];
+		let year = artist[filterType];
 
-		if (dateValue < minYear) minYear = dateValue;
-		if (dateValue > maxYear) maxYear = dateValue;
+		if (filterType === "firstAlbum") {
+			const parts = year.split("-");
+			year = parseInt(parts[parts.length - 1], 10);
+		}
+
+		if (year < minYear) minYear = year;
+		if (year > maxYear) maxYear = year;
 	});
 
 	// Ensure minYear and maxYear have valid values
