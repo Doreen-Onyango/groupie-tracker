@@ -16,6 +16,7 @@ class ArtistApp {
  */
 ArtistApp.prototype.initialize = async function () {
 	this.artistsData = await getAllArtists();
+	this.setRangeFilterDefaults();
 	renderAllArtists(this.artistsData);
 };
 
@@ -30,9 +31,10 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document
 		.getElementById("rangeFilter")
 		.addEventListener("input", this.handleRangeFilter.bind(this));
-	document
-		.getElementById("filterType")
-		.addEventListener("change", this.updateRangeFilter.bind(this));
+	document.getElementById("filterType").addEventListener("change", () => {
+		this.setRangeFilterDefaults();
+		this.handleRangeFilter();
+	});
 };
 
 /**
@@ -76,15 +78,42 @@ ArtistApp.prototype.handleSearchInput = function () {
  * Filters artist cards based on the selected year range and filter type
  */
 ArtistApp.prototype.handleRangeFilter = function () {
-	const rangeValue = document.getElementById("rangeFilter").value;
+	if (!this.artistsData) return;
+
+	const rangeValue = parseInt(document.getElementById("rangeFilter").value, 10);
 	document.getElementById("rangeValue").textContent = rangeValue;
 
 	const filterType = document.getElementById("filterType").value;
 
 	const { data, message, error } = this.artistsData;
+
+	console.log("Filter Type:", filterType);
+	console.log("Range Value:", rangeValue);
+	console.log("Artists Data:", data);
+
 	const filteredData = data.filter((artist) => {
 		const dateValue = artist[filterType];
-		return new Date(dateValue).getFullYear() <= rangeValue;
+		let year;
+
+		// Attempt to parse the date manually
+		try {
+			const parsedDate = new Date(dateValue);
+			year = parsedDate.getFullYear();
+		} catch (e) {
+			console.error("Error parsing date:", e);
+			year = null;
+		}
+
+		if (year === null) {
+			console.warn("Invalid date for artist:", artist);
+			return false;
+		}
+
+		// Log date parsing and filtering
+		console.log("Date Value:", dateValue, "Year:", year);
+
+		// Ensure year is within the range
+		return year <= rangeValue;
 	});
 
 	const filteredArtistsData = {
@@ -100,29 +129,40 @@ ArtistApp.prototype.handleRangeFilter = function () {
  * Updates the range filter based on the selected filter type
  * Adjusts the min and max range based on the artist data
  */
-ArtistApp.prototype.updateRangeFilter = function () {
+ArtistApp.prototype.setRangeFilterDefaults = function () {
+	if (!this.artistsData) return;
+
 	const filterType = document.getElementById("filterType").value;
-	let minYear = new Date().getFullYear();
-	let maxYear = 0;
+	let minYear = Infinity;
+	let maxYear = -Infinity;
 
 	this.artistsData.data.forEach((artist) => {
 		const dateValue = artist[filterType];
-		const year = new Date(dateValue).getFullYear();
-		if (year < minYear) minYear = year;
-		if (year > maxYear) maxYear = year;
+
+		if (dateValue < minYear) minYear = dateValue;
+		if (dateValue > maxYear) maxYear = dateValue;
 	});
+
+	// Ensure minYear and maxYear have valid values
+	if (minYear === Infinity || maxYear === -Infinity) {
+		minYear = 0;
+		maxYear = new Date().getFullYear();
+	}
+
+	// Debugging: Log min and max year
+	console.log("Min Year:", minYear);
+	console.log("Max Year:", maxYear);
 
 	const rangeFilter = document.getElementById("rangeFilter");
 	rangeFilter.min = minYear;
 	rangeFilter.max = maxYear;
 	rangeFilter.value = maxYear;
-
 	document.getElementById("rangeValue").textContent = maxYear;
-
-	this.handleRangeFilter();
 };
 
 /**
  * Creates a new instance of ArtistApp and starts the application
  */
-document.addEventListener("DOMContentLoaded", () => new ArtistApp());
+document.addEventListener("DOMContentLoaded", () => {
+	const app = new ArtistApp();
+});
