@@ -18,6 +18,29 @@
 		/>
 	</form>
 
+	<!-- filters -->
+	<!-- Dropdown to select the filter type -->
+	<label for="filterType">Filter by:</label>
+	<select id="filterType">
+		<option value="creationDate">Creation Date</option>
+		<option value="firstAlbumDate">First Album Date</option>
+	</select>
+
+	<!-- Range filter -->
+	<label for="rangeFilter">Year Range:</label>
+	<input
+		type="range"
+		id="rangeFilter"
+		min="{{ .minYear }}"
+		max="{{ .maxYear }}"
+		step="1"
+		value="{{ .maxYear }}"
+	/>
+	<span id="rangeValue">{{ .maxYear }}</span>
+
+	<!--  end -->
+
+	<!-- artis Cards -->
 	<div
 		id="artistsContainer"
 		class="artists-container"
