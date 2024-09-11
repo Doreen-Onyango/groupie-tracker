@@ -40,7 +40,35 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 	m.res.Message = "success"
 	m.res.Data = json.RawMessage(artistsJSON)
 
-	if err := m.res.WriteJSON(w,*m.res, http.StatusOK); err != nil {
-		m.res.ErrJSON(w,err, http.StatusInternalServerError)
+	if err := m.res.WriteJSON(w, *m.res, http.StatusOK); err != nil {
+		m.res.ErrJSON(w, err, http.StatusInternalServerError)
+	}
+}
+
+func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
+	var requestData struct {
+		Request string `json:"request"`
+	}
+
+	err := m.res.ReadJSON(w, r, &requestData)
+	if err != nil {
+		m.res.ErrJSON(w, err, http.StatusBadRequest)
+	}
+
+	artistData, err := m.app.Res.GetArtistById(requestData.Request)
+	if err != nil || len(artistData) == 0 {
+		m.res.Err = true
+		m.res.Message = "oops something went wrong, network error"
+		m.res.ErrJSON(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	artistsJSON, _ := json.Marshal(artistData)
+	m.res.Err = false
+	m.res.Message = "success"
+	m.res.Data = json.RawMessage(artistsJSON)
+
+	if err := m.res.WriteJSON(w, *m.res, http.StatusOK); err != nil {
+		m.res.ErrJSON(w, err, http.StatusInternalServerError)
 	}
 }
