@@ -28,8 +28,8 @@ ArtistApp.prototype.setupEventListeners = function () {
 		.getElementById("search")
 		.addEventListener("input", this.handleSearchInput.bind(this));
 	document
-		.getElementById("filter")
-		.addEventListener("change", this.handleFilterChange.bind(this));
+		.getElementById("rangeFilter")
+		.addEventListener("input", this.handleRangeFilter.bind(this));
 };
 
 /**
@@ -69,20 +69,18 @@ ArtistApp.prototype.handleSearchInput = function () {
 };
 
 /**
- * Handles change events on the filter dropdown
- * Filters artist cards based on the selected filter criteria
+ * Handles input events on the range filter
+ * Filters artist cards based on the selected year range and filter type
  */
-ArtistApp.prototype.handleFilterChange = function () {
-	const filterValue = document.getElementById("filter").value;
-	let filteredArtists;
+ArtistApp.prototype.handleRangeFilter = function () {
+	const rangeValue = document.getElementById("rangeFilter").value;
+	document.getElementById("rangeValue").textContent = rangeValue;
 
-	if (filterValue === "all") {
-		filteredArtists = this.artistsData;
-	} else {
-		filteredArtists = this.artistsData.filter((artist) =>
-			artist.genre.toLowerCase().includes(filterValue.toLowerCase())
-		);
-	}
+	const filterType = document.getElementById("filterType").value;
+	const filteredArtists = this.artistsData.filter((artist) => {
+		const dateValue = artist[filterType];
+		return new Date(dateValue).getFullYear() <= rangeValue;
+	});
 
 	renderAllArtists(filteredArtists);
 };
