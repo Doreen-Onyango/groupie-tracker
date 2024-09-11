@@ -9,10 +9,12 @@ type App struct {
 }
 
 var (
-	instance *App
-	once     sync.Once
+	instance   *App
+	once       sync.Once
+	allArtists = make(chan struct{}, 1)
 )
 
+// initializing and executing only once.
 func AppState() *App {
 	once.Do(func() {
 		instance = &App{
@@ -20,7 +22,7 @@ func AppState() *App {
 			Res: NewResponseData(),
 			Err: nil,
 		}
-		instance.Res.SetData(instance.Api)
+		instance.Res.AddArtist(instance.Api)
 	})
 	return instance
 }
