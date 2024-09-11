@@ -1,10 +1,4 @@
-{{template "base" . }} {{define "css"}}
-<link
-	rel="stylesheet"
-	href="/static/styles/home.css"
-	type="text/css"
-/>
-{{end}} {{define "title"}} Home {{end}} {{define "content"}}
+{{template "base" . }} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-page">
 	<h1 id="home-page">Welcome to the Groupie Tracker</h1>
 	<p>
@@ -24,6 +18,83 @@
 		/>
 	</form>
 
+	<!-- filters -->
+	<!-- Dropdown to select the filter type -->
+	<label for="filterType">Filter by:</label>
+	<select id="filterType">
+		<option value="creationDate">Creation Date</option>
+		<option value="firstAlbum">First Album Date</option>
+	</select>
+
+	<!-- Range filter -->
+	<label for="rangeFilter">Year Range:</label>
+	<input
+		type="range"
+		id="rangeFilter"
+		min="{{ .minYear }}"
+		max="{{ .maxYear }}"
+		step="1"
+		value="{{ .maxYear }}"
+	/>
+	<span id="rangeValue">{{ .maxYear }}</span>
+
+	<!-- members filter -->
+	<div id="membersFilter">
+		<label
+			><input
+				type="checkbox"
+				value="1"
+			/>
+			1</label
+		>
+		<label
+			><input
+				type="checkbox"
+				value="2"
+			/>
+			2</label
+		>
+		<label
+			><input
+				type="checkbox"
+				value="3"
+			/>
+			3</label
+		>
+		<label
+			><input
+				type="checkbox"
+				value="4"
+			/>
+			4</label
+		>
+		<label
+			><input
+				type="checkbox"
+				value="5"
+			/>
+			5</label
+		>
+		<label
+			><input
+				type="checkbox"
+				value="6"
+			/>
+			6</label
+		>
+		<label
+			><input
+				type="checkbox"
+				value="7"
+			/>
+			7</label
+		>
+	</div>
+	<!-- end of members filter -->
+
+	<!--  end -->
+
+	<!-- artis Cards -->
 	<div
 		id="artistsContainer"
 		class="artists-container"
@@ -34,32 +105,51 @@
 
 <!-- Template for artist card -->
 <template id="artistCardTemplate">
-	<div class="artist-card">
-		<img
-			class="artist-image"
-			src=""
-			alt=""
-			width="100"
-		/>
-		<div class="artist-info">
-			<h2 class="artist-name"></h2>
-			<ul class="artist-members"></ul>
-			<p>
-				<strong>Creation Date:</strong>
-				<span class="artist-creationDate"></span>
-			</p>
-			<p>
-				<strong>First Album:</strong> <span class="artist-firstAlbum"></span>
-			</p>
-			<p><strong>Locations:</strong> <span class="artist-locations"></span></p>
-			<p>
-				<strong>Concert Dates:</strong>
-				<span class="artist-concertDates"></span>
-			</p>
-			<p><strong>Relations:</strong> <span class="artist-relations"></span></p>
+	<a
+		href="#"
+		class="artist-card-link"
+	>
+		<div
+			class="artist-card"
+			data-artist-id="{{.ArtistID}}"
+		>
+			<img
+				class="artist-image"
+				src="{{.Image}}"
+				alt="{{.Name}} image"
+				width="100"
+			/>
+			<div class="artist-info">
+				<h2 class="artist-name">{{.Name}}</h2>
+				<ul class="artist-members">
+					{{range .Members}}
+					<li>{{.}}</li>
+					{{end}}
+				</ul>
+				<p>
+					<strong>Creation Date:</strong>
+					<span class="artist-creationDate">{{.CreationDate}}</span>
+				</p>
+				<p>
+					<strong>First Album:</strong>
+					<span class="artist-firstAlbum">{{.FirstAlbum}}</span>
+				</p>
+			</div>
 		</div>
-	</div>
+	</a>
 </template>
+
+<!-- Modal Template -->
+<div
+	id="artistDetailsModal"
+	class="modal"
+>
+	<div class="modal-content">
+		<span class="close-button">&times;</span>
+		<div id="artistDetails"></div>
+	</div>
+</div>
+<!-- end of Modal -->
 
 {{end}} {{define "js"}}
 <script
