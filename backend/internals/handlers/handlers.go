@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/models"
@@ -36,8 +35,6 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 		m.res.ErrJSON(w, err, http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Println(artistData)
 
 	artistsJSON, _ := json.Marshal(artistData)
 	m.res.Err = false
