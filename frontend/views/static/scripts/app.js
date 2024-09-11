@@ -15,12 +15,12 @@ class ArtistApp {
  * Fetches and displays all artists when the DOM is fully loaded
  */
 ArtistApp.prototype.initialize = async function () {
-	const data = await getAllArtists();
-	renderAllArtists(data);
+	this.artistsData = await getAllArtists();
+	renderAllArtists(this.artistsData);
 };
 
 /**
- * Sets up event listeners for artist card clicks and search input
+ * Sets up event listeners for artist card clicks, search input, and range filter
  */
 ArtistApp.prototype.setupEventListeners = function () {
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
@@ -80,12 +80,20 @@ ArtistApp.prototype.handleRangeFilter = function () {
 	document.getElementById("rangeValue").textContent = rangeValue;
 
 	const filterType = document.getElementById("filterType").value;
-	const filteredArtists = this.artistsData.filter((artist) => {
+
+	const { data, message, error } = this.artistsData;
+	const filteredData = data.filter((artist) => {
 		const dateValue = artist[filterType];
 		return new Date(dateValue).getFullYear() <= rangeValue;
 	});
 
-	renderAllArtists(filteredArtists);
+	const filteredArtistsData = {
+		data: filteredData,
+		message: message,
+		error: error,
+	};
+
+	renderAllArtists(filteredArtistsData);
 };
 
 /**
@@ -97,7 +105,7 @@ ArtistApp.prototype.updateRangeFilter = function () {
 	let minYear = new Date().getFullYear();
 	let maxYear = 0;
 
-	this.artistsData.forEach((artist) => {
+	this.artistsData.data.forEach((artist) => {
 		const dateValue = artist[filterType];
 		const year = new Date(dateValue).getFullYear();
 		if (year < minYear) minYear = year;
