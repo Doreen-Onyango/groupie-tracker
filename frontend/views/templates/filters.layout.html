@@ -69,6 +69,45 @@
 
 <!-- range filter -->
 {{define "rangeFilter"}}
+<div class="range_container">
+	<div class="sliders_control">
+		<div
+			id="fromSliderTooltip"
+			class="slider-tooltip"
+		>
+			{{ .minYear}}
+		</div>
+		<input
+			id="fromSlider"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
+		/>
+		<div
+			id="toSliderTooltip"
+			class="slider-tooltip"
+		>
+			{{ .maxYear }}
+		</div>
+		<input
+			id="toSlider"
+			type="range"
+			value="260"
+			min="50"
+			max="350"
+			steps="10"
+		/>
+	</div>
+
+	<!--scale steps defined by data-steps value -->
+	<div
+		id="scale"
+		class="scale"
+		data-steps="50"
+	></div>
+</div>
 <label for="rangeFilter">Year Range:</label>
 <input
 	type="range"
