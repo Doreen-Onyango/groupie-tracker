@@ -95,8 +95,8 @@ ArtistApp.prototype.handleSearchInput = function () {
 ArtistApp.prototype.handleRangeFilter = function () {
 	if (!this.artistsData) return;
 
-	const rangeValue = parseInt(document.getElementById("rangeFilter").value, 10);
-	document.getElementById("rangeValue").textContent = rangeValue;
+	const fromValue = parseInt(document.getElementById("fromSlider").value, 10);
+	const toValue = parseInt(document.getElementById("toSlider").value, 10);
 	const filterType = document.getElementById("filterType").value;
 
 	const { data, message, error } = this.artistsData;
@@ -110,7 +110,9 @@ ArtistApp.prototype.handleRangeFilter = function () {
 			year = parseInt(parts[parts.length - 1], 10);
 		}
 
-		return year <= rangeValue;
+		console.log(fromValue, toValue);
+
+		return year >= fromValue && year <= toValue;
 	});
 
 	const filteredArtistsData = {
@@ -180,11 +182,13 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		maxYear = new Date().getFullYear();
 	}
 
-	const rangeFilter = document.getElementById("rangeFilter");
-	rangeFilter.min = minYear;
-	rangeFilter.max = maxYear;
-	rangeFilter.value = maxYear;
-	document.getElementById("rangeValue").textContent = maxYear;
+	document.getElementById("fromSlider").min = minYear;
+	document.getElementById("fromSlider").max = maxYear;
+	document.getElementById("fromSlider").value = minYear;
+
+	document.getElementById("toSlider").min = minYear;
+	document.getElementById("toSlider").max = maxYear;
+	document.getElementById("toSlider").value = maxYear;
 };
 
 /**

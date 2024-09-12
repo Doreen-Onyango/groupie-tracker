@@ -83,7 +83,7 @@
 			min="{{ .minYear }}"
 			max="{{ .maxYear }}"
 			step="1"
-			value="{{ .maxYear }}"
+			value="{{ .minYear }}"
 		/>
 		<div
 			id="toSliderTooltip"
@@ -94,10 +94,10 @@
 		<input
 			id="toSlider"
 			type="range"
-			value="260"
-			min="50"
-			max="350"
-			steps="10"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
 		/>
 	</div>
 
@@ -105,7 +105,7 @@
 	<div
 		id="scale"
 		class="scale"
-		data-steps="50"
+		data-steps="1"
 	></div>
 </div>
 <label for="rangeFilter">Year Range:</label>
