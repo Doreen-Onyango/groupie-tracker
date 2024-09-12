@@ -113,3 +113,14 @@
 	{{ end }}
 	<!-- end of dropdown -->
 </div>
+
+<!-- concerts filter -->
+<!-- Add this below the existing filters -->
+{{ define "concertsFilter"}}
+<label for="concertsFilter">Sort by:</label>
+<select id="concertsFilter">
+	<option value="default">Default</option>
+	<option value="location">Concert Locations</option>
+</select>
+{{ end }}
+<!-- end of concert filter -->

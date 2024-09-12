@@ -2,7 +2,7 @@
  * Renders all artists or displays an error message if there's an issue
  * @param {Object} artistsData - The data object containing artists, message, and error status
  */
-export const renderAllArtists = ({ data, message, error }) => {
+export const renderAllArtists = ({ data, message, error }, sortById) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
 
@@ -175,13 +175,4 @@ function formatDate(date) {
 		month: "long",
 		day: "numeric",
 	});
-}
-
-/**
- * Sorts an array of objects by the 'id' property.
- * @param {Array<Object>} items - The array of objects to be sorted.
- * @returns {Array<Object>} - The sorted array.
- */
-function sortById(items) {
-	return items.sort((a, b) => a.id - b.id);
 }

@@ -6,6 +6,8 @@ import {
 	fillSlider,
 	controlToSlider,
 	controlFromSlider,
+	sortByLocation,
+	sortById,
 } from "/static/scripts/helpers.js";
 import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 
@@ -23,6 +25,7 @@ class ArtistApp {
 		this.toSlider = document.getElementById("toSlider");
 		this.fromTooltip = document.getElementById("fromSliderTooltip");
 		this.toTooltip = document.getElementById("toSliderTooltip");
+		this.concertsFilter = document.getElementById("concertsFilter"); // Concerts filter dropdown element
 
 		this.initialize();
 		this.setupEventListeners();
@@ -49,6 +52,7 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
 	bindEvent(this.searchInput, "input", this.applyAllFilters);
 	bindEvent(this.membersFilter, "change", this.applyAllFilters);
+	bindEvent(this.concertsFilter, "change", this.applyAllFilters); // Listen for concert location sorting
 	document.addEventListener("input", this.applyAllFilters.bind(this));
 	bindEvent(this.filterType, "change", () => {
 		this.setRangeFilterDefaults();
@@ -102,6 +106,12 @@ ArtistApp.prototype.applyAllFilters = function () {
 		});
 	}
 
+	// Apply sorting based on concert locations
+	const sortValue = this.concertsFilter.value;
+	if (sortValue === "location") {
+		filteredData = sortByLocation(filteredData);
+	}
+
 	// Update the filtered data
 	this.filteredData = filteredData;
 
@@ -112,7 +122,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 		error: this.artistsData.error,
 	};
 
-	renderAllArtists(data);
+	renderAllArtists(data, sortById);
 };
 
 /**

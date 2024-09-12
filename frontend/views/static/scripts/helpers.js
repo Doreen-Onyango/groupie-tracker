@@ -87,19 +87,6 @@ export function setTooltip(slider, tooltip) {
 	tooltip.style.left = `calc(${percent}% - ${offset}px)`;
 }
 
-// export function createScale(min, max, step) {
-// 	const range = max - min;
-// 	const steps = range / step;
-// 	for (let i = 0; i <= steps; i++) {
-// 		const value = min + i * step;
-// 		const percent = ((value - min) / range) * 100;
-// 		const marker = document.createElement("div");
-// 		marker.style.left = `${percent}%`;
-// 		marker.textContent = `$${value}`;
-// 		scale.appendChild(marker);
-// 	}
-// }
-
 export function setToggleAccessible(currentTarget) {
 	const toSlider = document.querySelector("#toSlider");
 	if (Number(currentTarget.value) <= 0) {
@@ -121,4 +108,26 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
           ${rangeColor} ${(toPosition / rangeDistance) * 100}%,
           ${sliderColor} ${(toPosition / rangeDistance) * 100}%,
           ${sliderColor} 100%)`;
+}
+
+/**
+ * Sorts an array of artists by the number of concert locations.
+ * @param {Array<Object>} artists - The array of artists to be sorted.
+ * @returns {Array<Object>} - The sorted array of artists.
+ */
+export function sortByLocation(artists) {
+	return artists.sort((a, b) => {
+		const locationsA = a.locations?.length || 0;
+		const locationsB = b.locations?.length || 0;
+		return locationsB - locationsA;
+	});
+}
+
+/**
+ * Sorts an array of objects by the 'id' property.
+ * @param {Array<Object>} items - The array of objects to be sorted.
+ * @returns {Array<Object>} - The sorted array.
+ */
+export function sortById(items) {
+	return items.sort((a, b) => a.id - b.id);
 }
