@@ -10,27 +10,22 @@ import (
 )
 
 func (a *MainApi) fetchData(apitype string) ([]byte, error) {
-	url := ""
-
-	if apitype == "artists" {
-		url = a.baseUrl + apitype
+	baseUrl := a.baseUrl
+	if apitype != "artists" {
+		baseUrl = apitype
 	} else {
-		url = apitype
+		baseUrl = fmt.Sprintf("%s%s", baseUrl, apitype)
 	}
 
-	res, err := http.Get(url)
+	res, err := http.Get(baseUrl)
 	if err != nil {
-		return nil, fmt.Errorf("error getting url: %w", err)
+		return nil, err
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http request failed with status code %d", res.StatusCode)
-	}
-
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read: %v", err)
+		return nil, err
 	}
 	return body, nil
 }
