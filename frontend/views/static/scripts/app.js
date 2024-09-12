@@ -2,7 +2,6 @@ import {
 	getAllArtists,
 	getArtistById,
 	setTooltip,
-	// createScale,
 	setToggleAccessible,
 	fillSlider,
 	controlToSlider,
