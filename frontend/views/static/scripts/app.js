@@ -1,4 +1,13 @@
-import { getAllArtists, getArtistById } from "/static/scripts/helpers.js";
+import {
+	getAllArtists,
+	getArtistById,
+	setTooltip,
+	createScale,
+	setToggleAccessible,
+	fillSlider,
+	controlToSlider,
+	controlFromSlider,
+} from "/static/scripts/helpers.js";
 import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 
 /**
@@ -38,6 +47,10 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document
 		.getElementById("membersFilter")
 		.addEventListener("change", this.handleMembersFilter.bind(this));
+	document.addEventListener(
+		"DOMContentLoaded",
+		this.handleDOMContentLoaded.bind(this)
+	);
 };
 
 /**
@@ -143,6 +156,7 @@ ArtistApp.prototype.handleMembersFilter = function () {
  */
 ArtistApp.prototype.setRangeFilterDefaults = function () {
 	if (!this.artistsData) return;
+	this.handleDOMContentLoaded();
 
 	const filterType = document.getElementById("filterType").value;
 	let minYear = Infinity;
@@ -171,6 +185,40 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	rangeFilter.max = maxYear;
 	rangeFilter.value = maxYear;
 	document.getElementById("rangeValue").textContent = maxYear;
+};
+
+/**
+ * Handles the DOMContentLoaded event to initialize the application
+ * @param {Event} event - DOMContentLoaded event
+ */
+ArtistApp.prototype.handleDOMContentLoaded = function (event) {
+	const COLOR_TRACK = "#CBD5E1";
+	const COLOR_RANGE = "#0EA5E9";
+
+	// Get the sliders and tooltips
+	const fromSlider = document.querySelector("#fromSlider");
+	const toSlider = document.querySelector("#toSlider");
+	const fromTooltip = document.querySelector("#fromSliderTooltip");
+	const toTooltip = document.querySelector("#toSliderTooltip");
+	const scale = document.getElementById("scale");
+
+	// Get min and max values from the fromSlider element
+	const MIN = parseInt(fromSlider.getAttribute("min")); // scale will start from min value (first range slider)
+	const MAX = parseInt(fromSlider.getAttribute("max")); // scale will end at max value (first range slider)
+	const STEPS = parseInt(scale.dataset.steps); // update the data-steps attribute value to change the scale points
+
+	// events
+	fromSlider.oninput = () =>
+		controlFromSlider(fromSlider, toSlider, fromTooltip, toTooltip);
+	toSlider.oninput = () =>
+		controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip);
+
+	// Initial load
+	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
+	setToggleAccessible(toSlider);
+	setTooltip(fromSlider, fromTooltip);
+	setTooltip(toSlider, toTooltip);
+	createScale(MIN, MAX, STEPS);
 };
 
 /**

@@ -37,9 +37,24 @@ export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
 
+const COLOR_TRACK = "#CBD5E1";
+const COLOR_RANGE = "#0EA5E9";
+
+// Get the sliders and tooltips
+const fromSlider = document.querySelector("#fromSlider");
+const toSlider = document.querySelector("#toSlider");
+const fromTooltip = document.querySelector("#fromSliderTooltip");
+const toTooltip = document.querySelector("#toSliderTooltip");
+const scale = document.getElementById("scale");
+
+// Get min and max values from the fromSlider element
+const MIN = parseInt(fromSlider.getAttribute("min")); // scale will start from min value (first range slider)
+const MAX = parseInt(fromSlider.getAttribute("max")); // scale will end at max value (first range slider)
+const STEPS = parseInt(scale.dataset.steps); // update the data-steps attribute value to change the scale points
+
 export function setTooltip(slider, tooltip) {
 	const value = slider.value;
-	tooltip.textContent = `$${value}`;
+	tooltip.textContent = `Years ${value}`;
 	const thumbPosition = (value - slider.min) / (slider.max - slider.min);
 	const percent = thumbPosition * 100;
 	const markerWidth = 20;
