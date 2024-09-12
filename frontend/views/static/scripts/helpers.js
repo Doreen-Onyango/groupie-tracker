@@ -87,18 +87,18 @@ export function setTooltip(slider, tooltip) {
 	tooltip.style.left = `calc(${percent}% - ${offset}px)`;
 }
 
-export function createScale(min, max, step) {
-	const range = max - min;
-	const steps = range / step;
-	for (let i = 0; i <= steps; i++) {
-		const value = min + i * step;
-		const percent = ((value - min) / range) * 100;
-		const marker = document.createElement("div");
-		marker.style.left = `${percent}%`;
-		marker.textContent = `$${value}`;
-		scale.appendChild(marker);
-	}
-}
+// export function createScale(min, max, step) {
+// 	const range = max - min;
+// 	const steps = range / step;
+// 	for (let i = 0; i <= steps; i++) {
+// 		const value = min + i * step;
+// 		const percent = ((value - min) / range) * 100;
+// 		const marker = document.createElement("div");
+// 		marker.style.left = `${percent}%`;
+// 		marker.textContent = `$${value}`;
+// 		scale.appendChild(marker);
+// 	}
+// }
 
 export function setToggleAccessible(currentTarget) {
 	const toSlider = document.querySelector("#toSlider");

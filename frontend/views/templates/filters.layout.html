@@ -100,23 +100,16 @@
 			value="{{ .maxYear }}"
 		/>
 	</div>
+	{{ end }}
+	<!-- end of range filter -->
 
-	<!--scale steps defined by data-steps value -->
-	<div
-		id="scale"
-		class="scale"
-		data-steps="1"
-	></div>
+	<!-- Dropdown to select the filter type -->
+	{{ define "filterType"}}
+	<label for="filterType">Filter by:</label>
+	<select id="filterType">
+		<option value="creationDate">Creation Date</option>
+		<option value="firstAlbum">First Album Date</option>
+	</select>
+	{{ end }}
+	<!-- end of dropdown -->
 </div>
-{{ end }}
-<!-- end of range filter -->
-
-<!-- Dropdown to select the filter type -->
-{{ define "filterType"}}
-<label for="filterType">Filter by:</label>
-<select id="filterType">
-	<option value="creationDate">Creation Date</option>
-	<option value="firstAlbum">First Album Date</option>
-</select>
-{{ end }}
-<!-- end of dropdown -->

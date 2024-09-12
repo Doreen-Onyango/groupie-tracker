@@ -2,7 +2,7 @@ import {
 	getAllArtists,
 	getArtistById,
 	setTooltip,
-	createScale,
+	// createScale,
 	setToggleAccessible,
 	fillSlider,
 	controlToSlider,
@@ -24,7 +24,6 @@ class ArtistApp {
 		this.toSlider = document.getElementById("toSlider");
 		this.fromTooltip = document.getElementById("fromSliderTooltip");
 		this.toTooltip = document.getElementById("toSliderTooltip");
-		this.scale = document.getElementById("scale");
 
 		this.initialize();
 		this.setupEventListeners();
@@ -164,7 +163,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 
 	const MIN = parseInt(this.fromSlider.getAttribute("min"));
 	const MAX = parseInt(this.fromSlider.getAttribute("max"));
-	const STEPS = parseInt(this.scale.dataset.steps);
 
 	const filterType = this.filterType.value;
 	let minYear = Infinity;
@@ -223,7 +221,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	setToggleAccessible(this.toSlider);
 	setTooltip(this.fromSlider, this.fromTooltip);
 	setTooltip(this.toSlider, this.toTooltip);
-	createScale(MIN, MAX, STEPS);
 };
 
 /**
