@@ -59,3 +59,12 @@ export function createScale(min, max, step) {
 		scale.appendChild(marker);
 	}
 }
+
+export function setToggleAccessible(currentTarget) {
+	const toSlider = document.querySelector("#toSlider");
+	if (Number(currentTarget.value) <= 0) {
+		toSlider.style.zIndex = 2;
+	} else {
+		toSlider.style.zIndex = 0;
+	}
+}
