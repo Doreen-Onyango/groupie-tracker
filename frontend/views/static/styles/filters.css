@@ -97,13 +97,7 @@ input[type="range"] {
 }
 
 .scale {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 2rem;
-	position: relative;
-	width: calc(100% - var(--_marker-size));
-	margin-inline: auto;
-	font-size: 0.8rem;
+	display: none;
 }
 
 .scale div {
