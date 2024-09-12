@@ -15,6 +15,17 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
  */
 class ArtistApp {
 	constructor() {
+		// Global DOM elements
+		this.searchInput = document.getElementById("search");
+		this.artistsContainer = document.getElementById("artistsContainer");
+		this.membersFilter = document.getElementById("membersFilter");
+		this.filterType = document.getElementById("filterType");
+		this.fromSlider = document.getElementById("fromSlider");
+		this.toSlider = document.getElementById("toSlider");
+		this.fromTooltip = document.getElementById("fromSliderTooltip");
+		this.toTooltip = document.getElementById("toSliderTooltip");
+		this.scale = document.getElementById("scale");
+
 		this.initialize();
 		this.setupEventListeners();
 	}
@@ -33,16 +44,14 @@ ArtistApp.prototype.initialize = async function () {
  * Sets up event listeners for artist card clicks, search input, and range filter
  */
 ArtistApp.prototype.setupEventListeners = function () {
-	const bindEvent = (selector, event, handler) =>
-		document
-			.querySelector(selector)
-			.addEventListener(event, handler.bind(this));
+	const bindEvent = (element, event, handler) =>
+		element.addEventListener(event, handler.bind(this));
 
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
-	bindEvent("#search", "input", this.handleSearchInput);
-	bindEvent("#membersFilter", "change", this.handleMembersFilter);
+	bindEvent(this.searchInput, "input", this.handleSearchInput);
+	bindEvent(this.membersFilter, "change", this.handleMembersFilter);
 	document.addEventListener("input", this.handleRangeFilter.bind(this));
-	bindEvent("#filterType", "change", () => {
+	bindEvent(this.filterType, "change", () => {
 		this.setRangeFilterDefaults();
 		this.handleRangeFilter();
 	});
@@ -72,8 +81,8 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
  * Filters artist cards based on the search query
  */
 ArtistApp.prototype.handleSearchInput = function () {
-	const query = document.getElementById("search").value.toLowerCase();
-	const cards = document.querySelectorAll("#artistsContainer .artist-card");
+	const query = this.searchInput.value.toLowerCase();
+	const cards = this.artistsContainer.querySelectorAll(".artist-card");
 
 	cards.forEach((card) => {
 		const artistName = card
@@ -90,9 +99,9 @@ ArtistApp.prototype.handleSearchInput = function () {
 ArtistApp.prototype.handleRangeFilter = function () {
 	if (!this.artistsData) return;
 
-	const fromValue = parseInt(document.getElementById("fromSlider").value, 10);
-	const toValue = parseInt(document.getElementById("toSlider").value, 10);
-	const filterType = document.getElementById("filterType").value;
+	const fromValue = parseInt(this.fromSlider.value, 10);
+	const toValue = parseInt(this.toSlider.value, 10);
+	const filterType = this.filterType.value;
 
 	const { data, message, error } = this.artistsData;
 	const filteredData = data.filter((artist) => {
@@ -124,7 +133,7 @@ ArtistApp.prototype.handleMembersFilter = function () {
 	if (!this.artistsData) return;
 
 	const selectedSizes = Array.from(
-		document.querySelectorAll("#membersFilter input:checked")
+		this.membersFilter.querySelectorAll("input:checked")
 	).map((input) => parseInt(input.value, 10));
 
 	const { data, message, error } = this.artistsData;
@@ -153,18 +162,11 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	const COLOR_TRACK = "#CBD5E1";
 	const COLOR_RANGE = "#0EA5E9";
 
-	// Get the sliders and tooltips
-	const fromSlider = document.querySelector("#fromSlider");
-	const toSlider = document.querySelector("#toSlider");
-	const fromTooltip = document.querySelector("#fromSliderTooltip");
-	const toTooltip = document.querySelector("#toSliderTooltip");
-	const scale = document.getElementById("scale");
+	const MIN = parseInt(this.fromSlider.getAttribute("min"));
+	const MAX = parseInt(this.fromSlider.getAttribute("max"));
+	const STEPS = parseInt(this.scale.dataset.steps);
 
-	const MIN = parseInt(fromSlider.getAttribute("min"));
-	const MAX = parseInt(fromSlider.getAttribute("max"));
-	const STEPS = parseInt(scale.dataset.steps);
-
-	const filterType = document.getElementById("filterType").value;
+	const filterType = this.filterType.value;
 	let minYear = Infinity;
 	let maxYear = -Infinity;
 
@@ -186,25 +188,41 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		maxYear = new Date().getFullYear();
 	}
 
-	document.getElementById("fromSlider").min = minYear;
-	document.getElementById("fromSlider").max = maxYear;
-	document.getElementById("fromSlider").value = minYear;
+	this.fromSlider.min = minYear;
+	this.fromSlider.max = maxYear;
+	this.fromSlider.value = minYear;
 
-	document.getElementById("toSlider").min = minYear;
-	document.getElementById("toSlider").max = maxYear;
-	document.getElementById("toSlider").value = maxYear;
+	this.toSlider.min = minYear;
+	this.toSlider.max = maxYear;
+	this.toSlider.value = maxYear;
 
 	// events
-	fromSlider.oninput = () =>
-		controlFromSlider(fromSlider, toSlider, fromTooltip, toTooltip);
-	toSlider.oninput = () =>
-		controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip);
+	this.fromSlider.oninput = () =>
+		controlFromSlider(
+			this.fromSlider,
+			this.toSlider,
+			this.fromTooltip,
+			this.toTooltip
+		);
+	this.toSlider.oninput = () =>
+		controlToSlider(
+			this.fromSlider,
+			this.toSlider,
+			this.fromTooltip,
+			this.toTooltip
+		);
 
 	// Initial load
-	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
-	setToggleAccessible(toSlider);
-	setTooltip(fromSlider, fromTooltip);
-	setTooltip(toSlider, toTooltip);
+	fillSlider(
+		this.fromSlider,
+		this.toSlider,
+		COLOR_TRACK,
+		COLOR_RANGE,
+		this.toSlider
+	);
+	setToggleAccessible(this.toSlider);
+	setTooltip(this.fromSlider, this.fromTooltip);
+	setTooltip(this.toSlider, this.toTooltip);
 	createScale(MIN, MAX, STEPS);
 };
 
