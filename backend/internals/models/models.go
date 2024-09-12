@@ -50,12 +50,12 @@ func (c *Concerts) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type Relations struct {
+type Relation struct {
 	ID             int                 `json:"id"`
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
-func (r *Relations) UnmarshalJSON(data []byte) error {
+func (r *Relation) UnmarshalJSON(data []byte) error {
 	var aux struct {
 		ID             interface{}         `json:"id"`
 		DatesLocations map[string][]string `json:"datesLocations"`
@@ -71,8 +71,11 @@ func (r *Relations) UnmarshalJSON(data []byte) error {
 	case int:
 		r.ID = id
 	default:
-		return fmt.Errorf("unexpected type %v", aux.ID)
+		return fmt.Errorf("unexpected type for id: %T", aux.ID)
 	}
+
+	r.DatesLocations = aux.DatesLocations
+
 	return nil
 }
 
@@ -162,7 +165,7 @@ type ResponseData struct {
 	Artists   map[string]Artist
 	Locations map[string]Locations `json:"locations"`
 	Concerts  map[string]Concerts  `json:"concertDates"`
-	Relations map[string]Relations `json:"relations"`
+	Relations map[string]Relation  `json:"relations"`
 	mu        sync.RWMutex
 }
 
@@ -171,6 +174,6 @@ func NewResponseData() *ResponseData {
 		Artists:   make(map[string]Artist),
 		Locations: make(map[string]Locations),
 		Concerts:  make(map[string]Concerts),
-		Relations: make(map[string]Relations),
+		Relations: make(map[string]Relation),
 	}
 }

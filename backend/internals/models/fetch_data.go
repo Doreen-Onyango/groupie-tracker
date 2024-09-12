@@ -68,21 +68,21 @@ func (r *ResponseData) processConcerts(id string, data []byte, firstErr *error) 
 }
 
 func (r *ResponseData) processRelations(id string, data []byte, firstErr *error) error {
-	var tempRelations Relations
+	var tempRelation Relation
 
-	if err := json.Unmarshal(data, &tempRelations); err != nil {
+	if err := json.Unmarshal(data, &tempRelation); err != nil {
+		fmt.Println("Error unmarshalling relation:", err)
 		handleError(err, firstErr)
 		return err
 	}
 
-	for location, dates := range tempRelations.DatesLocations {
-		tempRelations.DatesLocations[location] = dates
+	for location, dates := range tempRelation.DatesLocations {
+		tempRelation.DatesLocations[location] = dates
 	}
 
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	r.Relations[id] = tempRelations
-
+	r.Relations[id] = tempRelation
 	return nil
 }
 
