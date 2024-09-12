@@ -15,14 +15,14 @@ func NewMainApi() *MainApi {
 }
 
 type Concerts struct {
-	ID           string   `json:"id"`
-	ConcertDates []string `json:"dates"`
+	ID       string   `json:"id"`
+	Concerts []string `json:"dates"`
 }
 
 func (c *Concerts) UnmarshalJSON(data []byte) error {
 	var aux struct {
-		ID           interface{} `json:"id"`
-		ConcertDates []string    `json:"dates"`
+		ID       interface{} `json:"id"`
+		Concerts []string    `json:"dates"`
 	}
 
 	if err := json.Unmarshal(data, &aux); err != nil {
@@ -35,15 +35,15 @@ func (c *Concerts) UnmarshalJSON(data []byte) error {
 	case string:
 		c.ID = id
 	default:
-		return fmt.Errorf("unexpected type %v", aux.ID)
+		return fmt.Errorf("unexpected type for id: %T", aux.ID)
 	}
 
-	c.ConcertDates = make([]string, len(aux.ConcertDates))
-	for i, date := range aux.ConcertDates {
+	c.Concerts = make([]string, len(aux.Concerts))
+	for i, date := range aux.Concerts {
 		if len(date) > 0 && date[0] == '*' {
-			c.ConcertDates[i] = date[1:]
+			c.Concerts[i] = date[1:]
 		} else {
-			c.ConcertDates[i] = date
+			c.Concerts[i] = date
 		}
 	}
 
