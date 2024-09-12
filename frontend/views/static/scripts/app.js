@@ -33,24 +33,19 @@ ArtistApp.prototype.initialize = async function () {
  * Sets up event listeners for artist card clicks, search input, and range filter
  */
 ArtistApp.prototype.setupEventListeners = function () {
+	const bindEvent = (selector, event, handler) =>
+		document
+			.querySelector(selector)
+			.addEventListener(event, handler.bind(this));
+
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
-	document
-		.getElementById("search")
-		.addEventListener("input", this.handleSearchInput.bind(this));
-	document
-		.getElementById("rangeFilter")
-		.addEventListener("input", this.handleRangeFilter.bind(this));
-	document.getElementById("filterType").addEventListener("change", () => {
+	bindEvent("#search", "input", this.handleSearchInput);
+	bindEvent("#membersFilter", "change", this.handleMembersFilter);
+	document.addEventListener("input", this.handleRangeFilter.bind(this));
+	bindEvent("#filterType", "change", () => {
 		this.setRangeFilterDefaults();
 		this.handleRangeFilter();
 	});
-	document
-		.getElementById("membersFilter")
-		.addEventListener("change", this.handleMembersFilter.bind(this));
-	document.addEventListener(
-		"DOMContentLoaded",
-		this.handleDOMContentLoaded.bind(this)
-	);
 };
 
 /**
@@ -109,9 +104,6 @@ ArtistApp.prototype.handleRangeFilter = function () {
 			const parts = year.split("-");
 			year = parseInt(parts[parts.length - 1], 10);
 		}
-
-		console.log(fromValue, toValue);
-
 		return year >= fromValue && year <= toValue;
 	});
 
@@ -158,7 +150,19 @@ ArtistApp.prototype.handleMembersFilter = function () {
  */
 ArtistApp.prototype.setRangeFilterDefaults = function () {
 	if (!this.artistsData) return;
-	this.handleDOMContentLoaded();
+	const COLOR_TRACK = "#CBD5E1";
+	const COLOR_RANGE = "#0EA5E9";
+
+	// Get the sliders and tooltips
+	const fromSlider = document.querySelector("#fromSlider");
+	const toSlider = document.querySelector("#toSlider");
+	const fromTooltip = document.querySelector("#fromSliderTooltip");
+	const toTooltip = document.querySelector("#toSliderTooltip");
+	const scale = document.getElementById("scale");
+
+	const MIN = parseInt(fromSlider.getAttribute("min"));
+	const MAX = parseInt(fromSlider.getAttribute("max"));
+	const STEPS = parseInt(scale.dataset.steps);
 
 	const filterType = document.getElementById("filterType").value;
 	let minYear = Infinity;
@@ -189,27 +193,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	document.getElementById("toSlider").min = minYear;
 	document.getElementById("toSlider").max = maxYear;
 	document.getElementById("toSlider").value = maxYear;
-};
-
-/**
- * Handles the DOMContentLoaded event to initialize the application
- * @param {Event} event - DOMContentLoaded event
- */
-ArtistApp.prototype.handleDOMContentLoaded = function (event) {
-	const COLOR_TRACK = "#CBD5E1";
-	const COLOR_RANGE = "#0EA5E9";
-
-	// Get the sliders and tooltips
-	const fromSlider = document.querySelector("#fromSlider");
-	const toSlider = document.querySelector("#toSlider");
-	const fromTooltip = document.querySelector("#fromSliderTooltip");
-	const toTooltip = document.querySelector("#toSliderTooltip");
-	const scale = document.getElementById("scale");
-
-	// Get min and max values from the fromSlider element
-	const MIN = parseInt(fromSlider.getAttribute("min")); // scale will start from min value (first range slider)
-	const MAX = parseInt(fromSlider.getAttribute("max")); // scale will end at max value (first range slider)
-	const STEPS = parseInt(scale.dataset.steps); // update the data-steps attribute value to change the scale points
 
 	// events
 	fromSlider.oninput = () =>
