@@ -15,90 +15,20 @@
 
 <div class="artists">
 	<h1>Artists</h1>
-	<form id="searchForm">
-		<input
-			name="searchForm"
-			type="text"
-			id="search"
-			placeholder="Search for artists..."
-		/>
-	</form>
-
+	{{block "searchFilter" .}}{{end}}
 	<!-- filters -->
-	<!-- Dropdown to select the filter type -->
-	<label for="filterType">Filter by:</label>
-	<select id="filterType">
-		<option value="creationDate">Creation Date</option>
-		<option value="firstAlbum">First Album Date</option>
-	</select>
+	{{ block "filterType" .}}{{end}} {{ block "rangeFilter" .}} {{end}} {{ block
+	"membersFilter" .}}{{end}}
+	<!-- end -->
 
-	<!-- Range filter -->
-	<label for="rangeFilter">Year Range:</label>
-	<input
-		type="range"
-		id="rangeFilter"
-		min="{{ .minYear }}"
-		max="{{ .maxYear }}"
-		step="1"
-		value="{{ .maxYear }}"
-	/>
-	<span id="rangeValue">{{ .maxYear }}</span>
+	<!-- artist cards -->
+	{{ block "artistCardTemplate" .}}{{end}}
+	<!-- end -->
 
-	<!-- members filter -->
-	<div id="membersFilter">
-		<label
-			><input
-				type="checkbox"
-				value="1"
-			/>
-			1</label
-		>
-		<label
-			><input
-				type="checkbox"
-				value="2"
-			/>
-			2</label
-		>
-		<label
-			><input
-				type="checkbox"
-				value="3"
-			/>
-			3</label
-		>
-		<label
-			><input
-				type="checkbox"
-				value="4"
-			/>
-			4</label
-		>
-		<label
-			><input
-				type="checkbox"
-				value="5"
-			/>
-			5</label
-		>
-		<label
-			><input
-				type="checkbox"
-				value="6"
-			/>
-			6</label
-		>
-		<label
-			><input
-				type="checkbox"
-				value="7"
-			/>
-			7</label
-		>
-	</div>
-	<!-- end of members filter -->
+	<!-- modal -->
+	{{ block "modalTemplate" .}}{{end}}
+	<!-- end -->
 
-	{{ block "artistCardTemplate" .}}{{end}} {{ block "modalTemplate" .}}{{end}}
 	<script
 		type="module"
 		src="/static/scripts/app.js"

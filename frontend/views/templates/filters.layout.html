@@ -1,0 +1,93 @@
+<!-- search filter -->
+{{define "searchFilter"}}
+<form id="searchForm">
+	<input
+		name="searchForm"
+		type="text"
+		id="search"
+		placeholder="Search for artists..."
+	/>
+</form>
+{{end}}
+<!-- end of search filter -->
+
+<!-- members filter -->
+{{define "membersFilter"}}
+<div id="membersFilter">
+	<label
+		><input
+			type="checkbox"
+			value="1"
+		/>
+		1</label
+	>
+	<label
+		><input
+			type="checkbox"
+			value="2"
+		/>
+		2</label
+	>
+	<label
+		><input
+			type="checkbox"
+			value="3"
+		/>
+		3</label
+	>
+	<label
+		><input
+			type="checkbox"
+			value="4"
+		/>
+		4</label
+	>
+	<label
+		><input
+			type="checkbox"
+			value="5"
+		/>
+		5</label
+	>
+	<label
+		><input
+			type="checkbox"
+			value="6"
+		/>
+		6</label
+	>
+	<label
+		><input
+			type="checkbox"
+			value="7"
+		/>
+		7</label
+	>
+</div>
+{{ end }}
+<!-- end of members filter -->
+
+<!-- range filter -->
+{{define "rangeFilter"}}
+<label for="rangeFilter">Year Range:</label>
+<input
+	type="range"
+	id="rangeFilter"
+	min="{{ .minYear }}"
+	max="{{ .maxYear }}"
+	step="1"
+	value="{{ .maxYear }}"
+/>
+<span id="rangeValue">{{ .maxYear }}</span>
+{{ end }}
+<!-- end of range filter -->
+
+<!-- Dropdown to select the filter type -->
+{{ define "filterType"}}
+<label for="filterType">Filter by:</label>
+<select id="filterType">
+	<option value="creationDate">Creation Date</option>
+	<option value="firstAlbum">First Album Date</option>
+</select>
+{{ end }}
+<!-- end of dropdown -->
