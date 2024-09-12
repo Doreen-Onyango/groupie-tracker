@@ -36,3 +36,13 @@ const fetchData = async (endpoint, bodyData = {}) => {
 export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
+
+export function setTooltip(slider, tooltip) {
+	const value = slider.value;
+	tooltip.textContent = `$${value}`;
+	const thumbPosition = (value - slider.min) / (slider.max - slider.min);
+	const percent = thumbPosition * 100;
+	const markerWidth = 20;
+	const offset = (((percent - 50) / 50) * markerWidth) / 2;
+	tooltip.style.left = `calc(${percent}% - ${offset}px)`;
+}
