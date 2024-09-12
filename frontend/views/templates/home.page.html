@@ -98,66 +98,22 @@
 	</div>
 	<!-- end of members filter -->
 
-	<!--  end -->
+	{{ block "artistCardTemplate" .}}{{end}}
 
-	<!-- artis Cards -->
+	<!-- Modal Template -->
 	<div
-		id="artistsContainer"
-		class="artists-container"
+		id="artistDetailsModal"
+		class="modal"
 	>
-		<!-- Cards will be injected here -->
-	</div>
-</div>
-
-<!-- Template for artist card -->
-<template id="artistCardTemplate">
-	<a
-		href="#"
-		class="artist-card-link"
-	>
-		<div
-			class="artist-card"
-			data-artist-id="{{.ArtistID}}"
-		>
-			<img
-				class="artist-image"
-				src="{{.Image}}"
-				alt="{{.Name}} image"
-				width="100"
-			/>
-			<div class="artist-info">
-				<h2 class="artist-name">{{.Name}}</h2>
-				<ul class="artist-members">
-					{{range .Members}}
-					<li>{{.}}</li>
-					{{end}}
-				</ul>
-				<p>
-					<strong>Creation Date:</strong>
-					<span class="artist-creationDate">{{.CreationDate}}</span>
-				</p>
-				<p>
-					<strong>First Album:</strong>
-					<span class="artist-firstAlbum">{{.FirstAlbum}}</span>
-				</p>
-			</div>
+		<div class="modal-content">
+			<span class="close-button">&times;</span>
+			<div id="artistDetails"></div>
 		</div>
-	</a>
-</template>
-
-<!-- Modal Template -->
-<div
-	id="artistDetailsModal"
-	class="modal"
->
-	<div class="modal-content">
-		<span class="close-button">&times;</span>
-		<div id="artistDetails"></div>
 	</div>
+	<!-- end of Modal -->
+	<script
+		type="module"
+		src="/static/scripts/app.js"
+	></script>
+	{{end}}
 </div>
-<!-- end of Modal -->
-<script
-	type="module"
-	src="/static/scripts/app.js"
-></script>
-{{end}}
