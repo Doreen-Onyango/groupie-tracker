@@ -1,4 +1,10 @@
-{{template "base" . }} {{define "title"}} Home {{end}} {{define "content"}}
+{{template "base" . }} {{ define "homecss"}}
+<link
+	rel="stylesheet"
+	href="/static/styles/home.css"
+	type="text/css"
+/>
+{{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-page">
 	<h1 id="home-page">Welcome to the Groupie Tracker</h1>
 	<p>
@@ -150,8 +156,6 @@
 	</div>
 </div>
 <!-- end of Modal -->
-
-{{end}} {{define "js"}}
 <script
 	type="module"
 	src="/static/scripts/app.js"
