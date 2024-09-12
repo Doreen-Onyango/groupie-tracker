@@ -88,3 +88,29 @@ export function getParsed(currentFrom, currentTo) {
 	const to = parseInt(currentTo.value, 10);
 	return [from, to];
 }
+
+export function controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip) {
+	const [from, to] = getParsed(fromSlider, toSlider);
+	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
+	setToggleAccessible(toSlider);
+	if (from <= to) {
+		toSlider.value = to;
+	} else {
+		toSlider.value = from;
+	}
+	setTooltip(toSlider, toTooltip);
+}
+
+export function controlFromSlider(
+	fromSlider,
+	toSlider,
+	fromTooltip,
+	toTooltip
+) {
+	const [from, to] = getParsed(fromSlider, toSlider);
+	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
+	if (from > to) {
+		fromSlider.value = to;
+	}
+	setTooltip(fromSlider, fromTooltip);
+}
