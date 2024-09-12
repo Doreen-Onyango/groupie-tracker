@@ -82,3 +82,9 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
           ${sliderColor} ${(toPosition / rangeDistance) * 100}%, 
           ${sliderColor} 100%)`;
 }
+
+export function getParsed(currentFrom, currentTo) {
+	const from = parseInt(currentFrom.value, 10);
+	const to = parseInt(currentTo.value, 10);
+	return [from, to];
+}
