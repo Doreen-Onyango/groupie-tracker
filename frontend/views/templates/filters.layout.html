@@ -147,24 +147,3 @@
 </div>
 {{ end }}
 <!-- end of range filter -->
-
-<!-- Dropdown to select the filter type -->
-{{ define "filterType"}}
-<label for="filterType">Filter by:</label>
-<select id="filterType">
-	<option value="creationDate">Creation Date</option>
-	<option value="firstAlbum">First Album Date</option>
-</select>
-{{ end }}
-<!-- end of dropdown -->
-
-<!-- concerts filter -->
-<!-- Add this below the existing filters -->
-{{ define "concertsFilter"}}
-<label for="concertsFilter">Sort by:</label>
-<select id="concertsFilter">
-	<option value="default">Default</option>
-	<option value="location">Concert Locations</option>
-</select>
-{{ end }}
-<!-- end of concert filter -->
