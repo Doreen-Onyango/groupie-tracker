@@ -26,6 +26,7 @@ class ArtistApp {
 		this.fromTooltip = document.getElementById("fromSliderTooltip");
 		this.toTooltip = document.getElementById("toSliderTooltip");
 		this.concertsFilter = document.getElementById("concertsFilter"); // Concerts filter dropdown element
+		this.searchType = document.getElementById("searchType");
 
 		this.initialize();
 		this.setupEventListeners();
@@ -37,9 +38,25 @@ class ArtistApp {
  */
 ArtistApp.prototype.initialize = async function () {
 	this.artistsData = await getAllArtists();
-	this.filteredData = [...this.artistsData.data]; // Initialize filtered data with all artists
+	this.filteredData = [...this.artistsData.data];
+	this.allArtistDetails = await this.fetchAllArtistDetails();
+
 	this.setRangeFilterDefaults();
 	this.applyAllFilters();
+};
+
+/**
+ * Fetches detailed data for all artists
+ * @returns {Promise<Array>} - An array of artist details
+ */
+ArtistApp.prototype.fetchAllArtistDetails = async function () {
+	const artistDetails = await Promise.all(
+		this.artistsData.data.map(async (artist) => {
+			const data = await getArtistById(artist.id);
+			return data;
+		})
+	);
+	return artistDetails;
 };
 
 /**
@@ -71,10 +88,12 @@ ArtistApp.prototype.applyAllFilters = function () {
 
 	// Apply search filter
 	const query = this.searchInput.value.toLowerCase();
-	filteredData = filteredData.filter((artist) => {
-		const artistName = artist.name.toLowerCase();
-		return artistName.includes(query);
-	});
+	if (this.searchType.value === "artistName") {
+		filteredData = filteredData.filter((artist) => {
+			const artistName = artist.name.toLowerCase();
+			return artistName.includes(query);
+		});
+	}
 
 	// Apply range filter
 	const fromValue = parseInt(this.fromSlider.value, 10);
