@@ -16,18 +16,19 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
  */
 class ArtistApp {
 	constructor() {
-		// Global DOM elements
-		this.searchByName = document.getElementById("searchByName");
-		this.searchByConcert = document.getElementById("searchByConcert");
-		this.artistsContainer = document.getElementById("artistsContainer");
-		this.membersFilter = document.getElementById("membersFilter");
-		this.filterType = document.getElementById("filterType");
-		this.fromSlider = document.getElementById("fromSlider");
-		this.toSlider = document.getElementById("toSlider");
-		this.fromTooltip = document.getElementById("fromSliderTooltip");
-		this.toTooltip = document.getElementById("toSliderTooltip");
-		this.concertsFilter = document.getElementById("concertsFilter"); // Concerts filter dropdown element
-		this.searchType = document.getElementById("searchType");
+		this.domElements = {
+			searchByName: document.getElementById("searchByName"),
+			searchByConcert: document.getElementById("searchByConcert"),
+			artistsContainer: document.getElementById("artistsContainer"),
+			membersFilter: document.getElementById("membersFilter"),
+			filterType: document.getElementById("filterType"),
+			fromSlider: document.getElementById("fromSlider"),
+			toSlider: document.getElementById("toSlider"),
+			fromTooltip: document.getElementById("fromSliderTooltip"),
+			toTooltip: document.getElementById("toSliderTooltip"),
+			concertsFilter: document.getElementById("concertsFilter"),
+			searchType: document.getElementById("searchType"),
+		};
 
 		this.initialize();
 		this.setupEventListeners();
@@ -64,18 +65,44 @@ ArtistApp.prototype.fetchAllArtistDetails = async function () {
  * Sets up event listeners for artist card clicks, search input, and range filter
  */
 ArtistApp.prototype.setupEventListeners = function () {
-	const bindEvent = (element, event, handler) =>
-		element.addEventListener(event, handler.bind(this));
+	this.addEventListeners([
+		{
+			element: this.domElements.searchByName,
+			event: "change",
+			handler: this.applyAllFilters,
+		},
+		{
+			element: this.domElements.searchByConcert,
+			event: "change",
+			handler: this.applyAllFilters,
+		},
+		{
+			element: this.domElements.membersFilter,
+			event: "change",
+			handler: this.applyAllFilters,
+		},
+		{
+			element: this.domElements.concertsFilter,
+			event: "change",
+			handler: this.applyAllFilters,
+		},
+		{
+			element: this.domElements.filterType,
+			event: "change",
+			handler: this.handleFilterTypeChange,
+		},
+	]);
 
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
-	bindEvent(this.searchByName, "input", this.applyAllFilters);
-	bindEvent(this.searchByConcert, "input", this.applyAllFilters);
-	bindEvent(this.membersFilter, "change", this.applyAllFilters);
-	bindEvent(this.concertsFilter, "change", this.applyAllFilters);
 	document.addEventListener("input", this.applyAllFilters.bind(this));
-	bindEvent(this.filterType, "change", () => {
-		this.setRangeFilterDefaults();
-		this.applyAllFilters();
+};
+
+/**
+ * Adds multiple event listeners at once
+ */
+ArtistApp.prototype.addEventListeners = function (listeners) {
+	listeners.forEach(({ element, event, handler }) => {
+		element.addEventListener(event, handler.bind(this));
 	});
 };
 
@@ -85,34 +112,63 @@ ArtistApp.prototype.setupEventListeners = function () {
  */
 ArtistApp.prototype.applyAllFilters = function () {
 	if (!this.artistsData) return;
-
 	let filteredData = [...this.artistsData.data];
 
-	// Apply searchByName filter based on searchType
-	const nameQuery = this.searchByName.value.toLowerCase();
-	filteredData = filteredData.filter((artist) => {
+	filteredData = this.applySearchByConcertFilter(filteredData);
+	filteredData = this.applySearchByNameFilter(filteredData);
+	filteredData = this.applyRangeFilter(filteredData);
+	filteredData = this.applyMembersFilter(filteredData);
+
+	const sortValue = this.domElements.concertsFilter.value;
+	if (sortValue === "location") {
+		filteredData = sortByLocation(filteredData);
+	}
+
+	this.renderFilteredData(filteredData);
+};
+
+/**
+ * Apply search by name filter
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by artist name
+ */
+ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
+	const nameQuery = this.domElements.searchByName.value.toLowerCase();
+	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
 	});
+};
 
-	// Apply searchByConcert filter based on searchType
-	const concertQuery = this.searchByConcert.value.toLowerCase();
-	filteredData = this.allArtistDetails
+/**
+ * Apply search by concert location filter
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by concert location
+ */
+ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
+	const concertQuery = this.domElements.searchByConcert.value.toLowerCase();
+	return this.allArtistDetails
 		.filter((artistDetail) => {
 			const locations = artistDetail.data.locations?.locations || [];
 			const tempLoc = locations.map((loc) => loc.split("-").join(" "));
 			return tempLoc.some((loc) => loc.toLowerCase().includes(concertQuery));
 		})
 		.map((detail) => detail.data.artist);
+};
 
-	// Apply range filter
-	const fromValue = parseInt(this.fromSlider.value, 10);
-	const toValue = parseInt(this.toSlider.value, 10);
-	const filterType = this.filterType.value;
-	filteredData = filteredData.filter((artist) => {
+/**
+ * Apply range filter based on years
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by the year range
+ */
+ArtistApp.prototype.applyRangeFilter = function (filteredData) {
+	const fromValue = parseInt(this.domElements.fromSlider.value, 10);
+	const toValue = parseInt(this.domElements.toSlider.value, 10);
+	const filterType = this.domElements.filterType.value;
+
+	return filteredData.filter((artist) => {
 		let year = artist[filterType];
-
-		if (year === null || year === undefined) return false;
+		if (!year) return false;
 
 		if (filterType === "firstAlbum") {
 			const parts = year.split("-");
@@ -120,33 +176,35 @@ ArtistApp.prototype.applyAllFilters = function () {
 		}
 		return year >= fromValue && year <= toValue;
 	});
+};
 
-	// Apply members filter
+/**
+ * Apply members filter
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by the number of members
+ */
+ArtistApp.prototype.applyMembersFilter = function (filteredData) {
 	const selectedSizes = Array.from(
-		this.membersFilter.querySelectorAll("input:checked")
+		this.domElements.membersFilter.querySelectorAll("input:checked")
 	).map((input) => parseInt(input.value, 10));
 
-	if (selectedSizes.length > 0) {
-		filteredData = filteredData.filter((artist) => {
-			const memberCount = Array.isArray(artist.members)
-				? artist.members.length
-				: artist.members;
-			return selectedSizes.includes(memberCount);
-		});
-	}
+	if (!selectedSizes.length) return filteredData;
 
-	// Apply sorting based on concert locations
-	const sortValue = this.concertsFilter.value;
-	if (sortValue === "location") {
-		filteredData = sortByLocation(filteredData);
-	}
+	return filteredData.filter((artist) => {
+		const memberCount = Array.isArray(artist.members)
+			? artist.members.length
+			: artist.members;
+		return selectedSizes.includes(memberCount);
+	});
+};
 
-	// Update the filtered data
-	this.filteredData = filteredData;
-
-	// Render the updated filtered data
+/**
+ * Renders the filtered data
+ * @param {Array} filteredData - the current filtered artist data
+ */
+ArtistApp.prototype.renderFilteredData = function (filteredData) {
 	const data = {
-		data: this.filteredData,
+		data: filteredData,
 		message: this.artistsData.message,
 		error: this.artistsData.error,
 	};
@@ -179,69 +237,55 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
  */
 ArtistApp.prototype.setRangeFilterDefaults = function () {
 	if (!this.artistsData) return;
+
+	const { fromSlider, toSlider, fromTooltip, toTooltip, filterType } =
+		this.domElements;
 	const COLOR_TRACK = "#CBD5E1";
 	const COLOR_RANGE = "#0EA5E9";
 
-	const MIN = parseInt(this.fromSlider.getAttribute("min"));
-	const MAX = parseInt(this.fromSlider.getAttribute("max"));
-
-	const filterType = this.filterType.value;
 	let minYear = Infinity;
 	let maxYear = -Infinity;
 
 	this.artistsData.data.forEach((artist) => {
-		let year = artist[filterType];
-
-		if (filterType === "firstAlbum") {
-			const parts = year.split("-");
-			year = parseInt(parts[parts.length - 1], 10);
+		let year = artist[filterType.value];
+		if (filterType.value === "firstAlbum" && year) {
+			year = parseInt(year.split("-").pop(), 10);
 		}
-
 		if (year < minYear) minYear = year;
 		if (year > maxYear) maxYear = year;
 	});
 
-	// Ensure minYear and maxYear have valid values
-	if (minYear === Infinity || maxYear === -Infinity) {
-		minYear = 0;
-		maxYear = new Date().getFullYear();
-	}
+	// Ensure min and max years are valid
+	minYear = minYear === Infinity ? 0 : minYear;
+	maxYear = maxYear === -Infinity ? new Date().getFullYear() : maxYear;
 
-	this.fromSlider.min = minYear;
-	this.fromSlider.max = maxYear;
-	this.fromSlider.value = minYear;
+	fromSlider.min = minYear;
+	fromSlider.max = maxYear;
+	fromSlider.value = minYear;
 
-	this.toSlider.min = minYear;
-	this.toSlider.max = maxYear;
-	this.toSlider.value = maxYear;
+	toSlider.min = minYear;
+	toSlider.max = maxYear;
+	toSlider.value = maxYear;
 
-	// events
-	this.fromSlider.oninput = () =>
-		controlFromSlider(
-			this.fromSlider,
-			this.toSlider,
-			this.fromTooltip,
-			this.toTooltip
-		);
-	this.toSlider.oninput = () =>
-		controlToSlider(
-			this.fromSlider,
-			this.toSlider,
-			this.fromTooltip,
-			this.toTooltip
-		);
+	// Attach events to the sliders
+	fromSlider.oninput = () =>
+		controlFromSlider(fromSlider, toSlider, fromTooltip, toTooltip);
+	toSlider.oninput = () =>
+		controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip);
 
-	// Initial load
-	fillSlider(
-		this.fromSlider,
-		this.toSlider,
-		COLOR_TRACK,
-		COLOR_RANGE,
-		this.toSlider
-	);
-	setToggleAccessible(this.toSlider);
-	setTooltip(this.fromSlider, this.fromTooltip);
-	setTooltip(this.toSlider, this.toTooltip);
+	// Initial slider setup
+	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
+	setToggleAccessible(toSlider);
+	setTooltip(fromSlider, fromTooltip);
+	setTooltip(toSlider, toTooltip);
+};
+
+/**
+ * Handles filter type change event
+ */
+ArtistApp.prototype.handleFilterTypeChange = function () {
+	this.setRangeFilterDefaults();
+	this.applyAllFilters();
 };
 
 /**
