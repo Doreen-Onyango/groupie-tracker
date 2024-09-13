@@ -50,10 +50,9 @@ export function controlFromSlider(
 	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
 	if (from > to) {
 		fromSlider.value = to;
-		fromTooltip.textContent = `Years ${to}`;
-	} else {
-		fromTooltip.textContent = `Years ${from}`;
+		toSlider.value = to + 1;
 	}
+	setTooltip(toSlider, toTooltip);
 	setTooltip(fromSlider, fromTooltip);
 	setToggleAccessible(toSlider);
 }
@@ -63,11 +62,10 @@ export function controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip) {
 	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
 	if (to < from) {
 		toSlider.value = from;
-		toTooltip.textContent = `Years ${from}`;
-	} else {
-		toTooltip.textContent = `Years ${to}`;
+		fromSlider.value = from - 1;
 	}
 	setTooltip(toSlider, toTooltip);
+	setTooltip(fromSlider, fromTooltip);
 	setToggleAccessible(toSlider);
 }
 
@@ -79,7 +77,7 @@ function getParsed(currentFrom, currentTo) {
 
 export function setTooltip(slider, tooltip) {
 	const value = slider.value;
-	tooltip.textContent = `Years ${value}`;
+	tooltip.textContent = `Year ${value}`;
 	const thumbPosition = (value - slider.min) / (slider.max - slider.min);
 	const percent = thumbPosition * 100;
 	const markerWidth = 20;
