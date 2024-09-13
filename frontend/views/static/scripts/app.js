@@ -22,10 +22,10 @@ class ArtistApp {
 			artistsContainer: document.getElementById("artistsContainer"),
 			membersFilter: document.getElementById("membersFilter"),
 			filterType: document.getElementById("filterType"),
-			fromSlider: document.getElementById("fromSlider"),
-			toSlider: document.getElementById("toSlider"),
-			fromTooltip: document.getElementById("fromSliderTooltip"),
-			toTooltip: document.getElementById("toSliderTooltip"),
+			fromSlider1: document.getElementById("fromSlider1"),
+			toSlider1: document.getElementById("toSlider1"),
+			fromTooltip1: document.getElementById("fromSliderTooltip1"),
+			toTooltip1: document.getElementById("toSliderTooltip1"),
 			concertsFilter: document.getElementById("concertsFilter"),
 			searchType: document.getElementById("searchType"),
 		};
@@ -162,18 +162,18 @@ ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
  * @returns {Array} filteredData - the data filtered by the year range
  */
 ArtistApp.prototype.applyRangeFilter = function (filteredData) {
-	const fromValue = parseInt(this.domElements.fromSlider.value, 10);
-	const toValue = parseInt(this.domElements.toSlider.value, 10);
-	const filterType = this.domElements.filterType.value;
+	const fromValue = parseInt(this.domElements.fromSlider1.value, 10);
+	const toValue = parseInt(this.domElements.toSlider1.value, 10);
+	// const filterType = this.domElements.filterType.value;
 
 	return filteredData.filter((artist) => {
-		let year = artist[filterType];
+		let year = artist["creationDate"];
 		if (!year) return false;
 
-		if (filterType === "firstAlbum") {
-			const parts = year.split("-");
-			year = parseInt(parts[parts.length - 1], 10);
-		}
+		// if (filterType === "firstAlbum") {
+		// 	const parts = year.split("-");
+		// 	year = parseInt(parts[parts.length - 1], 10);
+		// }
 		return year >= fromValue && year <= toValue;
 	});
 };
@@ -238,7 +238,7 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 ArtistApp.prototype.setRangeFilterDefaults = function () {
 	if (!this.artistsData) return;
 
-	const { fromSlider, toSlider, fromTooltip, toTooltip, filterType } =
+	const { fromSlider1, toSlider1, fromTooltip1, toTooltip1, filterType } =
 		this.domElements;
 	const COLOR_TRACK = "#CBD5E1";
 	const COLOR_RANGE = "#0EA5E9";
@@ -247,10 +247,10 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	let maxYear = -Infinity;
 
 	this.artistsData.data.forEach((artist) => {
-		let year = artist[filterType.value];
-		if (filterType.value === "firstAlbum" && year) {
-			year = parseInt(year.split("-").pop(), 10);
-		}
+		let year = artist["creationDate"];
+		// if (filterType.value === "firstAlbum" && year) {
+		// 	year = parseInt(year.split("-").pop(), 10);
+		// }
 		if (year < minYear) minYear = year;
 		if (year > maxYear) maxYear = year;
 	});
@@ -259,25 +259,25 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	minYear = minYear === Infinity ? 0 : minYear;
 	maxYear = maxYear === -Infinity ? new Date().getFullYear() : maxYear;
 
-	fromSlider.min = minYear;
-	fromSlider.max = maxYear;
-	fromSlider.value = minYear;
+	fromSlider1.min = minYear;
+	fromSlider1.max = maxYear;
+	fromSlider1.value = minYear;
 
-	toSlider.min = minYear;
-	toSlider.max = maxYear;
-	toSlider.value = maxYear;
+	toSlider1.min = minYear;
+	toSlider1.max = maxYear;
+	toSlider1.value = maxYear;
 
 	// Attach events to the sliders
-	fromSlider.oninput = () =>
-		controlFromSlider(fromSlider, toSlider, fromTooltip, toTooltip);
-	toSlider.oninput = () =>
-		controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip);
+	fromSlider1.oninput = () =>
+		controlFromSlider(fromSlider1, toSlider1, fromTooltip1, toTooltip1);
+	toSlider1.oninput = () =>
+		controlToSlider(fromSlider1, toSlider1, fromTooltip1, toTooltip1);
 
 	// Initial slider setup
-	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
-	setToggleAccessible(toSlider);
-	setTooltip(fromSlider, fromTooltip);
-	setTooltip(toSlider, toTooltip);
+	fillSlider(fromSlider1, toSlider1, COLOR_TRACK, COLOR_RANGE, toSlider1);
+	setToggleAccessible(toSlider1);
+	setTooltip(fromSlider1, fromTooltip1);
+	setTooltip(toSlider1, toTooltip1);
 };
 
 /**
