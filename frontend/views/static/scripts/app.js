@@ -248,12 +248,12 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		toTooltip2,
 	} = this.domElements;
 	// Colors for Slider 1 (Creation Date)
-	const COLOR_TRACK_SLIDER1 = "#CBD5E1";
+	const COLOR_TRACK_SLIDER1 = "#FF6347";
 	const COLOR_RANGE_SLIDER1 = "#0EA5E9";
 
 	// Colors for Slider 2 (First Album)
-	const COLOR_TRACK_SLIDER2 = "#FFD700";
-	const COLOR_RANGE_SLIDER2 = "#FF6347";
+	const COLOR_TRACK_SLIDER2 = "#FF6347";
+	const COLOR_RANGE_SLIDER2 = "#FFD700";
 
 	let minYear1 = Infinity;
 	let maxYear1 = -Infinity;

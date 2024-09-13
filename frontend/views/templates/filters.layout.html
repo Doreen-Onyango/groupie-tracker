@@ -11,12 +11,12 @@
 	/>
 
 	<!-- searchByConcert -->
-	<label for="searchByConcert">search By Concert</label>
+	<label for="searchByConcert">Search By Concert</label>
 	<input
 		name="searchByConcert"
 		type="text"
 		id="searchByConcert"
-		placeholder="Search for artists..."
+		placeholder="Search for concerts..."
 	/>
 </form>
 {{end}}
@@ -25,68 +25,71 @@
 <!-- members filter -->
 {{define "membersFilter"}}
 <div id="membersFilter">
-	<label
-		><input
+	<label>
+		<input
 			type="checkbox"
 			value="1"
 		/>
-		1</label
-	>
-	<label
-		><input
+		1 Member
+	</label>
+	<label>
+		<input
 			type="checkbox"
 			value="2"
 		/>
-		2</label
-	>
-	<label
-		><input
+		2 Members
+	</label>
+	<label>
+		<input
 			type="checkbox"
 			value="3"
 		/>
-		3</label
-	>
-	<label
-		><input
+		3 Members
+	</label>
+	<label>
+		<input
 			type="checkbox"
 			value="4"
 		/>
-		4</label
-	>
-	<label
-		><input
+		4 Members
+	</label>
+	<label>
+		<input
 			type="checkbox"
 			value="5"
 		/>
-		5</label
-	>
-	<label
-		><input
+		5 Members
+	</label>
+	<label>
+		<input
 			type="checkbox"
 			value="6"
 		/>
-		6</label
-	>
-	<label
-		><input
+		6 Members
+	</label>
+	<label>
+		<input
 			type="checkbox"
 			value="7"
 		/>
-		7</label
-	>
+		7 Members
+	</label>
 </div>
-{{ end }}
+{{end}}
 <!-- end of members filter -->
 
-<!-- range filter -->
+<!-- range filters -->
 {{define "rangeFilter"}}
-<div class="range_concertDate">
+<div
+	class="range_concertDate"
+	data-label="Concert Date Range"
+>
 	<div class="sliders_control">
 		<div
 			id="fromSliderTooltip1"
 			class="slider-tooltip"
 		>
-			{{ .minYear}}
+			{{ .minYear }}
 		</div>
 		<input
 			id="fromSlider1"
@@ -113,13 +116,16 @@
 	</div>
 </div>
 
-<div class="range_firstAlbum">
+<div
+	class="range_firstAlbum"
+	data-label="First Album Year Range"
+>
 	<div class="sliders_control">
 		<div
 			id="fromSliderTooltip2"
 			class="slider-tooltip"
 		>
-			{{ .minYear}}
+			{{ .minYear }}
 		</div>
 		<input
 			id="fromSlider2"
@@ -145,5 +151,5 @@
 		/>
 	</div>
 </div>
-{{ end }}
+{{end}}
 <!-- end of range filter -->

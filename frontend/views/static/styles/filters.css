@@ -6,19 +6,39 @@
 	box-sizing: border-box;
 }
 
+.range_firstAlbum,
+.range_concertDate {
+	width: 100%;
+	max-width: 600px;
+	margin-top: 80px;
+	border: 2px solid var(--_marker-border-clr);
+	border-radius: 8px;
+	padding: 60px 25px 15px 25px;
+	position: relative;
+}
+
+.range_firstAlbum::before,
+.range_concertDate::before {
+	content: attr(data-label);
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	border-radius: 10px;
+	transform: translateX(-50%);
+	background-color: white;
+	padding: 10px;
+	font-size: 1.1rem;
+	color: var(--_marker-border-clr);
+	font-weight: bold;
+}
+
 .range_firstAlbum {
-	--_marker-border-clr: #9d4e05;
+	--_marker-border-clr: #ffd700;
 	--_marker-size: 15px;
 	--_track-heigt: 3px;
 
 	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
 	--_tooltip-txt-clr: var(--_marker-border-clr);
-
-	width: 100%;
-	max-width: 600px;
-	display: flex;
-	flex-direction: column;
-	margin-top: 80px;
 }
 
 .range_concertDate {
@@ -28,12 +48,6 @@
 
 	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
 	--_tooltip-txt-clr: var(--_marker-border-clr);
-
-	width: 100%;
-	max-width: 600px;
-	display: flex;
-	flex-direction: column;
-	margin-top: 80px;
 }
 
 .sliders_control {
@@ -42,7 +56,9 @@
 
 .slider-tooltip {
 	position: absolute;
-	top: -3.5rem;
+	display: flex;
+	flex-direction: column;
+	top: -3rem;
 	left: 0;
 	width: fit-content;
 	background-color: var(--_tooltip-bg-clr);
@@ -76,6 +92,7 @@ input[type="range"]::-webkit-slider-thumb {
 	border-radius: 50%;
 	box-shadow: 0 0 0 1px var(--_marker-border-clr);
 	cursor: pointer;
+	z-index: 20;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -96,9 +113,5 @@ input[type="range"] {
 	position: absolute;
 	background-color: var(--_marker-border-clr);
 	pointer-events: none;
-}
-
-#fromSlider {
-	height: 0;
-	z-index: 1;
+	z-index: -10;
 }

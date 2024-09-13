@@ -37,21 +37,13 @@ export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
 
-// Colors for Slider 1 (Creation Date)
-const COLOR_TRACK_SLIDER1 = "#CBD5E1";
-const COLOR_RANGE_SLIDER1 = "#0EA5E9";
-
-// Colors for Slider 2 (First Album)
-const COLOR_TRACK_SLIDER2 = "#FFD700";
-const COLOR_RANGE_SLIDER2 = "#FF6347";
-
 export function controlFromSlider(
 	fromSlider,
 	toSlider,
 	fromTooltip,
 	toTooltip,
-	sliderColor, // Add slider color parameter
-	rangeColor // Add range color parameter
+	sliderColor,
+	rangeColor
 ) {
 	const [from, to] = getParsed(fromSlider, toSlider);
 	fillSlider(fromSlider, toSlider, sliderColor, rangeColor, toSlider);
@@ -91,7 +83,7 @@ function getParsed(currentFrom, currentTo) {
 
 export function setTooltip(slider, tooltip) {
 	const value = slider.value;
-	tooltip.textContent = `Year ${value}`;
+	tooltip.textContent = `${value}`;
 	const thumbPosition = (value - slider.min) / (slider.max - slider.min);
 	const percent = thumbPosition * 100;
 	const markerWidth = 20;
@@ -100,14 +92,25 @@ export function setTooltip(slider, tooltip) {
 }
 
 export function setToggleAccessible(currentTarget) {
+	const fromSlider1 = document.querySelector("#fromSlider1");
 	const toSlider1 = document.querySelector("#toSlider1");
+	const fromSlider2 = document.querySelector("#fromSlider2");
 	const toSlider2 = document.querySelector("#toSlider2");
-	if (Number(currentTarget.value) <= 0) {
-		toSlider1.style.zIndex = 2;
-		toSlider2.style.zIndex = 2;
+
+	if (Number(fromSlider1.value) >= Number(toSlider1.value)) {
+		fromSlider1.style.zIndex = 2;
+		toSlider1.style.zIndex = 1;
 	} else {
-		toSlider1.style.zIndex = 0;
-		toSlider2.style.zIndex = 0;
+		fromSlider1.style.zIndex = 1;
+		toSlider1.style.zIndex = 2;
+	}
+
+	if (Number(fromSlider2.value) >= Number(toSlider2.value)) {
+		fromSlider2.style.zIndex = 2;
+		toSlider2.style.zIndex = 1;
+	} else {
+		fromSlider2.style.zIndex = 1;
+		toSlider2.style.zIndex = 2;
 	}
 }
 
