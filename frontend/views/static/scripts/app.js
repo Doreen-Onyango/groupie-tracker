@@ -247,8 +247,13 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		fromTooltip2,
 		toTooltip2,
 	} = this.domElements;
-	const COLOR_TRACK = "#CBD5E1";
-	const COLOR_RANGE = "#0EA5E9";
+	// Colors for Slider 1 (Creation Date)
+	const COLOR_TRACK_SLIDER1 = "#CBD5E1";
+	const COLOR_RANGE_SLIDER1 = "#0EA5E9";
+
+	// Colors for Slider 2 (First Album)
+	const COLOR_TRACK_SLIDER2 = "#FFD700";
+	const COLOR_RANGE_SLIDER2 = "#FF6347";
 
 	let minYear1 = Infinity;
 	let maxYear1 = -Infinity;
@@ -304,22 +309,62 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 
 	// Attach events to the sliders
 	fromSlider1.oninput = () =>
-		controlFromSlider(fromSlider1, toSlider1, fromTooltip1, toTooltip1);
+		controlFromSlider(
+			fromSlider1,
+			toSlider1,
+			fromTooltip1,
+			toTooltip1,
+			COLOR_TRACK_SLIDER1,
+			COLOR_RANGE_SLIDER1
+		);
 	toSlider1.oninput = () =>
-		controlToSlider(fromSlider1, toSlider1, fromTooltip1, toTooltip1);
+		controlToSlider(
+			fromSlider1,
+			toSlider1,
+			fromTooltip1,
+			toTooltip1,
+			COLOR_TRACK_SLIDER1,
+			COLOR_RANGE_SLIDER1
+		);
 
 	fromSlider2.oninput = () =>
-		controlFromSlider(fromSlider2, toSlider2, fromTooltip2, toTooltip2);
+		controlFromSlider(
+			fromSlider2,
+			toSlider2,
+			fromTooltip2,
+			toTooltip2,
+			COLOR_TRACK_SLIDER2,
+			COLOR_RANGE_SLIDER2
+		);
 	toSlider2.oninput = () =>
-		controlToSlider(fromSlider2, toSlider2, fromTooltip2, toTooltip2);
+		controlToSlider(
+			fromSlider2,
+			toSlider2,
+			fromTooltip2,
+			toTooltip2,
+			COLOR_TRACK_SLIDER2,
+			COLOR_RANGE_SLIDER2
+		);
 
 	// Initialize slider visuals
-	fillSlider(fromSlider1, toSlider1, COLOR_TRACK, COLOR_RANGE, toSlider1);
+	fillSlider(
+		fromSlider1,
+		toSlider1,
+		COLOR_TRACK_SLIDER1,
+		COLOR_RANGE_SLIDER1,
+		toSlider1
+	);
 	setToggleAccessible(toSlider1);
 	setTooltip(fromSlider1, fromTooltip1);
 	setTooltip(toSlider1, toTooltip1);
 
-	fillSlider(fromSlider2, toSlider2, COLOR_TRACK, COLOR_RANGE, toSlider2);
+	fillSlider(
+		fromSlider2,
+		toSlider2,
+		COLOR_TRACK_SLIDER2,
+		COLOR_RANGE_SLIDER2,
+		toSlider2
+	);
 	setToggleAccessible(toSlider2);
 	setTooltip(fromSlider2, fromTooltip2);
 	setTooltip(toSlider2, toTooltip2);

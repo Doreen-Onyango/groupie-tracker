@@ -37,17 +37,24 @@ export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
 
-const COLOR_TRACK = "#CBD5E1";
-const COLOR_RANGE = "#0EA5E9";
+// Colors for Slider 1 (Creation Date)
+const COLOR_TRACK_SLIDER1 = "#CBD5E1";
+const COLOR_RANGE_SLIDER1 = "#0EA5E9";
+
+// Colors for Slider 2 (First Album)
+const COLOR_TRACK_SLIDER2 = "#FFD700";
+const COLOR_RANGE_SLIDER2 = "#FF6347";
 
 export function controlFromSlider(
 	fromSlider,
 	toSlider,
 	fromTooltip,
-	toTooltip
+	toTooltip,
+	sliderColor, // Add slider color parameter
+	rangeColor // Add range color parameter
 ) {
 	const [from, to] = getParsed(fromSlider, toSlider);
-	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
+	fillSlider(fromSlider, toSlider, sliderColor, rangeColor, toSlider);
 	if (from > to) {
 		fromSlider.value = to;
 		toSlider.value = to + 1;
@@ -57,9 +64,16 @@ export function controlFromSlider(
 	setToggleAccessible(toSlider);
 }
 
-export function controlToSlider(fromSlider, toSlider, fromTooltip, toTooltip) {
+export function controlToSlider(
+	fromSlider,
+	toSlider,
+	fromTooltip,
+	toTooltip,
+	sliderColor,
+	rangeColor
+) {
 	const [from, to] = getParsed(fromSlider, toSlider);
-	fillSlider(fromSlider, toSlider, COLOR_TRACK, COLOR_RANGE, toSlider);
+	fillSlider(fromSlider, toSlider, sliderColor, rangeColor, toSlider);
 	if (to < from) {
 		toSlider.value = from;
 		fromSlider.value = from - 1;
