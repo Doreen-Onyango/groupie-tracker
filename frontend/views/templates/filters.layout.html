@@ -1,5 +1,6 @@
 <!-- search filter -->
 {{define "searchFilter"}}
+<!-- search form -->
 <form id="searchForm">
 	<input
 		name="searchForm"
@@ -8,6 +9,13 @@
 		placeholder="Search for artists..."
 	/>
 </form>
+
+<!-- search type dropdown -->
+<label for="searchType">Search by:</label>
+<select id="searchType">
+	<option value="artistName">artist name</option>
+	<option value="concertLocation">concert location</option>
+</select>
 {{end}}
 <!-- end of search filter -->
 
