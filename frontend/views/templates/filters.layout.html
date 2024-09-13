@@ -80,16 +80,16 @@
 
 <!-- range filter -->
 {{define "rangeFilter"}}
-<div class="range_container">
+<div class="range_concertDate">
 	<div class="sliders_control">
 		<div
-			id="fromSliderTooltip"
+			id="fromSliderTooltip1"
 			class="slider-tooltip"
 		>
 			{{ .minYear}}
 		</div>
 		<input
-			id="fromSlider"
+			id="fromSlider1"
 			type="range"
 			min="{{ .minYear }}"
 			max="{{ .maxYear }}"
@@ -97,13 +97,13 @@
 			value="{{ .minYear }}"
 		/>
 		<div
-			id="toSliderTooltip"
+			id="toSliderTooltip1"
 			class="slider-tooltip"
 		>
 			{{ .maxYear }}
 		</div>
 		<input
-			id="toSlider"
+			id="toSlider1"
 			type="range"
 			min="{{ .minYear }}"
 			max="{{ .maxYear }}"
@@ -111,19 +111,52 @@
 			value="{{ .maxYear }}"
 		/>
 	</div>
-	{{ end }}
-	<!-- end of range filter -->
-
-	<!-- Dropdown to select the filter type -->
-	{{ define "filterType"}}
-	<label for="filterType">Filter by:</label>
-	<select id="filterType">
-		<option value="creationDate">Creation Date</option>
-		<option value="firstAlbum">First Album Date</option>
-	</select>
-	{{ end }}
-	<!-- end of dropdown -->
 </div>
+
+<div class="range_firstAlbum">
+	<div class="sliders_control">
+		<div
+			id="fromSliderTooltip2"
+			class="slider-tooltip"
+		>
+			{{ .minYear}}
+		</div>
+		<input
+			id="fromSlider2"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .minYear }}"
+		/>
+		<div
+			id="toSliderTooltip2"
+			class="slider-tooltip"
+		>
+			{{ .maxYear }}
+		</div>
+		<input
+			id="toSlider2"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
+		/>
+	</div>
+</div>
+{{ end }}
+<!-- end of range filter -->
+
+<!-- Dropdown to select the filter type -->
+{{ define "filterType"}}
+<label for="filterType">Filter by:</label>
+<select id="filterType">
+	<option value="creationDate">Creation Date</option>
+	<option value="firstAlbum">First Album Date</option>
+</select>
+{{ end }}
+<!-- end of dropdown -->
 
 <!-- concerts filter -->
 <!-- Add this below the existing filters -->
