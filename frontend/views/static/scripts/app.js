@@ -17,7 +17,8 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 class ArtistApp {
 	constructor() {
 		// Global DOM elements
-		this.searchInput = document.getElementById("search");
+		this.searchByName = document.getElementById("searchByName");
+		this.searchByConcert = document.getElementById("searchByConcert");
 		this.artistsContainer = document.getElementById("artistsContainer");
 		this.membersFilter = document.getElementById("membersFilter");
 		this.filterType = document.getElementById("filterType");
@@ -67,9 +68,10 @@ ArtistApp.prototype.setupEventListeners = function () {
 		element.addEventListener(event, handler.bind(this));
 
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
-	bindEvent(this.searchInput, "input", this.applyAllFilters);
+	bindEvent(this.searchByName, "input", this.applyAllFilters);
+	bindEvent(this.searchByConcert, "input", this.applyAllFilters);
 	bindEvent(this.membersFilter, "change", this.applyAllFilters);
-	bindEvent(this.concertsFilter, "change", this.applyAllFilters); // Listen for concert location sorting
+	bindEvent(this.concertsFilter, "change", this.applyAllFilters);
 	document.addEventListener("input", this.applyAllFilters.bind(this));
 	bindEvent(this.filterType, "change", () => {
 		this.setRangeFilterDefaults();
@@ -86,24 +88,22 @@ ArtistApp.prototype.applyAllFilters = function () {
 
 	let filteredData = [...this.artistsData.data];
 
-	// Apply search filter based on searchType
-	const query = this.searchInput.value.toLowerCase();
-	const searchType = this.searchType.value;
+	// Apply searchByName filter based on searchType
+	const nameQuery = this.searchByName.value.toLowerCase();
+	filteredData = filteredData.filter((artist) => {
+		const artistName = artist.name.toLowerCase();
+		return artistName.includes(nameQuery);
+	});
 
-	if (searchType === "artistName") {
-		filteredData = filteredData.filter((artist) => {
-			const artistName = artist.name.toLowerCase();
-			return artistName.includes(query);
-		});
-	} else if (searchType === "concertLocation") {
-		filteredData = this.allArtistDetails
-			.filter((artistDetail) => {
-				const locations = artistDetail.data.locations?.locations || [];
-				const tempLoc = locations.map((loc) => loc.split("-").join(" "));
-				return tempLoc.some((loc) => loc.toLowerCase().includes(query));
-			})
-			.map((detail) => detail.data.artist);
-	}
+	// Apply searchByConcert filter based on searchType
+	const concertQuery = this.searchByConcert.value.toLowerCase();
+	filteredData = this.allArtistDetails
+		.filter((artistDetail) => {
+			const locations = artistDetail.data.locations?.locations || [];
+			const tempLoc = locations.map((loc) => loc.split("-").join(" "));
+			return tempLoc.some((loc) => loc.toLowerCase().includes(concertQuery));
+		})
+		.map((detail) => detail.data.artist);
 
 	// Apply range filter
 	const fromValue = parseInt(this.fromSlider.value, 10);
