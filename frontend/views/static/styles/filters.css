@@ -6,7 +6,22 @@
 	box-sizing: border-box;
 }
 
-.range_container {
+.range_firstAlbum {
+	--_marker-border-clr: #9d4e05;
+	--_marker-size: 15px;
+	--_track-heigt: 3px;
+
+	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
+	--_tooltip-txt-clr: var(--_marker-border-clr);
+
+	width: 100%;
+	max-width: 600px;
+	display: flex;
+	flex-direction: column;
+	margin-top: 80px;
+}
+
+.range_concertDate {
 	--_marker-border-clr: #0ea5e9;
 	--_marker-size: 15px;
 	--_track-heigt: 3px;
@@ -18,6 +33,7 @@
 	max-width: 600px;
 	display: flex;
 	flex-direction: column;
+	margin-top: 80px;
 }
 
 .sliders_control {
