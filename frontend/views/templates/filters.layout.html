@@ -1,11 +1,23 @@
-<!-- search filter -->
+<!-- search filters -->
 {{define "searchFilter"}}
-<!-- search form -->
-<form id="searchForm">
+<!-- searchByName -->
+<form id="searchByName">
+	<label for="searchByName">Search By Name</label>
 	<input
-		name="searchForm"
+		name="searchByName"
 		type="text"
-		id="search"
+		id="searchByName"
+		placeholder="Search for artists..."
+	/>
+</form>
+
+<!-- searchByConcert -->
+<form id="searchByConcert">
+	<label for="searchByConcert">search By Concert</label>
+	<input
+		name="searchByConcert"
+		type="text"
+		id="searchByConcert"
 		placeholder="Search for artists..."
 	/>
 </form>
