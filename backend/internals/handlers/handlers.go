@@ -60,8 +60,8 @@ func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
 	artistData, err := m.app.Res.GetArtistById(requestData.Request)
 	if err != nil || len(artistData) == 0 {
 		m.res.Err = true
-		m.res.Message = "oops something went wrong, network error"
-		m.res.ErrJSON(w, err, http.StatusInternalServerError)
+		m.res.Message = err.Error()
+		m.res.ErrJSON(w, err, http.StatusNotFound)
 		return
 	}
 

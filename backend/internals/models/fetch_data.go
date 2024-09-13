@@ -95,7 +95,6 @@ func (r *ResponseData) AddArtist(api *MainApi) error {
 
 	var artists []Artist
 	if err := json.Unmarshal(data, &artists); err != nil {
-		instance.Err = err
 		return fmt.Errorf("oops! connection problem")
 	}
 
