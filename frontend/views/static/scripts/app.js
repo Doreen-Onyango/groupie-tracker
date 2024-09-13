@@ -86,13 +86,23 @@ ArtistApp.prototype.applyAllFilters = function () {
 
 	let filteredData = [...this.artistsData.data];
 
-	// Apply search filter
+	// Apply search filter based on searchType
 	const query = this.searchInput.value.toLowerCase();
-	if (this.searchType.value === "artistName") {
+	const searchType = this.searchType.value;
+
+	if (searchType === "artistName") {
 		filteredData = filteredData.filter((artist) => {
 			const artistName = artist.name.toLowerCase();
 			return artistName.includes(query);
 		});
+	} else if (searchType === "concertLocation") {
+		filteredData = this.allArtistDetails
+			.filter((artistDetail) => {
+				const locations = artistDetail.data.locations?.locations || [];
+				const tempLoc = locations.map((loc) => loc.split("-").join(" "));
+				return tempLoc.some((loc) => loc.toLowerCase().includes(query));
+			})
+			.map((detail) => detail.data.artist);
 	}
 
 	// Apply range filter
