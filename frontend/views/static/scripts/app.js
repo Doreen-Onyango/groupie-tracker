@@ -19,15 +19,15 @@ class ArtistApp {
 		this.domElements = {
 			searchByName: document.getElementById("searchByName"),
 			searchByConcert: document.getElementById("searchByConcert"),
-			artistsContainer: document.getElementById("artistsContainer"),
 			membersFilter: document.getElementById("membersFilter"),
-			filterType: document.getElementById("filterType"),
 			fromSlider1: document.getElementById("fromSlider1"),
 			toSlider1: document.getElementById("toSlider1"),
 			fromTooltip1: document.getElementById("fromSliderTooltip1"),
 			toTooltip1: document.getElementById("toSliderTooltip1"),
-			concertsFilter: document.getElementById("concertsFilter"),
-			searchType: document.getElementById("searchType"),
+			fromSlider2: document.getElementById("fromSlider2"),
+			toSlider2: document.getElementById("toSlider2"),
+			fromTooltip2: document.getElementById("fromSliderTooltip2"),
+			toTooltip2: document.getElementById("toSliderTooltip2"),
 		};
 
 		this.initialize();
@@ -81,16 +81,6 @@ ArtistApp.prototype.setupEventListeners = function () {
 			event: "change",
 			handler: this.applyAllFilters,
 		},
-		{
-			element: this.domElements.concertsFilter,
-			event: "change",
-			handler: this.applyAllFilters,
-		},
-		{
-			element: this.domElements.filterType,
-			event: "change",
-			handler: this.handleFilterTypeChange,
-		},
 	]);
 
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
@@ -114,15 +104,12 @@ ArtistApp.prototype.applyAllFilters = function () {
 	if (!this.artistsData) return;
 	let filteredData = [...this.artistsData.data];
 
+	// Apply filters in sequence
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByNameFilter(filteredData);
-	filteredData = this.applyRangeFilter(filteredData);
+	filteredData = this.applyCreationDateFilter(filteredData);
+	filteredData = this.applyFirstAlbumFilter(filteredData);
 	filteredData = this.applyMembersFilter(filteredData);
-
-	const sortValue = this.domElements.concertsFilter.value;
-	if (sortValue === "location") {
-		filteredData = sortByLocation(filteredData);
-	}
 
 	this.renderFilteredData(filteredData);
 };
@@ -157,23 +144,35 @@ ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
 };
 
 /**
- * Apply range filter based on years
+ * Apply creation dates filter based on years
  * @param {Array} filteredData - the current filtered artist data
  * @returns {Array} filteredData - the data filtered by the year range
  */
-ArtistApp.prototype.applyRangeFilter = function (filteredData) {
+ArtistApp.prototype.applyCreationDateFilter = function (filteredData) {
 	const fromValue = parseInt(this.domElements.fromSlider1.value, 10);
 	const toValue = parseInt(this.domElements.toSlider1.value, 10);
-	// const filterType = this.domElements.filterType.value;
 
 	return filteredData.filter((artist) => {
 		let year = artist["creationDate"];
 		if (!year) return false;
+		return year >= fromValue && year <= toValue;
+	});
+};
 
-		// if (filterType === "firstAlbum") {
-		// 	const parts = year.split("-");
-		// 	year = parseInt(parts[parts.length - 1], 10);
-		// }
+/**
+ * Apply first album filter based on years
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by the year range
+ */
+ArtistApp.prototype.applyFirstAlbumFilter = function (filteredData) {
+	const fromValue = parseInt(this.domElements.fromSlider2.value, 10);
+	const toValue = parseInt(this.domElements.toSlider2.value, 10);
+
+	return filteredData.filter((artist) => {
+		let year = artist["firstAlbum"];
+		if (!year) return false;
+		const parts = year.split("-");
+		year = parseInt(parts[parts.length - 1], 10);
 		return year >= fromValue && year <= toValue;
 	});
 };
@@ -238,34 +237,70 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 ArtistApp.prototype.setRangeFilterDefaults = function () {
 	if (!this.artistsData) return;
 
-	const { fromSlider1, toSlider1, fromTooltip1, toTooltip1, filterType } =
-		this.domElements;
+	const {
+		fromSlider1,
+		toSlider1,
+		fromTooltip1,
+		toTooltip1,
+		fromSlider2,
+		toSlider2,
+		fromTooltip2,
+		toTooltip2,
+	} = this.domElements;
 	const COLOR_TRACK = "#CBD5E1";
 	const COLOR_RANGE = "#0EA5E9";
 
-	let minYear = Infinity;
-	let maxYear = -Infinity;
+	let minYear1 = Infinity;
+	let maxYear1 = -Infinity;
+	let minYear2 = Infinity;
+	let maxYear2 = -Infinity;
 
+	// Loop through artist data to get min/max for creationDate (Slider 1)
 	this.artistsData.data.forEach((artist) => {
 		let year = artist["creationDate"];
-		// if (filterType.value === "firstAlbum" && year) {
-		// 	year = parseInt(year.split("-").pop(), 10);
-		// }
-		if (year < minYear) minYear = year;
-		if (year > maxYear) maxYear = year;
+		if (year) {
+			// Check if year is defined
+			if (year < minYear1) minYear1 = year;
+			if (year > maxYear1) maxYear1 = year;
+		}
 	});
 
-	// Ensure min and max years are valid
-	minYear = minYear === Infinity ? 0 : minYear;
-	maxYear = maxYear === -Infinity ? new Date().getFullYear() : maxYear;
+	// Loop through artist data to get min/max for firstAlbum (Slider 2)
+	this.artistsData.data.forEach((artist) => {
+		let year = artist["firstAlbum"];
+		if (year) {
+			// Check if year is defined
+			const parts = year.split("-");
+			year = parseInt(parts[parts.length - 1], 10); // Parse the year from the date string
+			if (year < minYear2) minYear2 = year;
+			if (year > maxYear2) maxYear2 = year;
+		}
+	});
 
-	fromSlider1.min = minYear;
-	fromSlider1.max = maxYear;
-	fromSlider1.value = minYear;
+	// Handle default min/max values if no valid years were found
+	minYear1 = minYear1 === Infinity ? 0 : minYear1;
+	maxYear1 = maxYear1 === -Infinity ? new Date().getFullYear() : maxYear1;
 
-	toSlider1.min = minYear;
-	toSlider1.max = maxYear;
-	toSlider1.value = maxYear;
+	minYear2 = minYear2 === Infinity ? 0 : minYear2;
+	maxYear2 = maxYear2 === -Infinity ? new Date().getFullYear() : maxYear2;
+
+	// Assign values to Slider 1 (creationDate)
+	fromSlider1.min = minYear1;
+	fromSlider1.max = maxYear1;
+	fromSlider1.value = minYear1;
+
+	toSlider1.min = minYear1;
+	toSlider1.max = maxYear1;
+	toSlider1.value = maxYear1;
+
+	// Assign values to Slider 2 (firstAlbum)
+	fromSlider2.min = minYear2;
+	fromSlider2.max = maxYear2;
+	fromSlider2.value = minYear2;
+
+	toSlider2.min = minYear2;
+	toSlider2.max = maxYear2;
+	toSlider2.value = maxYear2;
 
 	// Attach events to the sliders
 	fromSlider1.oninput = () =>
@@ -273,11 +308,21 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	toSlider1.oninput = () =>
 		controlToSlider(fromSlider1, toSlider1, fromTooltip1, toTooltip1);
 
-	// Initial slider setup
+	fromSlider2.oninput = () =>
+		controlFromSlider(fromSlider2, toSlider2, fromTooltip2, toTooltip2);
+	toSlider2.oninput = () =>
+		controlToSlider(fromSlider2, toSlider2, fromTooltip2, toTooltip2);
+
+	// Initialize slider visuals
 	fillSlider(fromSlider1, toSlider1, COLOR_TRACK, COLOR_RANGE, toSlider1);
 	setToggleAccessible(toSlider1);
 	setTooltip(fromSlider1, fromTooltip1);
 	setTooltip(toSlider1, toTooltip1);
+
+	fillSlider(fromSlider2, toSlider2, COLOR_TRACK, COLOR_RANGE, toSlider2);
+	setToggleAccessible(toSlider2);
+	setTooltip(fromSlider2, fromTooltip2);
+	setTooltip(toSlider2, toTooltip2);
 };
 
 /**

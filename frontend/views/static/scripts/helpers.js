@@ -87,10 +87,13 @@ export function setTooltip(slider, tooltip) {
 
 export function setToggleAccessible(currentTarget) {
 	const toSlider1 = document.querySelector("#toSlider1");
+	const toSlider2 = document.querySelector("#toSlider2");
 	if (Number(currentTarget.value) <= 0) {
 		toSlider1.style.zIndex = 2;
+		toSlider2.style.zIndex = 2;
 	} else {
 		toSlider1.style.zIndex = 0;
+		toSlider2.style.zIndex = 0;
 	}
 }
 
