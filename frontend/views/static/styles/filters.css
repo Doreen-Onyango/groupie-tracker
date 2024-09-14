@@ -19,17 +19,59 @@
 
 .range_firstAlbum::before,
 .range_concertDate::before {
-	content: attr(data-label);
+	content: "From"; /* Label before the slider */
+	position: absolute;
+	top: -40px;
+	left: 0;
+	font-size: 0.8rem; /* Smaller size */
+	color: var(--_marker-border-clr); /* Same color as the main label */
+	font-weight: normal; /* Make it less prominent */
+	background: none; /* No background */
+}
+
+.range_firstAlbum::after,
+.range_concertDate::after {
+	content: "To"; /* Label after the slider */
+	position: absolute;
+	top: -40px;
+	right: 0;
+	font-size: 0.8rem; /* Smaller size */
+	color: var(--_marker-border-clr); /* Same color as the main label */
+	font-weight: normal; /* Make it less prominent */
+	background: none; /* No background */
+}
+
+.range_firstAlbum::before,
+.range_firstAlbum::after,
+.range_concertDate::before,
+.range_concertDate::after {
+	white-space: nowrap;
+}
+
+.range_firstAlbum::before,
+.range_concertDate::before {
+	content: "From"; /* "From" label */
+}
+
+.range_firstAlbum::after,
+.range_concertDate::after {
+	content: "To"; /* "To" label */
+}
+
+/* Existing styling for the main data label */
+.range_firstAlbum[data-label]::before,
+.range_concertDate[data-label]::before {
+	content: attr(data-label); /* Main label in the middle */
 	position: absolute;
 	top: -20px;
 	left: 50%;
-	border-radius: 10px;
 	transform: translateX(-50%);
 	background-color: white;
 	padding: 10px;
 	font-size: 1.1rem;
 	color: var(--_marker-border-clr);
 	font-weight: bold;
+	border-radius: 10px;
 }
 
 .range_firstAlbum {
