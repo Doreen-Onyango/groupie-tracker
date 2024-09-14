@@ -29,6 +29,7 @@ class ArtistApp {
 			fromSlider2: document.getElementById("fromSlider2"),
 			toSlider1: document.getElementById("toSlider1"),
 			toSlider2: document.getElementById("toSlider2"),
+			resetButton: document.getElementById("resetButton"),
 		};
 
 		this.initialize();
@@ -76,6 +77,11 @@ ArtistApp.prototype.setupEventListeners = function () {
 			element: this.domElements.searchByConcert,
 			event: "input",
 			handler: this.handleConcertSearchInput,
+		},
+		{
+			element: this.domElements.resetButton,
+			event: "click",
+			handler: this.resetFilters,
 		},
 		{
 			element: this.domElements.membersFilter,
@@ -457,6 +463,50 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	setToggleAccessible(toSlider2);
 	setTooltip(fromSlider2, fromTooltip2);
 	setTooltip(toSlider2, toTooltip2);
+};
+
+/**
+ * Resets all filters to their default values
+ */
+ArtistApp.prototype.resetFilters = function () {
+	// Reset text inputs
+	this.domElements.searchByName.value = "";
+	this.domElements.searchByConcert.value = "";
+
+	// Reset sliders
+	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
+	this.domElements.toSlider1.value = this.domElements.toSlider1.max;
+	this.domElements.fromSlider2.value = this.domElements.fromSlider2.min;
+	this.domElements.toSlider2.value = this.domElements.toSlider2.max;
+
+	// Reset tooltips and slider visuals
+	setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
+	setTooltip(this.domElements.toSlider1, this.domElements.toTooltip1);
+	setTooltip(this.domElements.fromSlider2, this.domElements.fromTooltip2);
+	setTooltip(this.domElements.toSlider2, this.domElements.toTooltip2);
+
+	fillSlider(
+		this.domElements.fromSlider1,
+		this.domElements.toSlider1,
+		"#FF6347",
+		"#0EA5E9",
+		this.domElements.toSlider1
+	);
+	fillSlider(
+		this.domElements.fromSlider2,
+		this.domElements.toSlider2,
+		"#FF6347",
+		"#FFD700",
+		this.domElements.toSlider2
+	);
+
+	// Reset checkboxes
+	Array.from(
+		this.domElements.membersFilter.querySelectorAll("input:checked")
+	).forEach((checkbox) => (checkbox.checked = false));
+
+	// Reapply filters to reset the view
+	this.applyAllFilters();
 };
 
 /**
