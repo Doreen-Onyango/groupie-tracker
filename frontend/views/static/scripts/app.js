@@ -157,7 +157,6 @@ ArtistApp.prototype.handleConcertSearchInput = function () {
 		? "block"
 		: "none";
 
-	// Add click event to select suggestion
 	this.addSuggestionClick("concertSuggestions", "searchByConcert");
 };
 
@@ -192,6 +191,11 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
  * @param {string} suggestionElementId - The ID of the suggestions dropdown
  * @param {string} inputElementId - The ID of the input field
  */
+/**
+ * Adds click behavior for selecting a suggestion
+ * @param {string} suggestionElementId - The ID of the suggestions dropdown
+ * @param {string} inputElementId - The ID of the input field
+ */
 ArtistApp.prototype.addSuggestionClick = function (
 	suggestionElementId,
 	inputElementId
@@ -202,9 +206,16 @@ ArtistApp.prototype.addSuggestionClick = function (
 	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
 		(item) => {
 			item.addEventListener("click", (e) => {
-				inputField.value = e.target.getAttribute(
+				let value = e.target.getAttribute(
 					`data-${inputElementId === "searchByName" ? "name" : "location"}`
 				);
+
+				// Format the value by replacing '-' with ' in '
+				if (inputElementId === "searchByConcert") {
+					value = value.replace(/-/g, " ");
+				}
+
+				inputField.value = value;
 				suggestionBox.style.display = "none";
 				this.applyAllFilters();
 			});
@@ -332,6 +343,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		fromTooltip2,
 		toTooltip2,
 	} = this.domElements;
+
 	// Colors for Slider 1 (Creation Date)
 	const COLOR_TRACK_SLIDER1 = "#FF6347";
 	const COLOR_RANGE_SLIDER1 = "#0EA5E9";
