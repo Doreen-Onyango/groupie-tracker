@@ -16,19 +16,19 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 class ArtistApp {
 	constructor() {
 		this.domElements = {
-			searchByName: document.getElementById("searchByName"),
+			concertSuggestions: document.getElementById("concertSuggestions"),
+			fromTooltip2: document.getElementById("fromSliderTooltip2"),
+			fromTooltip1: document.getElementById("fromSliderTooltip1"),
 			searchByConcert: document.getElementById("searchByConcert"),
 			nameSuggestions: document.getElementById("nameSuggestions"),
-			concertSuggestions: document.getElementById("concertSuggestions"),
-			membersFilter: document.getElementById("membersFilter"),
-			fromSlider1: document.getElementById("fromSlider1"),
-			toSlider1: document.getElementById("toSlider1"),
-			fromTooltip1: document.getElementById("fromSliderTooltip1"),
-			toTooltip1: document.getElementById("toSliderTooltip1"),
-			fromSlider2: document.getElementById("fromSlider2"),
-			toSlider2: document.getElementById("toSlider2"),
-			fromTooltip2: document.getElementById("fromSliderTooltip2"),
 			toTooltip2: document.getElementById("toSliderTooltip2"),
+			membersFilter: document.getElementById("membersFilter"),
+			toTooltip1: document.getElementById("toSliderTooltip1"),
+			searchByName: document.getElementById("searchByName"),
+			fromSlider1: document.getElementById("fromSlider1"),
+			fromSlider2: document.getElementById("fromSlider2"),
+			toSlider1: document.getElementById("toSlider1"),
+			toSlider2: document.getElementById("toSlider2"),
 		};
 
 		this.initialize();
@@ -84,9 +84,9 @@ ArtistApp.prototype.setupEventListeners = function () {
 		},
 	]);
 
+	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
 	document.addEventListener("input", this.applyAllFilters.bind(this));
-	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
 };
 
 /**
@@ -191,11 +191,6 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
  * @param {string} suggestionElementId - The ID of the suggestions dropdown
  * @param {string} inputElementId - The ID of the input field
  */
-/**
- * Adds click behavior for selecting a suggestion
- * @param {string} suggestionElementId - The ID of the suggestions dropdown
- * @param {string} inputElementId - The ID of the input field
- */
 ArtistApp.prototype.addSuggestionClick = function (
 	suggestionElementId,
 	inputElementId
@@ -211,9 +206,8 @@ ArtistApp.prototype.addSuggestionClick = function (
 				);
 
 				// Format the value by replacing '-' with ' in '
-				if (inputElementId === "searchByConcert") {
+				if (inputElementId === "searchByConcert")
 					value = value.replace(/-/g, " ");
-				}
 
 				inputField.value = value;
 				suggestionBox.style.display = "none";
