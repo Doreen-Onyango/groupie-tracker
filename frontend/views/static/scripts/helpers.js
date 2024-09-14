@@ -129,19 +129,6 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
 }
 
 /**
- * Sorts an array of artists by the number of concert locations.
- * @param {Array<Object>} artists - The array of artists to be sorted.
- * @returns {Array<Object>} - The sorted array of artists.
- */
-export function sortByLocation(artists) {
-	return artists.sort((a, b) => {
-		const locationsA = a.locations?.length || 0;
-		const locationsB = b.locations?.length || 0;
-		return locationsB - locationsA;
-	});
-}
-
-/**
  * Sorts an array of objects by the 'id' property.
  * @param {Array<Object>} items - The array of objects to be sorted.
  * @returns {Array<Object>} - The sorted array.

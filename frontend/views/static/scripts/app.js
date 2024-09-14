@@ -6,7 +6,6 @@ import {
 	fillSlider,
 	controlToSlider,
 	controlFromSlider,
-	sortByLocation,
 	sortById,
 } from "/static/scripts/helpers.js";
 import { renderAllArtists, showModal } from "/static/scripts/renders.js";
@@ -104,7 +103,6 @@ ArtistApp.prototype.applyAllFilters = function () {
 	if (!this.artistsData) return;
 	let filteredData = [...this.artistsData.data];
 
-	// Apply filters in sequence
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByNameFilter(filteredData);
 	filteredData = this.applyCreationDateFilter(filteredData);
@@ -264,7 +262,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	this.artistsData.data.forEach((artist) => {
 		let year = artist["creationDate"];
 		if (year) {
-			// Check if year is defined
 			if (year < minYear1) minYear1 = year;
 			if (year > maxYear1) maxYear1 = year;
 		}
@@ -274,9 +271,8 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	this.artistsData.data.forEach((artist) => {
 		let year = artist["firstAlbum"];
 		if (year) {
-			// Check if year is defined
 			const parts = year.split("-");
-			year = parseInt(parts[parts.length - 1], 10); // Parse the year from the date string
+			year = parseInt(parts[parts.length - 1], 10);
 			if (year < minYear2) minYear2 = year;
 			if (year > maxYear2) maxYear2 = year;
 		}
@@ -368,14 +364,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	setToggleAccessible(toSlider2);
 	setTooltip(fromSlider2, fromTooltip2);
 	setTooltip(toSlider2, toTooltip2);
-};
-
-/**
- * Handles filter type change event
- */
-ArtistApp.prototype.handleFilterTypeChange = function () {
-	this.setRangeFilterDefaults();
-	this.applyAllFilters();
 };
 
 /**
