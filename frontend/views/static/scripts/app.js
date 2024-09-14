@@ -18,6 +18,8 @@ class ArtistApp {
 		this.domElements = {
 			searchByName: document.getElementById("searchByName"),
 			searchByConcert: document.getElementById("searchByConcert"),
+			nameSuggestions: document.getElementById("nameSuggestions"),
+			concertSuggestions: document.getElementById("concertSuggestions"),
 			membersFilter: document.getElementById("membersFilter"),
 			fromSlider1: document.getElementById("fromSlider1"),
 			toSlider1: document.getElementById("toSlider1"),
@@ -67,13 +69,13 @@ ArtistApp.prototype.setupEventListeners = function () {
 	this.addEventListeners([
 		{
 			element: this.domElements.searchByName,
-			event: "change",
-			handler: this.applyAllFilters,
+			event: "input",
+			handler: this.handleNameSearchInput,
 		},
 		{
 			element: this.domElements.searchByConcert,
-			event: "change",
-			handler: this.applyAllFilters,
+			event: "input",
+			handler: this.handleConcertSearchInput,
 		},
 		{
 			element: this.domElements.membersFilter,
@@ -84,6 +86,7 @@ ArtistApp.prototype.setupEventListeners = function () {
 
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
 	document.addEventListener("input", this.applyAllFilters.bind(this));
+	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
 };
 
 /**
@@ -113,6 +116,65 @@ ArtistApp.prototype.applyAllFilters = function () {
 };
 
 /**
+ * Handles input event for searchByName to show suggestions dropdown
+ */
+ArtistApp.prototype.handleNameSearchInput = function () {
+	const query = this.domElements.searchByName.value.toLowerCase();
+	const suggestions = this.artistsData.data
+		.filter((artist) => artist.name.toLowerCase().includes(query))
+		.map(
+			(artist) =>
+				`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
+		)
+		.join("");
+
+	this.domElements.nameSuggestions.innerHTML = suggestions;
+	this.domElements.nameSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("nameSuggestions", "searchByName");
+};
+
+/**
+ * Handles input event for searchByConcert to show suggestions dropdown
+ */
+ArtistApp.prototype.handleConcertSearchInput = function () {
+	const query = this.domElements.searchByConcert.value.toLowerCase();
+	const suggestions = this.allArtistDetails
+		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
+		.filter((location) => location.toLowerCase().includes(query))
+		.map(
+			(location) =>
+				`<div class="suggestion-item" data-location="${location}">${location
+					.split("-")
+					.join(" ")}</div>`
+		)
+		.join("");
+
+	this.domElements.concertSuggestions.innerHTML = suggestions;
+	this.domElements.concertSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	// Add click event to select suggestion
+	this.addSuggestionClick("concertSuggestions", "searchByConcert");
+};
+
+/**
+ * Hides suggestions when clicking outside of the input fields or suggestion boxes
+ */
+ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
+	if (
+		!event.target.closest("#searchByName") &&
+		!event.target.closest("#searchByConcert")
+	) {
+		this.domElements.nameSuggestions.style.display = "none";
+		this.domElements.concertSuggestions.style.display = "none";
+	}
+};
+
+/**
  * Apply search by name filter
  * @param {Array} filteredData - the current filtered artist data
  * @returns {Array} filteredData - the data filtered by artist name
@@ -123,6 +185,31 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
 	});
+};
+
+/**
+ * Adds click behavior for selecting a suggestion
+ * @param {string} suggestionElementId - The ID of the suggestions dropdown
+ * @param {string} inputElementId - The ID of the input field
+ */
+ArtistApp.prototype.addSuggestionClick = function (
+	suggestionElementId,
+	inputElementId
+) {
+	const suggestionBox = this.domElements[suggestionElementId];
+	const inputField = this.domElements[inputElementId];
+
+	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
+		(item) => {
+			item.addEventListener("click", (e) => {
+				inputField.value = e.target.getAttribute(
+					`data-${inputElementId === "searchByName" ? "name" : "location"}`
+				);
+				suggestionBox.style.display = "none";
+				this.applyAllFilters();
+			});
+		}
+	);
 };
 
 /**
