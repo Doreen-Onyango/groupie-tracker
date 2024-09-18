@@ -20,7 +20,6 @@ class ArtistApp {
 				"creationDateSuggestions"
 			),
 			searchByCreationDate: document.getElementById("searchByCreationDate"),
-			searchByCreationDate: document.getElementById("searchByCreationDate"),
 			concertSuggestions: document.getElementById("concertSuggestions"),
 			fromTooltip2: document.getElementById("fromSliderTooltip2"),
 			fromTooltip1: document.getElementById("fromSliderTooltip1"),
@@ -535,6 +534,7 @@ ArtistApp.prototype.resetFilters = function () {
 	// Reset text inputs
 	this.domElements.searchByName.value = "";
 	this.domElements.searchByConcert.value = "";
+	this.domElements.searchByCreationDate.value = "";
 
 	// Reset sliders
 	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
