@@ -16,6 +16,11 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 class ArtistApp {
 	constructor() {
 		this.domElements = {
+			creationDateSuggestions: document.getElementById(
+				"creationDateSuggestions"
+			),
+			searchByCreationDate: document.getElementById("searchByCreationDate"),
+			searchByCreationDate: document.getElementById("searchByCreationDate"),
 			concertSuggestions: document.getElementById("concertSuggestions"),
 			fromTooltip2: document.getElementById("fromSliderTooltip2"),
 			fromTooltip1: document.getElementById("fromSliderTooltip1"),
@@ -79,6 +84,11 @@ ArtistApp.prototype.setupEventListeners = function () {
 			handler: this.handleConcertSearchInput,
 		},
 		{
+			element: this.domElements.searchByCreationDate,
+			event: "input",
+			handler: this.handleCreationDateSearchInput,
+		},
+		{
 			element: this.domElements.resetButton,
 			event: "click",
 			handler: this.resetFilters,
@@ -112,13 +122,60 @@ ArtistApp.prototype.applyAllFilters = function () {
 	if (!this.artistsData) return;
 	let filteredData = [...this.artistsData.data];
 
+	// Apply all filters
+
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByNameFilter(filteredData);
 	filteredData = this.applyCreationDateFilter(filteredData);
 	filteredData = this.applyFirstAlbumFilter(filteredData);
 	filteredData = this.applyMembersFilter(filteredData);
+	filteredData = this.applySearchByCreationDateFilter(filteredData);
 
 	this.renderFilteredData(filteredData);
+};
+
+/**
+ * Apply search by creation date filter
+ */
+ArtistApp.prototype.applySearchByCreationDateFilter = function (filteredData) {
+	const creationDateQuery = this.domElements.searchByCreationDate.value;
+	if (!creationDateQuery) return filteredData;
+
+	return filteredData.filter((artist) => {
+		return artist.creationDate.toString().startsWith(creationDateQuery);
+	});
+};
+
+/**
+ * Handles input event for searchByCreationDate to show suggestions dropdown
+ */
+ArtistApp.prototype.handleCreationDateSearchInput = function () {
+	const query = this.domElements.searchByCreationDate.value;
+
+	// Get unique creation dates and make sure they're treated as strings
+	const uniqueCreationDates = [
+		...new Set(
+			this.artistsData.data
+				.map((artist) => artist.creationDate)
+				.filter((date) => date != null)
+		),
+	];
+
+	// Convert the dates to strings and check if they start with the query
+	const suggestions = uniqueCreationDates
+		.filter((date) => date.toString().startsWith(query))
+		.map(
+			(date) =>
+				`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
+		)
+		.join("");
+
+	this.domElements.creationDateSuggestions.innerHTML = suggestions;
+	this.domElements.creationDateSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("creationDateSuggestions", "searchByCreationDate");
 };
 
 /**
@@ -208,10 +265,16 @@ ArtistApp.prototype.addSuggestionClick = function (
 		(item) => {
 			item.addEventListener("click", (e) => {
 				let value = e.target.getAttribute(
-					`data-${inputElementId === "searchByName" ? "name" : "location"}`
+					`data-${
+						inputElementId === "searchByName"
+							? "name"
+							: inputElementId === "searchByCreationDate"
+							? "creationdate"
+							: "location"
+					}`
 				);
 
-				// Format the value by replacing '-' with ' in '
+				// Format the value by replacing '-' with ' in ' for concert locations
 				if (inputElementId === "searchByConcert")
 					value = value.replace(/-/g, " ");
 
