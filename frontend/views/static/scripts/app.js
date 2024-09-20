@@ -20,6 +20,10 @@ class ArtistApp {
 				"creationDateSuggestions"
 			),
 			searchByCreationDate: document.getElementById("searchByCreationDate"),
+			searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
+			albumReleaseSuggestions: document.getElementById(
+				"albumReleaseSuggestions"
+			),
 			concertSuggestions: document.getElementById("concertSuggestions"),
 			fromTooltip2: document.getElementById("fromSliderTooltip2"),
 			fromTooltip1: document.getElementById("fromSliderTooltip1"),
@@ -88,6 +92,11 @@ ArtistApp.prototype.setupEventListeners = function () {
 			handler: this.handleCreationDateSearchInput,
 		},
 		{
+			element: this.domElements.searchByAlbumRelease,
+			event: "input",
+			handler: this.handleAlbumReleaseSearchInput,
+		},
+		{
 			element: this.domElements.resetButton,
 			event: "click",
 			handler: this.resetFilters,
@@ -128,9 +137,45 @@ ArtistApp.prototype.applyAllFilters = function () {
 	filteredData = this.applyCreationDateFilter(filteredData);
 	filteredData = this.applyFirstAlbumFilter(filteredData);
 	filteredData = this.applyMembersFilter(filteredData);
+	filteredData = this.applySearchByAlbumReleaseFilter(filteredData);
 	filteredData = this.applySearchByCreationDateFilter(filteredData);
 
 	this.renderFilteredData(filteredData);
+};
+
+ArtistApp.prototype.handleAlbumReleaseSearchInput = function () {
+	const query = this.domElements.searchByAlbumRelease.value;
+	const uniqueAlbumReleaseYears = [
+		...new Set(
+			this.artistsData.data
+				.map((artist) => artist.firstAlbum)
+				.filter((year) => year != null)
+		),
+	];
+
+	const suggestions = uniqueAlbumReleaseYears
+		.filter((year) => year.toString().startsWith(query))
+		.map(
+			(year) =>
+				`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
+		)
+		.join("");
+
+	this.domElements.albumReleaseSuggestions.innerHTML = suggestions;
+	this.domElements.albumReleaseSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("albumReleaseSuggestions", "searchByAlbumRelease");
+};
+
+ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (filteredData) {
+	const albumReleaseQuery = this.domElements.searchByAlbumRelease.value;
+	if (!albumReleaseQuery) return filteredData;
+
+	return filteredData.filter((artist) => {
+		return artist.firstAlbum.toString().startsWith(albumReleaseQuery);
+	});
 };
 
 /**
@@ -269,6 +314,8 @@ ArtistApp.prototype.addSuggestionClick = function (
 							? "name"
 							: inputElementId === "searchByCreationDate"
 							? "creationdate"
+							: inputElementId === "searchByAlbumRelease"
+							? "albumrelease"
 							: "location"
 					}`
 				);
@@ -277,8 +324,13 @@ ArtistApp.prototype.addSuggestionClick = function (
 				if (inputElementId === "searchByConcert")
 					value = value.replace(/-/g, " ");
 
+				// Set the input field value
 				inputField.value = value;
+
+				// Hide the suggestion box AFTER setting the value
 				suggestionBox.style.display = "none";
+
+				// Trigger filtering
 				this.applyAllFilters();
 			});
 		}
@@ -535,6 +587,7 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.searchByName.value = "";
 	this.domElements.searchByConcert.value = "";
 	this.domElements.searchByCreationDate.value = "";
+	this.domElements.searchByAlbumRelease.value = "";
 
 	// Reset sliders
 	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
