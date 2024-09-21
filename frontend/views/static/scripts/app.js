@@ -126,8 +126,6 @@ ArtistApp.prototype.applyAllFilters = function () {
 	if (!this.artistsData) return;
 	let filteredData = [...this.artistsData.data];
 
-	// Apply all filters
-
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByNameFilter(filteredData);
 	filteredData = this.applyCreationDateFilter(filteredData);
@@ -206,8 +204,6 @@ ArtistApp.prototype.applySearchByCreationDateFilter = function (filteredData) {
  */
 ArtistApp.prototype.handleCreationDateSearchInput = function () {
 	const query = this.domElements.searchByCreationDate.value;
-
-	// Get unique creation dates and make sure they're treated as strings
 	const uniqueCreationDates = [
 		...new Set(
 			this.artistsData.data
@@ -216,7 +212,6 @@ ArtistApp.prototype.handleCreationDateSearchInput = function () {
 		),
 	];
 
-	// Convert the dates to strings and check if they start with the query
 	const suggestions = uniqueCreationDates
 		.filter((date) => date.toString().startsWith(query))
 		.map(
@@ -231,6 +226,19 @@ ArtistApp.prototype.handleCreationDateSearchInput = function () {
 		: "none";
 
 	this.addSuggestionClick("creationDateSuggestions", "searchByCreationDate");
+};
+
+/**
+ * Apply search by name filter
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by artist name
+ */
+ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
+	const nameQuery = this.domElements.searchByName.value.toLowerCase();
+	return filteredData.filter((artist) => {
+		const artistName = artist.name.toLowerCase();
+		return artistName.includes(nameQuery);
+	});
 };
 
 /**
@@ -252,6 +260,22 @@ ArtistApp.prototype.handleNameSearchInput = function () {
 		: "none";
 
 	this.addSuggestionClick("nameSuggestions", "searchByName");
+};
+
+/**
+ * Apply search by concert location filter
+ * @param {Array} filteredData - the current filtered artist data
+ * @returns {Array} filteredData - the data filtered by concert location
+ */
+ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
+	const concertQuery = this.domElements.searchByConcert.value.toLowerCase();
+	return this.allArtistDetails
+		.filter((artistDetail) => {
+			const locations = artistDetail.data.locations?.locations || [];
+			const tempLoc = locations.map((loc) => loc.split("-").join(" "));
+			return tempLoc.some((loc) => loc.toLowerCase().includes(concertQuery));
+		})
+		.map((detail) => detail.data.artist);
 };
 
 /**
@@ -296,19 +320,6 @@ ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 };
 
 /**
- * Apply search by name filter
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by artist name
- */
-ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
-	const nameQuery = this.domElements.searchByName.value.toLowerCase();
-	return filteredData.filter((artist) => {
-		const artistName = artist.name.toLowerCase();
-		return artistName.includes(nameQuery);
-	});
-};
-
-/**
  * Adds click behavior for selecting a suggestion
  * @param {string} suggestionElementId - The ID of the suggestions dropdown
  * @param {string} inputElementId - The ID of the input field
@@ -319,8 +330,6 @@ ArtistApp.prototype.addSuggestionClick = function (
 ) {
 	const suggestionBox = this.domElements[suggestionElementId];
 	const inputField = this.domElements[inputElementId];
-
-	// Explicitly map the input elements to their corresponding data attributes
 	const attributeMapping = {
 		searchByName: "data-name",
 		searchByConcert: "data-location",
@@ -333,12 +342,12 @@ ArtistApp.prototype.addSuggestionClick = function (
 			item.addEventListener("click", (e) => {
 				const dataAttribute = attributeMapping[inputElementId];
 
-				// Safely check if the data attribute exists
 				if (dataAttribute) {
 					let value = e.target.getAttribute(dataAttribute);
 					value = value.replace(/-(?!\d{2})/g, " ");
 					inputField.value = value;
 					suggestionBox.style.display = "none";
+
 					this.applyAllFilters();
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
@@ -346,22 +355,6 @@ ArtistApp.prototype.addSuggestionClick = function (
 			});
 		}
 	);
-};
-
-/**
- * Apply search by concert location filter
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by concert location
- */
-ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
-	const concertQuery = this.domElements.searchByConcert.value.toLowerCase();
-	return this.allArtistDetails
-		.filter((artistDetail) => {
-			const locations = artistDetail.data.locations?.locations || [];
-			const tempLoc = locations.map((loc) => loc.split("-").join(" "));
-			return tempLoc.some((loc) => loc.toLowerCase().includes(concertQuery));
-		})
-		.map((detail) => detail.data.artist);
 };
 
 /**
@@ -632,7 +625,6 @@ ArtistApp.prototype.resetFilters = function () {
 		this.domElements.membersFilter.querySelectorAll("input:checked")
 	).forEach((checkbox) => (checkbox.checked = false));
 
-	// Reapply filters to reset the view
 	this.applyAllFilters();
 };
 
