@@ -305,28 +305,39 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const suggestionBox = this.domElements[suggestionElementId];
 	const inputField = this.domElements[inputElementId];
 
+	// Explicitly map the input elements to their corresponding data attributes
+	const attributeMapping = {
+		searchByName: "data-name",
+		searchByConcert: "data-location",
+		searchByCreationDate: "data-creationdate",
+		searchByAlbumRelease: "data-albumrelease",
+	};
+
 	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
 		(item) => {
 			item.addEventListener("click", (e) => {
-				const dataAttribute = `data-${inputField
-					.getAttribute("name")
-					.replace("searchBy", "")
-					.toLowerCase()}`;
-				let value = e.target.getAttribute(dataAttribute);
+				const dataAttribute = attributeMapping[inputElementId];
 
-				// Format the value if it's related to concert search
-				if (inputElementId === "searchByConcert") {
-					value = value.replace(/-/g, " ");
+				// Safely check if the data attribute exists
+				if (dataAttribute) {
+					let value = e.target.getAttribute(dataAttribute);
+
+					// Format the value if it's related to concert search
+					if (inputElementId === "searchByConcert") {
+						value = value.replace(/-/g, " ");
+					}
+
+					// Set the input field value
+					inputField.value = value;
+
+					// Hide the suggestion box AFTER setting the value
+					suggestionBox.style.display = "none";
+
+					// Trigger filtering
+					this.applyAllFilters();
+				} else {
+					console.error(`No data attribute found for ${inputElementId}`);
 				}
-
-				// Set the input field value
-				inputField.value = value;
-
-				// Hide the suggestion box AFTER setting the value
-				suggestionBox.style.display = "none";
-
-				// Trigger filtering
-				this.applyAllFilters();
 			});
 		}
 	);
