@@ -139,6 +139,14 @@ ArtistApp.prototype.applyAllFilters = function () {
 	this.renderFilteredData(filteredData);
 };
 
+/**
+ * Handles the input event for searching by album release year.
+ * Fetches the input query from the searchByAlbumRelease field, extracts unique
+ * album release years from the artists' data, and filters them to match the query.
+ * Displays the filtered suggestions in the albumReleaseSuggestions dropdown.
+ * If suggestions exist, the dropdown is shown; otherwise, it remains hidden.
+ * It also sets up the click event for the suggestion items using addSuggestionClick.
+ */
 ArtistApp.prototype.handleAlbumReleaseSearchInput = function () {
 	const query = this.domElements.searchByAlbumRelease.value;
 	const uniqueAlbumReleaseYears = [
@@ -165,6 +173,13 @@ ArtistApp.prototype.handleAlbumReleaseSearchInput = function () {
 	this.addSuggestionClick("albumReleaseSuggestions", "searchByAlbumRelease");
 };
 
+/**
+ * Applies the search filter based on the album release year.
+ * Filters the artist data to match the input query in the searchByAlbumRelease field.
+ * If no query is provided, the function returns the unfiltered data.
+ * @param {Array} filteredData - The current filtered artist data
+ * @returns {Array} - The filtered artist data by album release year
+ */
 ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (filteredData) {
 	const albumReleaseQuery = this.domElements.searchByAlbumRelease.value;
 	if (!albumReleaseQuery) return filteredData;
