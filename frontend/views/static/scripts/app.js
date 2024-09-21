@@ -31,6 +31,8 @@ ArtistApp.prototype.initialize = async function () {
 		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
 		albumReleaseSuggestions: document.getElementById("albumReleaseSuggestions"),
 		concertSuggestions: document.getElementById("concertSuggestions"),
+		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
+		searchUnified: document.getElementById("searchUnified"),
 		fromTooltip2: document.getElementById("fromSliderTooltip2"),
 		fromTooltip1: document.getElementById("fromSliderTooltip1"),
 		searchByConcert: document.getElementById("searchByConcert"),
@@ -76,6 +78,11 @@ ArtistApp.prototype.setupEventListeners = function () {
 			element: this.domElements.searchByName,
 			event: "input",
 			handler: this.handleNameSearchInput,
+		},
+		{
+			element: this.domElements.searchUnified,
+			event: "input",
+			handler: this.handleUnifiedSearchInput,
 		},
 		{
 			element: this.domElements.searchByConcert,
@@ -135,6 +142,13 @@ ArtistApp.prototype.applyAllFilters = function () {
 	filteredData = this.applySearchByCreationDateFilter(filteredData);
 
 	this.renderFilteredData(filteredData);
+};
+
+/**
+ * Handles input event for the unified search input to show suggestions dropdown.
+ */
+ArtistApp.prototype.handleUnifiedSearchInput = function () {
+	const query = this.domElements.searchUnified.value.toLowerCase();
 };
 
 /**

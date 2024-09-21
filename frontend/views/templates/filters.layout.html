@@ -1,5 +1,17 @@
 <!-- search filters -->
 {{define "searchFilter"}}
+<label for="searchUnified">Unified Search</label>
+<input
+	name="searchUnified"
+	type="text"
+	id="searchUnified"
+	placeholder="Search by name, concert, creation date, or album release..."
+/>
+<div
+	id="unifiedSuggestions"
+	class="suggestions-dropdown"
+></div>
+
 <form id="searchForm">
 	<!-- searchByName -->
 	<label for="searchByName">Search By Name</label>
