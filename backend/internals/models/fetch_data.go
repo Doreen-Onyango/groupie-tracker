@@ -9,6 +9,7 @@ import (
 	"sync"
 )
 
+// retrieve data from URL
 func (a *MainApi) fetchData(apitype string) ([]byte, error) {
 	baseUrl := a.baseUrl
 	if apitype != "artists" {
@@ -30,12 +31,15 @@ func (a *MainApi) fetchData(apitype string) ([]byte, error) {
 	return body, nil
 }
 
+// store first error encountered, propergated to other parts of the system
 func handleError(err error, firstErr *error) {
 	if *firstErr == nil {
 		*firstErr = err
 		instance.Err = err
 	}
 }
+
+// unmarshal  data and checks for errors during the process.
 
 func (r *ResponseData) processLocations(id string, data []byte, firstErr *error) error {
 	var temLocations Locations
@@ -86,6 +90,7 @@ func (r *ResponseData) processRelations(id string, data []byte, firstErr *error)
 	return nil
 }
 
+// retrieve artist data from API, handle potential errors and unmarshals the data
 func (r *ResponseData) AddArtist(api *MainApi) error {
 	data, err := api.fetchData("artists")
 	if err != nil {
@@ -105,11 +110,14 @@ func (r *ResponseData) AddArtist(api *MainApi) error {
 		r.Artists[artist.ID] = artist
 	}
 
+	// set additional data and signal completion through channel
 	go r.SetData(api)
 	allArtists <- struct{}{}
 	return nil
 }
 
+// process all artists in a concurrently using goroutines and 
+// tracking their completion with a WaitGroup.
 func (r *ResponseData) SetData(api *MainApi) error {
 	var wg sync.WaitGroup
 	var firstErr error
@@ -131,6 +139,7 @@ func (r *ResponseData) processArtist(id string, wg *sync.WaitGroup, api *MainApi
 	r.processUrl(id, artist.Relations, wg, api, firstErr)
 }
 
+//  categorizes the fetched data based on the URL content and processes it accordingly
 func (r *ResponseData) processUrl(id, url string, wg *sync.WaitGroup, api *MainApi, firstErr *error) {
 	wg.Add(1)
 	go func() {
@@ -152,6 +161,7 @@ func (r *ResponseData) processUrl(id, url string, wg *sync.WaitGroup, api *MainA
 	}()
 }
 
+// retrieve all artists data and related information.
 func (r *ResponseData) GetAllArtist() ([]Artist, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -171,6 +181,7 @@ func (r *ResponseData) GetAllArtist() ([]Artist, error) {
 	return artists, nil
 }
 
+// retrieve artist data and related information based on a given id
 func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
