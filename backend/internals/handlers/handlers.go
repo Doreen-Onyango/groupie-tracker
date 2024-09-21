@@ -16,7 +16,7 @@ type Repo struct {
 func NewRepo(app *models.App) *Repo {
 	return &Repo{app, responses.NewJSONRes()}
 }
-
+//handles HTTP requests to fetch all artists. 
 func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
 		Request string `json:"request"`
@@ -45,7 +45,7 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 		m.res.ErrJSON(w, err, http.StatusInternalServerError)
 	}
 }
-
+// andles requests to fetch an artist by their ID
 func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
 		Request string `json:"artist_id"`
