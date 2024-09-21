@@ -273,10 +273,14 @@ ArtistApp.prototype.handleConcertSearchInput = function () {
 ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 	if (
 		!event.target.closest("#searchByName") &&
-		!event.target.closest("#searchByConcert")
+		!event.target.closest("#searchByConcert") &&
+		!event.target.closest("#searchByCreationDate") &&
+		!event.target.closest("#searchByAlbumRelease")
 	) {
 		this.domElements.nameSuggestions.style.display = "none";
 		this.domElements.concertSuggestions.style.display = "none";
+		this.domElements.creationDateSuggestions.style.display = "none";
+		this.domElements.albumReleaseSuggestions.style.display = "none";
 	}
 };
 
