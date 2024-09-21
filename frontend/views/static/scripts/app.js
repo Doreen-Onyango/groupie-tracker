@@ -155,13 +155,15 @@ ArtistApp.prototype.handleAlbumReleaseSearchInput = function () {
 		),
 	];
 
-	const suggestions = uniqueAlbumReleaseYears
-		.filter((year) => year.toString().startsWith(query))
-		.map(
-			(year) =>
-				`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
-		)
-		.join("");
+	const suggestions =
+		`<p class="suggestion-title">Search by Album Release Year</p>` +
+		uniqueAlbumReleaseYears
+			.filter((year) => year.toString().startsWith(query))
+			.map(
+				(year) =>
+					`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
+			)
+			.join("");
 
 	this.domElements.albumReleaseSuggestions.innerHTML = suggestions;
 	this.domElements.albumReleaseSuggestions.style.display = suggestions
@@ -212,13 +214,15 @@ ArtistApp.prototype.handleCreationDateSearchInput = function () {
 		),
 	];
 
-	const suggestions = uniqueCreationDates
-		.filter((date) => date.toString().startsWith(query))
-		.map(
-			(date) =>
-				`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
-		)
-		.join("");
+	const suggestions =
+		`<p class="suggestion-title">Search by Creation Date</p>` +
+		uniqueCreationDates
+			.filter((date) => date.toString().startsWith(query))
+			.map(
+				(date) =>
+					`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
+			)
+			.join("");
 
 	this.domElements.creationDateSuggestions.innerHTML = suggestions;
 	this.domElements.creationDateSuggestions.style.display = suggestions
@@ -246,13 +250,15 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
  */
 ArtistApp.prototype.handleNameSearchInput = function () {
 	const query = this.domElements.searchByName.value.toLowerCase();
-	const suggestions = this.artistsData.data
-		.filter((artist) => artist.name.toLowerCase().includes(query))
-		.map(
-			(artist) =>
-				`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
-		)
-		.join("");
+	const suggestions =
+		`<p class="suggestion-title">Search by Artist Name</p>` +
+		this.artistsData.data
+			.filter((artist) => artist.name.toLowerCase().includes(query))
+			.map(
+				(artist) =>
+					`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
+			)
+			.join("");
 
 	this.domElements.nameSuggestions.innerHTML = suggestions;
 	this.domElements.nameSuggestions.style.display = suggestions
@@ -283,16 +289,18 @@ ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
  */
 ArtistApp.prototype.handleConcertSearchInput = function () {
 	const query = this.domElements.searchByConcert.value.toLowerCase();
-	const suggestions = this.allArtistDetails
-		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
-		.filter((location) => location.toLowerCase().includes(query))
-		.map(
-			(location) =>
-				`<div class="suggestion-item" data-location="${location}">${location
-					.split("-")
-					.join(" ")}</div>`
-		)
-		.join("");
+	const suggestions =
+		`<p class="suggestion-title">Search by Concerts</p>` +
+		this.allArtistDetails
+			.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
+			.filter((location) => location.toLowerCase().includes(query))
+			.map(
+				(location) =>
+					`<div class="suggestion-item" data-location="${location}">${location
+						.split("-")
+						.join(" ")}</div>`
+			)
+			.join("");
 
 	this.domElements.concertSuggestions.innerHTML = suggestions;
 	this.domElements.concertSuggestions.style.display = suggestions
