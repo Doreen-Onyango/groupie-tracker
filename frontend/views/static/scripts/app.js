@@ -15,31 +15,7 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
  */
 class ArtistApp {
 	constructor() {
-		this.domElements = {
-			creationDateSuggestions: document.getElementById(
-				"creationDateSuggestions"
-			),
-			searchByCreationDate: document.getElementById("searchByCreationDate"),
-			searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
-			albumReleaseSuggestions: document.getElementById(
-				"albumReleaseSuggestions"
-			),
-			concertSuggestions: document.getElementById("concertSuggestions"),
-			fromTooltip2: document.getElementById("fromSliderTooltip2"),
-			fromTooltip1: document.getElementById("fromSliderTooltip1"),
-			searchByConcert: document.getElementById("searchByConcert"),
-			nameSuggestions: document.getElementById("nameSuggestions"),
-			toTooltip2: document.getElementById("toSliderTooltip2"),
-			membersFilter: document.getElementById("membersFilter"),
-			toTooltip1: document.getElementById("toSliderTooltip1"),
-			searchByName: document.getElementById("searchByName"),
-			fromSlider1: document.getElementById("fromSlider1"),
-			fromSlider2: document.getElementById("fromSlider2"),
-			toSlider1: document.getElementById("toSlider1"),
-			toSlider2: document.getElementById("toSlider2"),
-			resetButton: document.getElementById("resetButton"),
-		};
-
+		this.domElements = {};
 		this.initialize();
 		this.setupEventListeners();
 	}
@@ -49,6 +25,26 @@ class ArtistApp {
  * Fetches and displays all artists when the DOM is fully loaded
  */
 ArtistApp.prototype.initialize = async function () {
+	this.domElements = {
+		creationDateSuggestions: document.getElementById("creationDateSuggestions"),
+		searchByCreationDate: document.getElementById("searchByCreationDate"),
+		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
+		albumReleaseSuggestions: document.getElementById("albumReleaseSuggestions"),
+		concertSuggestions: document.getElementById("concertSuggestions"),
+		fromTooltip2: document.getElementById("fromSliderTooltip2"),
+		fromTooltip1: document.getElementById("fromSliderTooltip1"),
+		searchByConcert: document.getElementById("searchByConcert"),
+		nameSuggestions: document.getElementById("nameSuggestions"),
+		toTooltip2: document.getElementById("toSliderTooltip2"),
+		membersFilter: document.getElementById("membersFilter"),
+		toTooltip1: document.getElementById("toSliderTooltip1"),
+		searchByName: document.getElementById("searchByName"),
+		fromSlider1: document.getElementById("fromSlider1"),
+		fromSlider2: document.getElementById("fromSlider2"),
+		toSlider1: document.getElementById("toSlider1"),
+		toSlider2: document.getElementById("toSlider2"),
+		resetButton: document.getElementById("resetButton"),
+	};
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.allArtistDetails = await this.fetchAllArtistDetails();
@@ -312,21 +308,16 @@ ArtistApp.prototype.addSuggestionClick = function (
 	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
 		(item) => {
 			item.addEventListener("click", (e) => {
-				let value = e.target.getAttribute(
-					`data-${
-						inputElementId === "searchByName"
-							? "name"
-							: inputElementId === "searchByCreationDate"
-							? "creationdate"
-							: inputElementId === "searchByAlbumRelease"
-							? "albumrelease"
-							: "location"
-					}`
-				);
+				const dataAttribute = `data-${inputField
+					.getAttribute("name")
+					.replace("searchBy", "")
+					.toLowerCase()}`;
+				let value = e.target.getAttribute(dataAttribute);
 
-				// Format the value by replacing '-' with ' in ' for concert locations
-				if (inputElementId === "searchByConcert")
+				// Format the value if it's related to concert search
+				if (inputElementId === "searchByConcert") {
 					value = value.replace(/-/g, " ");
+				}
 
 				// Set the input field value
 				inputField.value = value;
