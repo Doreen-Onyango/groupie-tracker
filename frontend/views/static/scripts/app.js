@@ -149,18 +149,17 @@ ArtistApp.prototype.applyAllFilters = function () {
  */
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase();
+	this.handleAlbumReleaseSearchInput(query);
+	this.handleCreationDateSearchInput(query);
+	this.handleNameSearchInput(query);
+	this.handleConcertSearchInput(query);
 };
 
 /**
- * Handles the input event for searching by album release year.
- * Fetches the input query from the searchByAlbumRelease field, extracts unique
- * album release years from the artists' data, and filters them to match the query.
- * Displays the filtered suggestions in the albumReleaseSuggestions dropdown.
- * If suggestions exist, the dropdown is shown; otherwise, it remains hidden.
- * It also sets up the click event for the suggestion items using addSuggestionClick.
+ * Handles input event for searching by album release.
+ * @param {string} query - The search query entered by the user.
  */
-ArtistApp.prototype.handleAlbumReleaseSearchInput = function () {
-	const query = this.domElements.searchByAlbumRelease.value;
+ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 	const uniqueAlbumReleaseYears = [
 		...new Set(
 			this.artistsData.data
@@ -216,10 +215,10 @@ ArtistApp.prototype.applySearchByCreationDateFilter = function (filteredData) {
 };
 
 /**
- * Handles input event for searchByCreationDate to show suggestions dropdown
+ * Handles input event for searching by creation date.
+ * @param {string} query - The search query entered by the user.
  */
-ArtistApp.prototype.handleCreationDateSearchInput = function () {
-	const query = this.domElements.searchByCreationDate.value;
+ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 	const uniqueCreationDates = [
 		...new Set(
 			this.artistsData.data
@@ -260,10 +259,10 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
 };
 
 /**
- * Handles input event for searchByName to show suggestions dropdown
+ * Handles input event for searching by artist name.
+ * @param {string} query - The search query entered by the user.
  */
-ArtistApp.prototype.handleNameSearchInput = function () {
-	const query = this.domElements.searchByName.value.toLowerCase();
+ArtistApp.prototype.handleNameSearchInput = function (query) {
 	const suggestions =
 		`<p class="suggestion-title">Search by Artist Name</p>` +
 		this.artistsData.data
@@ -299,10 +298,10 @@ ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
 };
 
 /**
- * Handles input event for searchByConcert to show suggestions dropdown
+ * Handles input event for searching by concert.
+ * @param {string} query - The search query entered by the user.
  */
-ArtistApp.prototype.handleConcertSearchInput = function () {
-	const query = this.domElements.searchByConcert.value.toLowerCase();
+ArtistApp.prototype.handleConcertSearchInput = function (query) {
 	const suggestions =
 		`<p class="suggestion-title">Search by Concerts</p>` +
 		this.allArtistDetails
