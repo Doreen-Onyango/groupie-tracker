@@ -321,19 +321,9 @@ ArtistApp.prototype.addSuggestionClick = function (
 				// Safely check if the data attribute exists
 				if (dataAttribute) {
 					let value = e.target.getAttribute(dataAttribute);
-
-					// Format the value if it's related to concert search
-					if (inputElementId === "searchByConcert") {
-						value = value.replace(/-/g, " ");
-					}
-
-					// Set the input field value
+					value = value.replace(/-(?!\d{2})/g, " ");
 					inputField.value = value;
-
-					// Hide the suggestion box AFTER setting the value
 					suggestionBox.style.display = "none";
-
-					// Trigger filtering
 					this.applyAllFilters();
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
