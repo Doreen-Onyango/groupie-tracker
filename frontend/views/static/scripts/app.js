@@ -29,6 +29,7 @@ ArtistApp.prototype.initialize = async function () {
 		searchByCreationDate: document.getElementById("searchByCreationDate"),
 		creationDateSuggestions: document.getElementById("creationDateSuggestions"),
 		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
+		albumReleaseSuggestions: document.getElementById("albumReleaseSuggestions"),
 		searchSummary: document.getElementById("searchSummary"),
 		searchUnified: document.getElementById("searchUnified"),
 		fromTooltip2: document.getElementById("fromSliderTooltip2"),
@@ -148,6 +149,7 @@ ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	this.handleNameSearchInput(query);
 	this.handleConcertSearchInput(query);
 	this.handleCreationDateSearchInput(query);
+	this.handleAlbumReleaseSearchInput(query);
 };
 
 /**
