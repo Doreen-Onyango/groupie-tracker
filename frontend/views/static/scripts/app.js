@@ -33,7 +33,8 @@ ArtistApp.prototype.initialize = async function () {
 		fromTooltip2: document.getElementById("fromSliderTooltip2"),
 		fromTooltip1: document.getElementById("fromSliderTooltip1"),
 		searchByConcert: document.getElementById("searchByConcert"),
-		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
+		concertSuggestions: document.getElementById("concertSuggestions"),
+		nameSuggestions: document.getElementById("nameSuggestions"),
 		toTooltip2: document.getElementById("toSliderTooltip2"),
 		membersFilter: document.getElementById("membersFilter"),
 		toTooltip1: document.getElementById("toSliderTooltip1"),
@@ -255,22 +256,20 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
  * @param {string} query - The search query entered by the user.
  */
 ArtistApp.prototype.handleNameSearchInput = function (query) {
-	const suggestions =
-		`<p class="suggestion-title">Search by Artist Name</p>` +
-		this.artistsData.data
-			.filter((artist) => artist.name.toLowerCase().includes(query))
-			.map(
-				(artist) =>
-					`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
-			)
-			.join("");
+	const nameSuggestions = this.artistsData.data
+		.filter((artist) => artist.name.toLowerCase().includes(query))
+		.map(
+			(artist) =>
+				`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
+		)
+		.join("");
 
-	this.domElements.unifiedSuggestions.innerHTML = suggestions;
-	this.domElements.unifiedSuggestions.style.display = suggestions
+	this.domElements.nameSuggestions.innerHTML = nameSuggestions;
+	this.domElements.nameSuggestions.style.display = nameSuggestions
 		? "block"
 		: "none";
 
-	this.addSuggestionClick("unifiedSuggestions", "searchByName");
+	this.addSuggestionClick("nameSuggestions", "searchByName");
 };
 
 /**
@@ -294,25 +293,23 @@ ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
  * @param {string} query - The search query entered by the user.
  */
 ArtistApp.prototype.handleConcertSearchInput = function (query) {
-	const suggestions =
-		`<p class="suggestion-title">Search by Concerts</p>` +
-		this.allArtistDetails
-			.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
-			.filter((location) => location.toLowerCase().includes(query))
-			.map(
-				(location) =>
-					`<div class="suggestion-item" data-location="${location}">${location
-						.split("-")
-						.join(" ")}</div>`
-			)
-			.join("");
+	const concertSuggestions = this.allArtistDetails
+		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
+		.filter((location) => location.toLowerCase().includes(query))
+		.map(
+			(location) =>
+				`<div class="suggestion-item" data-location="${location}">${location
+					.split("-")
+					.join(" ")}</div>`
+		)
+		.join("");
 
-	this.domElements.unifiedSuggestions.innerHTML = suggestions;
-	this.domElements.unifiedSuggestions.style.display = suggestions
+	this.domElements.concertSuggestions.innerHTML = concertSuggestions;
+	this.domElements.concertSuggestions.style.display = concertSuggestions
 		? "block"
 		: "none";
 
-	this.addSuggestionClick("unifiedSuggestions", "searchByConcert");
+	this.addSuggestionClick("concertSuggestions", "searchByConcert");
 };
 
 /**
@@ -325,7 +322,7 @@ ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 		!event.target.closest("#searchByCreationDate") &&
 		!event.target.closest("#searchByAlbumRelease")
 	) {
-		this.domElements.unifiedSuggestions.style.display = "none";
+		this.domElements.nameSuggestions.style.display = "none";
 	}
 };
 
@@ -349,16 +346,15 @@ ArtistApp.prototype.addSuggestionClick = function (
 		(item) => {
 			item.addEventListener("click", (e) => {
 				const dataAttribute = attributeMapping[inputElementId];
-				let value;
-
 				if (dataAttribute) {
-					value = e.target.getAttribute(dataAttribute);
+					let value = e.target.getAttribute(dataAttribute);
 					value = value.replace(/-(?!\d{2})/g, " ");
 					inputField.value = value;
-					suggestionBox.style.display = "none";
+					suggestionBox.style.display = "none"; // Hide suggestions
 
-					this.applyAllFilters();
+					this.applyAllFilters(); // Apply filters
 
+					// Update search summary
 					const summary = `<p class="summary-title">${inputElementId}: ${value}</p>`;
 					this.domElements.searchSummary.innerHTML += summary;
 				} else {
