@@ -11,18 +11,35 @@
 />
 
 <label for="searchUnified">Unified Search</label>
+<!-- Unified Search -->
 <input
-	name="searchUnified"
-	type="text"
 	id="searchUnified"
-	placeholder="Search by name, concert, creation date, or album release..."
+	type="text"
+	placeholder="Search for artists, concerts, etc."
 />
 
-<div class="unified-suggestions">
-	<div
-		id="unifiedSuggestions"
-		class="suggestions-dropdown"
-	></div>
+<!-- Suggestions dropdown for unified search -->
+<div
+	class="unified-suggestions"
+	id="unifiedSuggestions"
+>
+	<!-- Name suggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by Artist Name</p>
+		<div
+			class="suggestion-items"
+			id="nameSuggestions"
+		></div>
+	</div>
+
+	<!-- Concert suggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by Concerts</p>
+		<div
+			class="suggestion-items"
+			id="concertSuggestions"
+		></div>
+	</div>
 </div>
 
 <div
