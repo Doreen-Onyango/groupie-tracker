@@ -149,10 +149,7 @@ ArtistApp.prototype.applyAllFilters = function () {
  */
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase();
-	this.handleAlbumReleaseSearchInput(query);
-	this.handleCreationDateSearchInput(query);
 	this.handleNameSearchInput(query);
-	this.handleConcertSearchInput(query);
 };
 
 /**
@@ -251,7 +248,7 @@ ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
  * @returns {Array} filteredData - the data filtered by artist name
  */
 ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
-	const nameQuery = this.domElements.searchByName.value.toLowerCase();
+	const nameQuery = this.domElements.searchUnified.value.toLowerCase();
 	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
@@ -273,12 +270,12 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 			)
 			.join("");
 
-	this.domElements.nameSuggestions.innerHTML = suggestions;
-	this.domElements.nameSuggestions.style.display = suggestions
+	this.domElements.unifiedSuggestions.innerHTML = suggestions;
+	this.domElements.unifiedSuggestions.style.display = suggestions
 		? "block"
 		: "none";
 
-	this.addSuggestionClick("nameSuggestions", "searchByName");
+	this.addSuggestionClick("unifiedSuggestions", "searchUnified");
 };
 
 /**
@@ -352,7 +349,8 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const suggestionBox = this.domElements[suggestionElementId];
 	const inputField = this.domElements[inputElementId];
 	const attributeMapping = {
-		searchByName: "data-name",
+		searchUnified: "data-name",
+		// searchByName: "data-name",
 		searchByConcert: "data-location",
 		searchByCreationDate: "data-creationdate",
 		searchByAlbumRelease: "data-albumrelease",
