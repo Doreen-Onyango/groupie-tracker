@@ -165,10 +165,16 @@ input[type="range"] {
 .unified-suggestions {
 	display: flex;
 	flex-direction: column;
+	max-height: 400px;
 	overflow-y: auto;
+	border: 1px solid #ddd;
 	border-radius: 4px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	background-color: #fff;
+}
+
+.suggestion-category {
+	margin-bottom: 10px;
 }
 
 .suggestion-title {
@@ -176,15 +182,33 @@ input[type="range"] {
 	padding: 5px;
 	background-color: #f1f1f1;
 	border-bottom: 1px solid #ddd;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.suggestion-items {
+	max-height: 150px;
+	overflow-y: auto;
 }
 
 .suggestion-item {
 	padding: 10px;
 	cursor: pointer;
+	border-bottom: 1px solid #ddd;
 }
 
 .suggestion-item:hover {
 	background-color: #eaeaea;
+}
+
+.unified-suggestions::-webkit-scrollbar {
+	width: 8px;
+}
+
+.unified-suggestions::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
 }
 
 .suggestions-dropdown {
