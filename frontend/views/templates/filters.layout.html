@@ -1,15 +1,37 @@
 <!-- search filters -->
 {{define "searchFilter"}}
-<form id="searchForm">
-	<!-- searchByName -->
-	<label for="searchByName">Search By Name</label>
-	<input
-		name="searchByName"
-		type="text"
-		id="searchByName"
-		placeholder="Search for artists..."
-	/>
+<!-- searchByName -->
+<label for="searchByName">Search By Name</label>
+<input
+	name="searchByName"
+	type="text"
+	id="searchByName"
+	placeholder="Search for artists..."
+	class="hidden"
+/>
 
+<label for="searchUnified">Unified Search</label>
+<input
+	name="searchUnified"
+	type="text"
+	id="searchUnified"
+	placeholder="Search by name, concert, creation date, or album release..."
+/>
+<div class="suggestions-container">
+	<div
+		id="unifiedSuggestions"
+		class="suggestions-dropdown"
+	></div>
+</div>
+
+<div
+	class="searchSummary"
+	id="searchSummary"
+>
+	search summary
+</div>
+
+<form id="searchForm">
 	<!-- searchByConcert -->
 	<label for="searchByConcert">Search By Concert</label>
 	<input
@@ -17,8 +39,65 @@
 		type="text"
 		id="searchByConcert"
 		placeholder="Search for concerts..."
+		class="hidden"
 	/>
 </form>
+
+<!-- search by creation date -->
+<label for="searchByCreationDate">Search By Creation Date</label>
+<input
+	name="searchByCreationDate"
+	type="text"
+	id="searchByCreationDate"
+	placeholder="Search by creation date..."
+/>
+
+<div
+	id="creationDateSuggestions"
+	class="suggestions-dropdown"
+>
+	<!-- Creation date suggestions with data-creationdate attribute -->
+	<div
+		class="suggestion-item"
+		data-creationdate="1990"
+	>
+		1990
+	</div>
+	<div
+		class="suggestion-item"
+		data-creationdate="2000"
+	>
+		2000
+	</div>
+</div>
+
+<!-- search by album release -->
+<label for="searchByAlbumRelease">Search By Album Release</label>
+<input
+	name="searchByAlbumRelease"
+	type="text"
+	id="searchByAlbumRelease"
+	placeholder="Search by album release..."
+/>
+<div
+	id="albumReleaseSuggestions"
+	class="suggestions-dropdown"
+>
+	<!-- Album release suggestions with data-albumrelease attribute -->
+	<div
+		class="suggestion-item"
+		data-albumrelease="1995"
+	>
+		1995
+	</div>
+	<div
+		class="suggestion-item"
+		data-albumrelease="2005"
+	>
+		2005
+	</div>
+</div>
+
 {{end}}
 <!-- end of search filter -->
 

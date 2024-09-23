@@ -157,3 +157,35 @@ input[type="range"] {
 	pointer-events: none;
 	z-index: -10;
 }
+
+.hidden {
+	display: none;
+}
+
+/* suggestions dropdown */
+.suggestions-container {
+	position: relative;
+}
+
+.suggestions-dropdown {
+	position: relative;
+	background-color: #ddd;
+	border: 1px solid #ccc;
+	max-height: 150px;
+	overflow-y: auto;
+	z-index: 10;
+	display: none; /* Initially hidden */
+}
+
+.suggestion-title {
+	position: relative;
+}
+
+.suggestion-item {
+	padding: 8px;
+	cursor: pointer;
+}
+
+.suggestion-item:hover {
+	background-color: #aaa;
+}

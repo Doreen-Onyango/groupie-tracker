@@ -15,20 +15,7 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
  */
 class ArtistApp {
 	constructor() {
-		this.domElements = {
-			searchByName: document.getElementById("searchByName"),
-			searchByConcert: document.getElementById("searchByConcert"),
-			membersFilter: document.getElementById("membersFilter"),
-			fromSlider1: document.getElementById("fromSlider1"),
-			toSlider1: document.getElementById("toSlider1"),
-			fromTooltip1: document.getElementById("fromSliderTooltip1"),
-			toTooltip1: document.getElementById("toSliderTooltip1"),
-			fromSlider2: document.getElementById("fromSlider2"),
-			toSlider2: document.getElementById("toSlider2"),
-			fromTooltip2: document.getElementById("fromSliderTooltip2"),
-			toTooltip2: document.getElementById("toSliderTooltip2"),
-		};
-
+		this.domElements = {};
 		this.initialize();
 		this.setupEventListeners();
 	}
@@ -38,6 +25,27 @@ class ArtistApp {
  * Fetches and displays all artists when the DOM is fully loaded
  */
 ArtistApp.prototype.initialize = async function () {
+	this.domElements = {
+		searchByCreationDate: document.getElementById("searchByCreationDate"),
+		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
+		searchSummary: document.getElementById("searchSummary"),
+		searchUnified: document.getElementById("searchUnified"),
+		fromTooltip2: document.getElementById("fromSliderTooltip2"),
+		fromTooltip1: document.getElementById("fromSliderTooltip1"),
+		searchByConcert: document.getElementById("searchByConcert"),
+		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
+		toTooltip2: document.getElementById("toSliderTooltip2"),
+		membersFilter: document.getElementById("membersFilter"),
+		toTooltip1: document.getElementById("toSliderTooltip1"),
+		fromSlider1: document.getElementById("fromSlider1"),
+		fromSlider2: document.getElementById("fromSlider2"),
+		toSlider1: document.getElementById("toSlider1"),
+		toSlider2: document.getElementById("toSlider2"),
+		resetButton: document.getElementById("resetButton"),
+
+		// hidden data fields
+		searchByName: document.getElementById("searchByName"),
+	};
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.allArtistDetails = await this.fetchAllArtistDetails();
@@ -66,14 +74,29 @@ ArtistApp.prototype.fetchAllArtistDetails = async function () {
 ArtistApp.prototype.setupEventListeners = function () {
 	this.addEventListeners([
 		{
-			element: this.domElements.searchByName,
-			event: "change",
-			handler: this.applyAllFilters,
+			element: this.domElements.searchUnified,
+			event: "input",
+			handler: this.handleUnifiedSearchInput,
 		},
 		{
 			element: this.domElements.searchByConcert,
-			event: "change",
-			handler: this.applyAllFilters,
+			event: "input",
+			handler: this.handleConcertSearchInput,
+		},
+		{
+			element: this.domElements.searchByCreationDate,
+			event: "input",
+			handler: this.handleCreationDateSearchInput,
+		},
+		{
+			element: this.domElements.searchByAlbumRelease,
+			event: "input",
+			handler: this.handleAlbumReleaseSearchInput,
+		},
+		{
+			element: this.domElements.resetButton,
+			event: "click",
+			handler: this.resetFilters,
 		},
 		{
 			element: this.domElements.membersFilter,
@@ -82,6 +105,7 @@ ArtistApp.prototype.setupEventListeners = function () {
 		},
 	]);
 
+	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
 	document.addEventListener("input", this.applyAllFilters.bind(this));
 };
@@ -108,8 +132,109 @@ ArtistApp.prototype.applyAllFilters = function () {
 	filteredData = this.applyCreationDateFilter(filteredData);
 	filteredData = this.applyFirstAlbumFilter(filteredData);
 	filteredData = this.applyMembersFilter(filteredData);
+	filteredData = this.applySearchByAlbumReleaseFilter(filteredData);
+	filteredData = this.applySearchByCreationDateFilter(filteredData);
 
 	this.renderFilteredData(filteredData);
+};
+
+/**
+ * Handles input event for the unified search input to show suggestions dropdown.
+ */
+ArtistApp.prototype.handleUnifiedSearchInput = function () {
+	const query = this.domElements.searchUnified.value.toLowerCase();
+	this.handleNameSearchInput(query);
+	this.handleConcertSearchInput(query);
+};
+
+/**
+ * Handles input event for searching by album release.
+ * @param {string} query - The search query entered by the user.
+ */
+ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
+	const uniqueAlbumReleaseYears = [
+		...new Set(
+			this.artistsData.data
+				.map((artist) => artist.firstAlbum)
+				.filter((year) => year != null)
+		),
+	];
+
+	const suggestions =
+		`<p class="suggestion-title">Search by Album Release Year</p>` +
+		uniqueAlbumReleaseYears
+			.filter((year) => year.toString().startsWith(query))
+			.map(
+				(year) =>
+					`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
+			)
+			.join("");
+
+	this.domElements.albumReleaseSuggestions.innerHTML = suggestions;
+	this.domElements.albumReleaseSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("albumReleaseSuggestions", "searchByAlbumRelease");
+};
+
+/**
+ * Applies the search filter based on the album release year.
+ * Filters the artist data to match the input query in the searchByAlbumRelease field.
+ * If no query is provided, the function returns the unfiltered data.
+ * @param {Array} filteredData - The current filtered artist data
+ * @returns {Array} - The filtered artist data by album release year
+ */
+ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (filteredData) {
+	const albumReleaseQuery = this.domElements.searchByAlbumRelease.value;
+	if (!albumReleaseQuery) return filteredData;
+
+	return filteredData.filter((artist) => {
+		return artist.firstAlbum.toString().startsWith(albumReleaseQuery);
+	});
+};
+
+/**
+ * Apply search by creation date filter
+ */
+ArtistApp.prototype.applySearchByCreationDateFilter = function (filteredData) {
+	const creationDateQuery = this.domElements.searchByCreationDate.value;
+	if (!creationDateQuery) return filteredData;
+
+	return filteredData.filter((artist) => {
+		return artist.creationDate.toString().startsWith(creationDateQuery);
+	});
+};
+
+/**
+ * Handles input event for searching by creation date.
+ * @param {string} query - The search query entered by the user.
+ */
+ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
+	const uniqueCreationDates = [
+		...new Set(
+			this.artistsData.data
+				.map((artist) => artist.creationDate)
+				.filter((date) => date != null)
+		),
+	];
+
+	const suggestions =
+		`<p class="suggestion-title">Search by Creation Date</p>` +
+		uniqueCreationDates
+			.filter((date) => date.toString().startsWith(query))
+			.map(
+				(date) =>
+					`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
+			)
+			.join("");
+
+	this.domElements.creationDateSuggestions.innerHTML = suggestions;
+	this.domElements.creationDateSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("creationDateSuggestions", "searchByCreationDate");
 };
 
 /**
@@ -126,6 +251,29 @@ ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
 };
 
 /**
+ * Handles input event for searching by artist name.
+ * @param {string} query - The search query entered by the user.
+ */
+ArtistApp.prototype.handleNameSearchInput = function (query) {
+	const suggestions =
+		`<p class="suggestion-title">Search by Artist Name</p>` +
+		this.artistsData.data
+			.filter((artist) => artist.name.toLowerCase().includes(query))
+			.map(
+				(artist) =>
+					`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
+			)
+			.join("");
+
+	this.domElements.unifiedSuggestions.innerHTML = suggestions;
+	this.domElements.unifiedSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("unifiedSuggestions", "searchByName");
+};
+
+/**
  * Apply search by concert location filter
  * @param {Array} filteredData - the current filtered artist data
  * @returns {Array} filteredData - the data filtered by concert location
@@ -139,6 +287,96 @@ ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
 			return tempLoc.some((loc) => loc.toLowerCase().includes(concertQuery));
 		})
 		.map((detail) => detail.data.artist);
+};
+
+/**
+ * Handles input event for searching by concert.
+ * @param {string} query - The search query entered by the user.
+ */
+ArtistApp.prototype.handleConcertSearchInput = function (query) {
+	const suggestions =
+		`<p class="suggestion-title">Search by Concerts</p>` +
+		this.allArtistDetails
+			.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
+			.filter((location) => location.toLowerCase().includes(query))
+			.map(
+				(location) =>
+					`<div class="suggestion-item" data-location="${location}">${location
+						.split("-")
+						.join(" ")}</div>`
+			)
+			.join("");
+
+	this.domElements.unifiedSuggestions.innerHTML = suggestions;
+	this.domElements.unifiedSuggestions.style.display = suggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("unifiedSuggestions", "searchByConcert");
+};
+
+/**
+ * Hides suggestions when clicking outside of the input fields or suggestion boxes
+ */
+ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
+	if (
+		!event.target.closest("#searchUnified") &&
+		!event.target.closest("#searchByConcert") &&
+		!event.target.closest("#searchByCreationDate") &&
+		!event.target.closest("#searchByAlbumRelease")
+	) {
+		this.domElements.unifiedSuggestions.style.display = "none";
+	}
+};
+
+/**
+ * Adds click behavior for selecting a suggestion
+ * @param {string} suggestionElementId - The ID of the suggestions dropdown
+ * @param {string} inputElementId - The ID of the input field
+ */
+ArtistApp.prototype.addSuggestionClick = function (
+	suggestionElementId,
+	inputElementId
+) {
+	const suggestionBox = this.domElements[suggestionElementId];
+	const inputField = this.domElements[inputElementId];
+	const attributeMapping = {
+		searchByName: "data-name",
+		searchByConcert: "data-location",
+		// searchSummary: "data-name",
+		// searchUnified: "data-location",
+		// searchSummary: "data-locatioin",
+		// searchUnified: "data-creationdate",
+		// searchSummary: "data-creationdate",
+		// searchUnified: "data-albumrelease",
+		// searchSummary: "data-albumrelease",
+		// searchByConcert: "data-location",
+		// searchByCreationDate: "data-creationdate",
+		// searchByAlbumRelease: "data-albumrelease",
+	};
+
+	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
+		(item) => {
+			item.addEventListener("click", (e) => {
+				const dataAttribute = attributeMapping[inputElementId];
+				let value;
+
+				if (dataAttribute) {
+					value = e.target.getAttribute(dataAttribute);
+					value = value.replace(/-(?!\d{2})/g, " ");
+					inputField.value = value;
+					suggestionBox.style.display = "none";
+
+					this.applyAllFilters();
+
+					const summary = `<p class="summary-title">${inputElementId}: ${value}</p>`;
+					this.domElements.searchSummary.innerHTML += summary;
+				} else {
+					console.error(`No data attribute found for ${inputElementId}`);
+				}
+			});
+		}
+	);
 };
 
 /**
@@ -245,6 +483,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		fromTooltip2,
 		toTooltip2,
 	} = this.domElements;
+
 	// Colors for Slider 1 (Creation Date)
 	const COLOR_TRACK_SLIDER1 = "#FF6347";
 	const COLOR_RANGE_SLIDER1 = "#0EA5E9";
@@ -364,6 +603,51 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	setToggleAccessible(toSlider2);
 	setTooltip(fromSlider2, fromTooltip2);
 	setTooltip(toSlider2, toTooltip2);
+};
+
+/**
+ * Resets all filters to their default values
+ */
+ArtistApp.prototype.resetFilters = function () {
+	// Reset text inputs
+	this.domElements.searchUnified.value = "";
+	this.domElements.searchByConcert.value = "";
+	this.domElements.searchByCreationDate.value = "";
+	this.domElements.searchByAlbumRelease.value = "";
+
+	// Reset sliders
+	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
+	this.domElements.toSlider1.value = this.domElements.toSlider1.max;
+	this.domElements.fromSlider2.value = this.domElements.fromSlider2.min;
+	this.domElements.toSlider2.value = this.domElements.toSlider2.max;
+
+	// Reset tooltips and slider visuals
+	setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
+	setTooltip(this.domElements.toSlider1, this.domElements.toTooltip1);
+	setTooltip(this.domElements.fromSlider2, this.domElements.fromTooltip2);
+	setTooltip(this.domElements.toSlider2, this.domElements.toTooltip2);
+
+	fillSlider(
+		this.domElements.fromSlider1,
+		this.domElements.toSlider1,
+		"#FF6347",
+		"#0EA5E9",
+		this.domElements.toSlider1
+	);
+	fillSlider(
+		this.domElements.fromSlider2,
+		this.domElements.toSlider2,
+		"#FF6347",
+		"#FFD700",
+		this.domElements.toSlider2
+	);
+
+	// Reset checkboxes
+	Array.from(
+		this.domElements.membersFilter.querySelectorAll("input:checked")
+	).forEach((checkbox) => (checkbox.checked = false));
+
+	this.applyAllFilters();
 };
 
 /**
