@@ -33,7 +33,7 @@ ArtistApp.prototype.initialize = async function () {
 		fromTooltip2: document.getElementById("fromSliderTooltip2"),
 		fromTooltip1: document.getElementById("fromSliderTooltip1"),
 		searchByConcert: document.getElementById("searchByConcert"),
-		nameSuggestions: document.getElementById("nameSuggestions"),
+		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
 		toTooltip2: document.getElementById("toSliderTooltip2"),
 		membersFilter: document.getElementById("membersFilter"),
 		toTooltip1: document.getElementById("toSliderTooltip1"),
