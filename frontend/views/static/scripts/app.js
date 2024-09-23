@@ -46,6 +46,9 @@ ArtistApp.prototype.initialize = async function () {
 		toSlider1: document.getElementById("toSlider1"),
 		toSlider2: document.getElementById("toSlider2"),
 		resetButton: document.getElementById("resetButton"),
+
+		// hidden data fields
+		searchByName: document.getElementById("searchByName"),
 	};
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
@@ -145,7 +148,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase();
 	this.handleNameSearchInput(query);
-	this.handleConcertSearchInput(query);
+	// this.handleConcertSearchInput(query);
 };
 
 /**
@@ -244,7 +247,7 @@ ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
  * @returns {Array} filteredData - the data filtered by artist name
  */
 ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
-	const nameQuery = this.domElements.searchUnified.value.toLowerCase();
+	const nameQuery = this.domElements.searchByName.value.toLowerCase();
 	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
@@ -271,7 +274,7 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 		? "block"
 		: "none";
 
-	this.addSuggestionClick("unifiedSuggestions", "searchUnified");
+	this.addSuggestionClick("unifiedSuggestions", "searchByName");
 };
 
 /**
@@ -345,8 +348,8 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const suggestionBox = this.domElements[suggestionElementId];
 	const inputField = this.domElements[inputElementId];
 	const attributeMapping = {
-		searchUnified: "data-name",
-		searchSummary: "data-name",
+		searchByName: "data-name",
+		// searchSummary: "data-name",
 		// searchUnified: "data-location",
 		// searchSummary: "data-locatioin",
 		// searchUnified: "data-creationdate",
@@ -362,14 +365,18 @@ ArtistApp.prototype.addSuggestionClick = function (
 		(item) => {
 			item.addEventListener("click", (e) => {
 				const dataAttribute = attributeMapping[inputElementId];
+				let value;
 
 				if (dataAttribute) {
-					let value = e.target.getAttribute(dataAttribute);
+					value = e.target.getAttribute(dataAttribute);
 					value = value.replace(/-(?!\d{2})/g, " ");
 					inputField.value = value;
 					suggestionBox.style.display = "none";
 
 					this.applyAllFilters();
+
+					const summary = `<p class="summary-title">${inputElementId}: ${value}</p>`;
+					this.domElements.searchSummary.innerHTML = summary;
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
 				}
