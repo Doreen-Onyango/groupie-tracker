@@ -159,15 +159,22 @@ input[type="range"] {
 }
 
 /* suggestions dropdown */
+.suggestions-container {
+	position: relative;
+}
+
 .suggestions-dropdown {
-	position: absolute;
-	width: 100%;
+	position: relative;
 	background-color: #ddd;
 	border: 1px solid #ccc;
 	max-height: 150px;
 	overflow-y: auto;
 	z-index: 10;
 	display: none; /* Initially hidden */
+}
+
+.suggestion-title {
+	position: relative;
 }
 
 .suggestion-item {
