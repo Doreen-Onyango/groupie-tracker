@@ -1,0 +1,155 @@
+<!-- search filters -->
+{{define "searchFilter"}}
+<form id="searchForm">
+	<!-- searchByName -->
+	<label for="searchByName">Search By Name</label>
+	<input
+		name="searchByName"
+		type="text"
+		id="searchByName"
+		placeholder="Search for artists..."
+	/>
+
+	<!-- searchByConcert -->
+	<label for="searchByConcert">Search By Concert</label>
+	<input
+		name="searchByConcert"
+		type="text"
+		id="searchByConcert"
+		placeholder="Search for concerts..."
+	/>
+</form>
+{{end}}
+<!-- end of search filter -->
+
+<!-- members filter -->
+{{define "membersFilter"}}
+<div id="membersFilter">
+	<label>
+		<input
+			type="checkbox"
+			value="1"
+		/>
+		1 Member
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="2"
+		/>
+		2 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="3"
+		/>
+		3 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="4"
+		/>
+		4 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="5"
+		/>
+		5 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="6"
+		/>
+		6 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="7"
+		/>
+		7 Members
+	</label>
+</div>
+{{end}}
+<!-- end of members filter -->
+
+<!-- range filters -->
+{{define "rangeFilter"}}
+<div
+	class="range_concertDate"
+	data-label="Creation Date"
+>
+	<div class="sliders_control">
+		<div
+			id="fromSliderTooltip1"
+			class="slider-tooltip"
+		>
+			{{ .minYear }}
+		</div>
+		<input
+			id="fromSlider1"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .minYear }}"
+		/>
+		<div
+			id="toSliderTooltip1"
+			class="slider-tooltip"
+		>
+			{{ .maxYear }}
+		</div>
+		<input
+			id="toSlider1"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
+		/>
+	</div>
+</div>
+
+<div
+	class="range_firstAlbum"
+	data-label="First Album Release"
+>
+	<div class="sliders_control">
+		<div
+			id="fromSliderTooltip2"
+			class="slider-tooltip"
+		>
+			{{ .minYear }}
+		</div>
+		<input
+			id="fromSlider2"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .minYear }}"
+		/>
+		<div
+			id="toSliderTooltip2"
+			class="slider-tooltip"
+		>
+			{{ .maxYear }}
+		</div>
+		<input
+			id="toSlider2"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
+		/>
+	</div>
+</div>
+{{end}}
+<!-- end of range filter -->

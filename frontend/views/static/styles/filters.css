@@ -1,0 +1,159 @@
+*,
+::before,
+::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.range_firstAlbum,
+.range_concertDate {
+	width: 100%;
+	max-width: 600px;
+	margin-top: 80px;
+	border: 2px solid var(--_marker-border-clr);
+	border-radius: 8px;
+	padding: 60px 25px 15px 25px;
+	position: relative;
+}
+
+.range_firstAlbum::before,
+.range_concertDate::before {
+	content: "From"; /* Label before the slider */
+	position: absolute;
+	top: -40px;
+	left: 0;
+	font-size: 0.8rem; /* Smaller size */
+	color: var(--_marker-border-clr); /* Same color as the main label */
+	font-weight: normal; /* Make it less prominent */
+	background: none; /* No background */
+}
+
+.range_firstAlbum::after,
+.range_concertDate::after {
+	content: "To"; /* Label after the slider */
+	position: absolute;
+	top: -40px;
+	right: 0;
+	font-size: 0.8rem; /* Smaller size */
+	color: var(--_marker-border-clr); /* Same color as the main label */
+	font-weight: normal; /* Make it less prominent */
+	background: none; /* No background */
+}
+
+.range_firstAlbum::before,
+.range_firstAlbum::after,
+.range_concertDate::before,
+.range_concertDate::after {
+	white-space: nowrap;
+}
+
+.range_firstAlbum::before,
+.range_concertDate::before {
+	content: "From"; /* "From" label */
+}
+
+.range_firstAlbum::after,
+.range_concertDate::after {
+	content: "To"; /* "To" label */
+}
+
+/* Existing styling for the main data label */
+.range_firstAlbum[data-label]::before,
+.range_concertDate[data-label]::before {
+	content: attr(data-label); /* Main label in the middle */
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: white;
+	padding: 10px;
+	font-size: 1.1rem;
+	color: var(--_marker-border-clr);
+	font-weight: bold;
+	border-radius: 10px;
+}
+
+.range_firstAlbum {
+	--_marker-border-clr: #ffd700;
+	--_marker-size: 15px;
+	--_track-heigt: 3px;
+
+	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
+	--_tooltip-txt-clr: var(--_marker-border-clr);
+}
+
+.range_concertDate {
+	--_marker-border-clr: #0ea5e9;
+	--_marker-size: 15px;
+	--_track-heigt: 3px;
+
+	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
+	--_tooltip-txt-clr: var(--_marker-border-clr);
+}
+
+.sliders_control {
+	position: relative;
+}
+
+.slider-tooltip {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: -3rem;
+	left: 0;
+	width: fit-content;
+	background-color: var(--_tooltip-bg-clr);
+	color: var(--_tooltip-txt-clr);
+	font-size: 0.8rem;
+	border-radius: 4px;
+	padding: 0.5rem 1rem;
+	text-align: center;
+	translate: -50% 0;
+}
+
+.slider-tooltip::before {
+	content: "";
+	position: absolute;
+	bottom: -0.25rem;
+	left: 50%;
+	translate: -50% 0;
+	width: 0.5rem;
+	height: 0.5rem;
+	rotate: 45deg;
+	z-index: -1;
+	background-color: inherit;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	pointer-events: all;
+	width: var(--_marker-size);
+	height: var(--_marker-size);
+	background-color: var(--_marker-border-clr);
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px var(--_marker-border-clr);
+	cursor: pointer;
+	z-index: 20;
+}
+
+input[type="range"]::-moz-range-thumb {
+	pointer-events: all;
+	width: var(--_marker-size);
+	height: var(--_marker-size);
+	background-color: var(--_marker-border-clr);
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px var(--_marker-border-clr);
+	cursor: pointer;
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	appearance: none;
+	height: var(--_track-heigt);
+	width: 100%;
+	position: absolute;
+	background-color: var(--_marker-border-clr);
+	pointer-events: none;
+	z-index: -10;
+}

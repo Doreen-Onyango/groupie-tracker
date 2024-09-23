@@ -19,6 +19,7 @@ type Concerts struct {
 	ConcertDates []string `json:"dates"`
 }
 
+//  handle various types for the ID and process concert dates, allowing for flexible and robust data handling
 func (c *Concerts) UnmarshalJSON(data []byte) error {
 	var aux struct {
 		ID           interface{} `json:"id"`
@@ -49,6 +50,7 @@ func (c *Concerts) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
 
 type Relation struct {
 	ID             int                 `json:"id"`
@@ -169,6 +171,7 @@ type ResponseData struct {
 	mu        sync.RWMutex
 }
 
+// efficient data storage and retrieval for an application that likely deals with artists 
 func NewResponseData() *ResponseData {
 	return &ResponseData{
 		Artists:   make(map[string]Artist),

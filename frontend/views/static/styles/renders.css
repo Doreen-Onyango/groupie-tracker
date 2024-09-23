@@ -1,9 +1,4 @@
-/* Home page styles */
-.home-page {
-	text-align: center;
-	margin-bottom: 20px;
-}
-
+/* artis card styles */
 .artists {
 	padding: 20px;
 }
@@ -12,6 +7,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 20px;
+	margin-top: 60px;
 }
 
 .artist-card {

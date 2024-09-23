@@ -1,0 +1,65 @@
+<!-- artist card component -->
+
+{{define "artistCardTemplate"}}
+
+<!-- Template for artist card -->
+<template id="artistCardTemplate">
+	<a
+		href="#"
+		class="artist-card-link"
+	>
+		<div
+			class="artist-card"
+			data-artist-id="{{.ArtistID}}"
+		>
+			<img
+				class="artist-image"
+				src="{{.Image}}"
+				alt="{{.Name}} image"
+				width="100"
+			/>
+			<div class="artist-info">
+				<h2 class="artist-name">{{.Name}}</h2>
+				<ul class="artist-members">
+					{{range .Members}}
+					<li>{{.}}</li>
+					{{end}}
+				</ul>
+				<p>
+					<strong>Creation Date:</strong>
+					<span class="artist-creationDate">{{.CreationDate}}</span>
+				</p>
+				<p>
+					<strong>First Album:</strong>
+					<span class="artist-firstAlbum">{{.FirstAlbum}}</span>
+				</p>
+			</div>
+		</div>
+	</a>
+</template>
+
+<!-- artistCardTemplate Container -->
+<div
+	id="artistsContainer"
+	class="artists-container"
+>
+	<!-- Cards will be injected here -->
+</div>
+<!-- artistCardTemplate end -->
+{{end}}
+<!-- end of artist card component -->
+
+{{define "modalTemplate"}}
+<!-- Modal Template -->
+<div
+	id="artistDetailsModal"
+	class="modal"
+>
+	<div class="modal-content">
+		<span class="close-button">&times;</span>
+		<div id="artistDetails"></div>
+	</div>
+</div>
+<!-- end of Modal -->
+{{end}}
+<!-- end of modal template -->
