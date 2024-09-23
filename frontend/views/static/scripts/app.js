@@ -26,12 +26,8 @@ class ArtistApp {
  */
 ArtistApp.prototype.initialize = async function () {
 	this.domElements = {
-		creationDateSuggestions: document.getElementById("creationDateSuggestions"),
 		searchByCreationDate: document.getElementById("searchByCreationDate"),
 		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
-		albumReleaseSuggestions: document.getElementById("albumReleaseSuggestions"),
-		concertSuggestions: document.getElementById("concertSuggestions"),
-		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
 		searchSummary: document.getElementById("searchSummary"),
 		searchUnified: document.getElementById("searchUnified"),
 		fromTooltip2: document.getElementById("fromSliderTooltip2"),
@@ -148,7 +144,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase();
 	this.handleNameSearchInput(query);
-	// this.handleConcertSearchInput(query);
+	this.handleConcertSearchInput(query);
 };
 
 /**
@@ -311,12 +307,12 @@ ArtistApp.prototype.handleConcertSearchInput = function (query) {
 			)
 			.join("");
 
-	this.domElements.concertSuggestions.innerHTML = suggestions;
-	this.domElements.concertSuggestions.style.display = suggestions
+	this.domElements.unifiedSuggestions.innerHTML = suggestions;
+	this.domElements.unifiedSuggestions.style.display = suggestions
 		? "block"
 		: "none";
 
-	this.addSuggestionClick("unifiedSuggestions", "searchUnified");
+	this.addSuggestionClick("unifiedSuggestions", "searchByConcert");
 };
 
 /**
@@ -330,9 +326,6 @@ ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 		!event.target.closest("#searchByAlbumRelease")
 	) {
 		this.domElements.unifiedSuggestions.style.display = "none";
-		this.domElements.concertSuggestions.style.display = "none";
-		this.domElements.creationDateSuggestions.style.display = "none";
-		this.domElements.albumReleaseSuggestions.style.display = "none";
 	}
 };
 
@@ -349,6 +342,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const inputField = this.domElements[inputElementId];
 	const attributeMapping = {
 		searchByName: "data-name",
+		searchByConcert: "data-location",
 		// searchSummary: "data-name",
 		// searchUnified: "data-location",
 		// searchSummary: "data-locatioin",
@@ -376,7 +370,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					this.applyAllFilters();
 
 					const summary = `<p class="summary-title">${inputElementId}: ${value}</p>`;
-					this.domElements.searchSummary.innerHTML = summary;
+					this.domElements.searchSummary.innerHTML += summary;
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
 				}
