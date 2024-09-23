@@ -144,6 +144,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase();
 	this.handleNameSearchInput(query);
+	this.handleConcertSearchInput(query);
 };
 
 /**
@@ -311,7 +312,7 @@ ArtistApp.prototype.handleConcertSearchInput = function (query) {
 		? "block"
 		: "none";
 
-	this.addSuggestionClick("concertSuggestions", "searchByConcert");
+	this.addSuggestionClick("unifiedSuggestions", "searchUnified");
 };
 
 /**
