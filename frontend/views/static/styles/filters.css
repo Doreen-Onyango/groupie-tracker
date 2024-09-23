@@ -158,6 +158,10 @@ input[type="range"] {
 	z-index: -10;
 }
 
+.hidden {
+	display: none;
+}
+
 /* suggestions dropdown */
 .suggestions-container {
 	position: relative;
