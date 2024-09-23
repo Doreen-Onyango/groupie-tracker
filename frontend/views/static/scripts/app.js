@@ -342,6 +342,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const attributeMapping = {
 		searchByName: "data-name",
 		searchByConcert: "data-location",
+		searchByCreationDate: "data-creationDate",
 	};
 
 	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
