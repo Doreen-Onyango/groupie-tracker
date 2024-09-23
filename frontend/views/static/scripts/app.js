@@ -40,7 +40,6 @@ ArtistApp.prototype.initialize = async function () {
 		toTooltip2: document.getElementById("toSliderTooltip2"),
 		membersFilter: document.getElementById("membersFilter"),
 		toTooltip1: document.getElementById("toSliderTooltip1"),
-		searchByName: document.getElementById("searchByName"),
 		fromSlider1: document.getElementById("fromSlider1"),
 		fromSlider2: document.getElementById("fromSlider2"),
 		toSlider1: document.getElementById("toSlider1"),
@@ -74,11 +73,6 @@ ArtistApp.prototype.fetchAllArtistDetails = async function () {
  */
 ArtistApp.prototype.setupEventListeners = function () {
 	this.addEventListeners([
-		{
-			element: this.domElements.searchByName,
-			event: "input",
-			handler: this.handleNameSearchInput,
-		},
 		{
 			element: this.domElements.searchUnified,
 			event: "input",
@@ -325,12 +319,12 @@ ArtistApp.prototype.handleConcertSearchInput = function (query) {
  */
 ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 	if (
-		!event.target.closest("#searchByName") &&
+		!event.target.closest("#searchUnified") &&
 		!event.target.closest("#searchByConcert") &&
 		!event.target.closest("#searchByCreationDate") &&
 		!event.target.closest("#searchByAlbumRelease")
 	) {
-		this.domElements.nameSuggestions.style.display = "none";
+		this.domElements.unifiedSuggestions.style.display = "none";
 		this.domElements.concertSuggestions.style.display = "none";
 		this.domElements.creationDateSuggestions.style.display = "none";
 		this.domElements.albumReleaseSuggestions.style.display = "none";
@@ -607,7 +601,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
  */
 ArtistApp.prototype.resetFilters = function () {
 	// Reset text inputs
-	this.domElements.searchByName.value = "";
+	this.domElements.searchUnified.value = "";
 	this.domElements.searchByConcert.value = "";
 	this.domElements.searchByCreationDate.value = "";
 	this.domElements.searchByAlbumRelease.value = "";
