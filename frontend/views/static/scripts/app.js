@@ -27,6 +27,7 @@ class ArtistApp {
 ArtistApp.prototype.initialize = async function () {
 	this.domElements = {
 		searchByCreationDate: document.getElementById("searchByCreationDate"),
+		creationDateSuggestions: document.getElementById("creationDateSuggestions"),
 		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
 		searchSummary: document.getElementById("searchSummary"),
 		searchUnified: document.getElementById("searchUnified"),
@@ -146,6 +147,7 @@ ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase();
 	this.handleNameSearchInput(query);
 	this.handleConcertSearchInput(query);
+	this.handleCreationDateSearchInput(query);
 };
 
 /**
