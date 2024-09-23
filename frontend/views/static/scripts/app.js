@@ -343,16 +343,6 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const attributeMapping = {
 		searchByName: "data-name",
 		searchByConcert: "data-location",
-		// searchSummary: "data-name",
-		// searchUnified: "data-location",
-		// searchSummary: "data-locatioin",
-		// searchUnified: "data-creationdate",
-		// searchSummary: "data-creationdate",
-		// searchUnified: "data-albumrelease",
-		// searchSummary: "data-albumrelease",
-		// searchByConcert: "data-location",
-		// searchByCreationDate: "data-creationdate",
-		// searchByAlbumRelease: "data-albumrelease",
 	};
 
 	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
