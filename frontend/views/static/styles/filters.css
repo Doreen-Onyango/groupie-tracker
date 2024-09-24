@@ -57,8 +57,8 @@
 .range_concertDate::after {
 	content: "To"; /* "To" label */
 	position: absolute;
-	top : -25%;
-	right : 15%;
+	top: -25%;
+	right: 15%;
 }
 
 /* Existing styling for the main data label */
@@ -226,9 +226,11 @@ input[type="range"] {
 
 .searchSummary {
 	display: flex;
-	flex-wrap: wrap;
-	font-size: 12px;
+	font-size: 14px;
 	padding-right: 2%;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
 }
 
 .hidden {
