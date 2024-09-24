@@ -165,7 +165,7 @@ input[type="range"] {
 .unified-suggestions {
 	display: flex;
 	flex-direction: column;
-	max-height: 400px;
+	/* height: fit-content; */
 	overflow-y: auto;
 	border: 1px solid #ddd;
 	border-radius: 4px;
