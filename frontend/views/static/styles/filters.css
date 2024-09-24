@@ -56,6 +56,9 @@
 .range_firstAlbum::after,
 .range_concertDate::after {
 	content: "To"; /* "To" label */
+	position: absolute;
+	top : -25%;
+	right : 15%;
 }
 
 /* Existing styling for the main data label */
