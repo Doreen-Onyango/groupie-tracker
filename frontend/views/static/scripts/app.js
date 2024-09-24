@@ -354,7 +354,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					this.applyAllFilters();
 
 					// Update search summary
-					const summary = `<p class="summary-title">${inputElementId}: ${value}</p>`;
+					const summary = `<div class="summary-title">${inputElementId}: ${value}</div>`;
 					this.domElements.searchSummary.innerHTML += summary;
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);

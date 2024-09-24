@@ -220,6 +220,17 @@ input[type="range"] {
 	display: none; /* Initially hidden */
 }
 
+/* .searchSummaryContainer {
+	width:min-content;
+} */
+
+.searchSummary {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 12px;
+	padding-right: 2%;
+}
+
 .hidden {
 	display: none;
 }
