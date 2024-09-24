@@ -596,9 +596,13 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 ArtistApp.prototype.resetFilters = function () {
 	// Reset text inputs
 	this.domElements.searchUnified.value = "";
+	this.domElements.searchByName.value = "";
 	this.domElements.searchByConcert.value = "";
 	this.domElements.searchByCreationDate.value = "";
 	this.domElements.searchByAlbumRelease.value = "";
+
+	// Reset summary
+	this.domElements.searchSummary.innerHTML = "";
 
 	// Reset sliders
 	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
