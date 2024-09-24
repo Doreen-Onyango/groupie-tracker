@@ -32,6 +32,7 @@ ArtistApp.prototype.initialize = async function () {
 		albumReleaseSuggestions: document.getElementById("albumReleaseSuggestions"),
 		searchSummary: document.getElementById("searchSummary"),
 		searchUnified: document.getElementById("searchUnified"),
+		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
 		fromTooltip2: document.getElementById("fromSliderTooltip2"),
 		fromTooltip1: document.getElementById("fromSliderTooltip1"),
 		searchByConcert: document.getElementById("searchByConcert"),
@@ -316,14 +317,9 @@ ArtistApp.prototype.handleConcertSearchInput = function (query) {
  * Hides suggestions when clicking outside of the input fields or suggestion boxes
  */
 ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
-	if (
-		!event.target.closest("#searchUnified") &&
-		!event.target.closest("#searchByConcert") &&
-		!event.target.closest("#searchByCreationDate") &&
-		!event.target.closest("#searchByAlbumRelease")
-	) {
-		this.domElements.nameSuggestions.style.display = "none";
-	}
+	event.stopPropagation();
+	this.domElements.unifiedSuggestions.classList.add("hidden");
+	this.domElements.searchUnified.value = "";
 };
 
 /**
@@ -344,6 +340,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 		searchByAlbumRelease: "data-albumRelease",
 	};
 
+	this.domElements.unifiedSuggestions.classList.remove("hidden");
 	Array.from(suggestionBox.querySelectorAll(".suggestion-item")).forEach(
 		(item) => {
 			item.addEventListener("click", (e) => {
@@ -352,9 +349,9 @@ ArtistApp.prototype.addSuggestionClick = function (
 					let value = e.target.getAttribute(dataAttribute);
 					value = value.replace(/-(?!\d{2})/g, " ");
 					inputField.value = value;
-					suggestionBox.style.display = "none"; // Hide suggestions
+					suggestionBox.style.display = "none";
 
-					this.applyAllFilters(); // Apply filters
+					this.applyAllFilters();
 
 					// Update search summary
 					const summary = `<p class="summary-title">${inputElementId}: ${value}</p>`;

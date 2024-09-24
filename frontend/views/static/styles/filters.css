@@ -158,10 +158,6 @@ input[type="range"] {
 	z-index: -10;
 }
 
-.hidden {
-	display: none;
-}
-
 .unified-suggestions {
 	display: flex;
 	flex-direction: column;
@@ -219,4 +215,8 @@ input[type="range"] {
 	overflow-y: auto;
 	z-index: 10;
 	display: none; /* Initially hidden */
+}
+
+.hidden {
+	display: none;
 }
