@@ -165,15 +165,13 @@ ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 		),
 	];
 
-	const suggestions =
-		`<p class="suggestion-title">Search by Album Release Year</p>` +
-		uniqueAlbumReleaseYears
-			.filter((year) => year.toString().startsWith(query))
-			.map(
-				(year) =>
-					`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
-			)
-			.join("");
+	const suggestions = uniqueAlbumReleaseYears
+		.filter((year) => year.toString().startsWith(query))
+		.map(
+			(year) =>
+				`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
+		)
+		.join("");
 
 	this.domElements.albumReleaseSuggestions.innerHTML = suggestions;
 	this.domElements.albumReleaseSuggestions.style.display = suggestions
@@ -224,15 +222,13 @@ ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 		),
 	];
 
-	const suggestions =
-		`<p class="suggestion-title">Search by Creation Date</p>` +
-		uniqueCreationDates
-			.filter((date) => date.toString().startsWith(query))
-			.map(
-				(date) =>
-					`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
-			)
-			.join("");
+	const suggestions = uniqueCreationDates
+		.filter((date) => date.toString().startsWith(query))
+		.map(
+			(date) =>
+				`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
+		)
+		.join("");
 
 	this.domElements.creationDateSuggestions.innerHTML = suggestions;
 	this.domElements.creationDateSuggestions.style.display = suggestions
