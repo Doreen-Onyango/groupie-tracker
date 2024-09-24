@@ -146,7 +146,7 @@ ArtistApp.prototype.applyAllFilters = function () {
  * Handles input event for the unified search input to show suggestions dropdown.
  */
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
-	const query = this.domElements.searchUnified.value.toLowerCase();
+	const query = this.domElements.searchUnified.value.toLowerCase().trim();
 	this.handleNameSearchInput(query);
 	this.handleConcertSearchInput(query);
 	this.handleCreationDateSearchInput(query);
