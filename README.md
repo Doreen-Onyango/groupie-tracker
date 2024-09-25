@@ -104,6 +104,6 @@ func (a *MainApi) fetchData(apitype string) ([]byte, error) {
 This project is public and open to contributions. Create pull requests if need be. 
 
 ## Authours
-This project is created and managed by:
+This project is maintained by:
 1. [Adioz Daniel](https://github.com/Adiozdaniel)
 2. [Doreen Onyango](https://github.com/Doreen-Onyango)
