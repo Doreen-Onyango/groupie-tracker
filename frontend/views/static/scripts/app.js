@@ -17,6 +17,7 @@ class ArtistApp {
 	constructor() {
 		this.domElements = {};
 		this.activeQueries = [];
+
 		this.initialize();
 		this.setupEventListeners();
 	}
@@ -131,25 +132,32 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
 
+	// Store original data
 	let filteredData = [...this.artistsData.data];
+	let accumulatedResults = [];
 
 	// search bar filters
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByAlbumReleaseFilter(filteredData);
 	filteredData = this.applySearchByCreationDateFilter(filteredData);
 
-	if (Array.isArray(activeQueries)) {
-		// console.log(activeQueries);
+	// Collect results from activeQueries
+	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
-			filteredData = this.applySearchByNameFilter(filteredData, query);
+			const result = this.applySearchByNameFilter(filteredData, query);
+			accumulatedResults = [...accumulatedResults, ...result];
 		});
+	}
+
+	if (accumulatedResults.length > 0) {
+		filteredData = accumulatedResults;
 	}
 
 	// range filters
 	filteredData = this.applyCreationDateFilter(filteredData);
 	filteredData = this.applyFirstAlbumFilter(filteredData);
 
-	//checkbox filters
+	// checkbox filters
 	filteredData = this.applyMembersFilter(filteredData);
 
 	this.renderFilteredData(filteredData);
@@ -261,8 +269,6 @@ ArtistApp.prototype.applySearchByNameFilter = function (
 	filteredData,
 	nameQuery
 ) {
-	// const nameQuery = this.domElements.searchByName.value.toLowerCase();
-	console.log(nameQuery);
 	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
@@ -643,6 +649,7 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.searchByConcert.value = "";
 	this.domElements.searchByCreationDate.value = "";
 	this.domElements.searchByAlbumRelease.value = "";
+	this.activeQueries = [];
 
 	// Reset summary
 	this.domElements.searchSummary.innerHTML = "";
