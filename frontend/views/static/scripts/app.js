@@ -128,19 +128,24 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
  * Applies all active filters (search, members, and range filters)
  * Filters artist cards based on the current state of all filters
  */
-ArtistApp.prototype.applyAllFilters = function () {
+ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
 	let filteredData = [...this.artistsData.data];
 
-	console.log("in applyfilters", this.activeQueries);
+	console.log(activeQueries);
 
+	// search bar filters
 	filteredData = this.applySearchByConcertFilter(filteredData);
-	filteredData = this.applySearchByNameFilter(filteredData);
-	filteredData = this.applyCreationDateFilter(filteredData);
-	filteredData = this.applyFirstAlbumFilter(filteredData);
-	filteredData = this.applyMembersFilter(filteredData);
 	filteredData = this.applySearchByAlbumReleaseFilter(filteredData);
 	filteredData = this.applySearchByCreationDateFilter(filteredData);
+	filteredData = this.applySearchByNameFilter(filteredData);
+
+	// range filters
+	filteredData = this.applyCreationDateFilter(filteredData);
+	filteredData = this.applyFirstAlbumFilter(filteredData);
+
+	//checkbox filters
+	filteredData = this.applyMembersFilter(filteredData);
 
 	this.renderFilteredData(filteredData);
 };
@@ -354,9 +359,8 @@ ArtistApp.prototype.addSuggestionClick = function (
 					inputField.value = value;
 					suggestionBox.style.display = "none";
 
-					this.applyAllFilters();
 					this.activeQueries.push(value);
-					console.log("in suggestion", this.activeQueries);
+					this.applyAllFilters(this.activeQueries);
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
