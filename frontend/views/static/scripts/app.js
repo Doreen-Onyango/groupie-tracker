@@ -16,6 +16,7 @@ import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 class ArtistApp {
 	constructor() {
 		this.domElements = {};
+		this.activeQueries = [];
 		this.initialize();
 		this.setupEventListeners();
 	}
@@ -352,6 +353,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					suggestionBox.style.display = "none";
 
 					this.applyAllFilters();
+					this.activeQueries.push(value);
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
@@ -625,6 +627,13 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.searchByConcert.value = "";
 	this.domElements.searchByCreationDate.value = "";
 	this.domElements.searchByAlbumRelease.value = "";
+
+	this.activeQueries = {
+		searchByName: [],
+		searchByConcert: [],
+		searchByCreationDate: [],
+		searchByAlbumRelease: [],
+	};
 
 	// Reset summary
 	this.domElements.searchSummary.innerHTML = "";
