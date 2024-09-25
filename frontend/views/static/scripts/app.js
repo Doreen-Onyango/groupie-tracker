@@ -132,6 +132,8 @@ ArtistApp.prototype.applyAllFilters = function () {
 	if (!this.artistsData) return;
 	let filteredData = [...this.artistsData.data];
 
+	console.log("in applyfilters", this.activeQueries);
+
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByNameFilter(filteredData);
 	filteredData = this.applyCreationDateFilter(filteredData);
@@ -354,6 +356,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 
 					this.applyAllFilters();
 					this.activeQueries.push(value);
+					console.log("in suggestion", this.activeQueries);
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
@@ -628,15 +631,9 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.searchByCreationDate.value = "";
 	this.domElements.searchByAlbumRelease.value = "";
 
-	this.activeQueries = {
-		searchByName: [],
-		searchByConcert: [],
-		searchByCreationDate: [],
-		searchByAlbumRelease: [],
-	};
-
 	// Reset summary
 	this.domElements.searchSummary.innerHTML = "";
+	this.activeQueries = [];
 
 	// Reset sliders
 	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
