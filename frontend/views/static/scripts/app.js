@@ -352,16 +352,41 @@ ArtistApp.prototype.addSuggestionClick = function (
 					suggestionBox.style.display = "none";
 
 					this.applyAllFilters();
-
-					// Update search summary
-					const summary = `<div class="summary-title">${inputElementId}: ${value}</div>`;
-					this.domElements.searchSummary.innerHTML += summary;
+					this.addSearchSummaryItem(inputElementId, value);
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
 				}
 			});
 		}
 	);
+};
+
+// Function to add an item to the search summary and handle removal with filtering
+ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
+	const summaryContainer = document.getElementById("searchSummary");
+	const item = document.createElement("div");
+	item.className = "searchSummaryItem";
+
+	const itemText = document.createElement("p");
+	itemText.textContent = `${inputElementId}: ${value}`;
+
+	// Create the close icon
+	const closeIcon = document.createElement("span");
+	closeIcon.className = "closeIcon";
+	closeIcon.textContent = "×";
+
+	closeIcon.addEventListener("click", (e) => {
+		item.remove();
+		this.domElements[inputElementId].value = "";
+		this.applyAllFilters();
+	});
+
+	// Append the text and close icon to the item div
+	item.appendChild(itemText);
+	item.appendChild(closeIcon);
+
+	// Append the item to the search summary container
+	summaryContainer.appendChild(item);
 };
 
 /**

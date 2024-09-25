@@ -226,11 +226,31 @@ input[type="range"] {
 
 .searchSummary {
 	display: flex;
-	font-size: 14px;
+	font-size: 12px;
 	padding-right: 2%;
 	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
+}
+
+.searchSummaryItem {
+	display: flex;
+	align-items: center;
+	background-color: #f0f0f0;
+	padding: 5px 10px;
+	border-radius: 5px;
+}
+
+.searchSummaryItem p {
+	margin: 0;
+	padding-right: 5px;
+}
+
+.closeIcon {
+	cursor: pointer;
+	color: red;
+	font-weight: bold;
+	margin-left: 5px;
 }
 
 .hidden {
