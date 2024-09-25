@@ -132,19 +132,34 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
 
-	// Store original data
 	let filteredData = [...this.artistsData.data];
 	let accumulatedResults = [];
 
 	// search bar filters
-	filteredData = this.applySearchByConcertFilter(filteredData);
-	filteredData = this.applySearchByAlbumReleaseFilter(filteredData);
-	filteredData = this.applySearchByCreationDateFilter(filteredData);
+	if (activeQueries.length > 0) {
+		activeQueries.forEach((query) => {
+			const result = this.applySearchByConcertFilter(filteredData, query);
+			accumulatedResults = [...accumulatedResults, ...result];
+		});
+	}
 
-	// Collect results from activeQueries
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
 			const result = this.applySearchByNameFilter(filteredData, query);
+			accumulatedResults = [...accumulatedResults, ...result];
+		});
+	}
+
+	if (activeQueries.length > 0) {
+		activeQueries.forEach((query) => {
+			const result = this.applySearchByAlbumReleaseFilter(filteredData, query);
+			accumulatedResults = [...accumulatedResults, ...result];
+		});
+	}
+
+	if (activeQueries.length > 0) {
+		activeQueries.forEach((query) => {
+			const result = this.applySearchByCreationDateFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
@@ -210,8 +225,10 @@ ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
  * @param {Array} filteredData - The current filtered artist data
  * @returns {Array} - The filtered artist data by album release year
  */
-ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (filteredData) {
-	const albumReleaseQuery = this.domElements.searchByAlbumRelease.value;
+ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (
+	filteredData,
+	albumReleaseQuery
+) {
 	if (!albumReleaseQuery) return filteredData;
 
 	return filteredData.filter((artist) => {
@@ -222,8 +239,10 @@ ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (filteredData) {
 /**
  * Apply search by creation date filter
  */
-ArtistApp.prototype.applySearchByCreationDateFilter = function (filteredData) {
-	const creationDateQuery = this.domElements.searchByCreationDate.value;
+ArtistApp.prototype.applySearchByCreationDateFilter = function (
+	filteredData,
+	creationDateQuery
+) {
 	if (!creationDateQuery) return filteredData;
 
 	return filteredData.filter((artist) => {
@@ -301,8 +320,10 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
  * @param {Array} filteredData - the current filtered artist data
  * @returns {Array} filteredData - the data filtered by concert location
  */
-ArtistApp.prototype.applySearchByConcertFilter = function (filteredData) {
-	const concertQuery = this.domElements.searchByConcert.value.toLowerCase();
+ArtistApp.prototype.applySearchByConcertFilter = function (
+	filteredData,
+	concertQuery
+) {
 	return this.allArtistDetails
 		.filter((artistDetail) => {
 			const locations = artistDetail.data.locations?.locations || [];
