@@ -56,7 +56,7 @@ ArtistApp.prototype.initialize = async function () {
 	this.allArtistDetails = await this.fetchAllArtistDetails();
 
 	this.setRangeFilterDefaults();
-	this.applyAllFilters();
+	this.applyAllFilters(this.activeQueries);
 };
 
 /**
@@ -130,15 +130,20 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
  */
 ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
-	let filteredData = [...this.artistsData.data];
 
-	console.log(activeQueries);
+	let filteredData = [...this.artistsData.data];
 
 	// search bar filters
 	filteredData = this.applySearchByConcertFilter(filteredData);
 	filteredData = this.applySearchByAlbumReleaseFilter(filteredData);
 	filteredData = this.applySearchByCreationDateFilter(filteredData);
-	filteredData = this.applySearchByNameFilter(filteredData);
+
+	if (Array.isArray(activeQueries)) {
+		// console.log(activeQueries);
+		activeQueries.forEach((query) => {
+			filteredData = this.applySearchByNameFilter(filteredData, query);
+		});
+	}
 
 	// range filters
 	filteredData = this.applyCreationDateFilter(filteredData);
@@ -252,8 +257,12 @@ ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
  * @param {Array} filteredData - the current filtered artist data
  * @returns {Array} filteredData - the data filtered by artist name
  */
-ArtistApp.prototype.applySearchByNameFilter = function (filteredData) {
-	const nameQuery = this.domElements.searchByName.value.toLowerCase();
+ArtistApp.prototype.applySearchByNameFilter = function (
+	filteredData,
+	nameQuery
+) {
+	// const nameQuery = this.domElements.searchByName.value.toLowerCase();
+	console.log(nameQuery);
 	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
@@ -359,7 +368,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					inputField.value = value;
 					suggestionBox.style.display = "none";
 
-					this.activeQueries.push(value);
+					this.activeQueries.push(value.toLowerCase().trim());
 					this.applyAllFilters(this.activeQueries);
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
@@ -387,7 +396,7 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	closeIcon.addEventListener("click", (e) => {
 		item.remove();
 		this.domElements[inputElementId].value = "";
-		this.applyAllFilters();
+		this.applyAllFilters(this.activeQueries);
 	});
 
 	// Append the text and close icon to the item div
@@ -671,7 +680,7 @@ ArtistApp.prototype.resetFilters = function () {
 		this.domElements.membersFilter.querySelectorAll("input:checked")
 	).forEach((checkbox) => (checkbox.checked = false));
 
-	this.applyAllFilters();
+	this.applyAllFilters(this.activeQueries);
 };
 
 /**
