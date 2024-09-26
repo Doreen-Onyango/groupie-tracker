@@ -56,7 +56,7 @@ ArtistApp.prototype.initialize = async function () {
 	this.filteredData = [...this.artistsData.data];
 	this.allArtistDetails = await this.fetchAllArtistDetails();
 
-	this.setRangeFilterDefaults();
+	this.setRangeFilterDefaults(this.artistsData.data);
 	this.applyAllFilters(this.activeQueries);
 };
 
@@ -527,8 +527,8 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
  * Updates the range filter based on the selected filter type
  * Adjusts the min and max range based on the artist data
  */
-ArtistApp.prototype.setRangeFilterDefaults = function () {
-	if (!this.artistsData) return;
+ArtistApp.prototype.setRangeFilterDefaults = function (artistData) {
+	if (!artistData) return;
 
 	const {
 		fromSlider1,
@@ -555,7 +555,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	let maxYear2 = -Infinity;
 
 	// Loop through artist data to get min/max for creationDate (Slider 1)
-	this.artistsData.data.forEach((artist) => {
+	artistData.forEach((artist) => {
 		let year = artist["creationDate"];
 		if (year) {
 			if (year < minYear1) minYear1 = year;
@@ -564,7 +564,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	});
 
 	// Loop through artist data to get min/max for firstAlbum (Slider 2)
-	this.artistsData.data.forEach((artist) => {
+	artistData.forEach((artist) => {
 		let year = artist["firstAlbum"];
 		if (year) {
 			const parts = year.split("-");
