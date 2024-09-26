@@ -421,8 +421,10 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	closeIcon.textContent = "×";
 
 	closeIcon.addEventListener("click", (e) => {
+		this.activeQueries = this.activeQueries.filter(
+			(query) => query.toLowerCase().trim() !== value.toLowerCase().trim()
+		);
 		item.remove();
-		this.domElements[inputElementId].value = "";
 		this.applyAllFilters(this.activeQueries);
 	});
 
