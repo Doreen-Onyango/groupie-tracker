@@ -697,6 +697,12 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	const { minCreationDate, maxCreationDate, minAlbumDate, maxAlbumDate } =
 		this.yearRanges;
 
+	// Ensure sliders and tooltips exist before setting values
+	if (!fromSlider1 || !toSlider1 || !fromSlider2 || !toSlider2) {
+		console.error("Sliders are not available in the DOM.");
+		return;
+	}
+
 	// Set values for Creation Date Slider
 	this.updateSliderValues(
 		fromSlider1,
