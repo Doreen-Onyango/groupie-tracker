@@ -52,11 +52,15 @@ ArtistApp.prototype.initialize = async function () {
 		// hidden data fields
 		searchByName: document.getElementById("searchByName"),
 	};
+
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.allArtistDetails = await this.fetchAllArtistDetails();
 
-	this.setRangeFilterDefaults(this.artistsData.data);
+	// Calculate and set year ranges
+	this.calculateMinMaxYears(this.artistsData.data);
+
+	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
 };
 
@@ -524,12 +528,161 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 };
 
 /**
- * Updates the range filter based on the selected filter type
- * Adjusts the min and max range based on the artist data
+ * Calculates the minimum and maximum years for creation dates and album releases
+ * @param {Array} artistData - The array of artist data
  */
-ArtistApp.prototype.setRangeFilterDefaults = function (artistData) {
-	if (!artistData) return;
+ArtistApp.prototype.calculateMinMaxYears = function (artistData) {
+	if (!artistData || artistData.length === 0) return;
 
+	this.yearRanges = {
+		minCreationDate: Infinity,
+		maxCreationDate: -Infinity,
+		minAlbumDate: Infinity,
+		maxAlbumDate: -Infinity,
+	};
+
+	// Loop through artist data to calculate min/max values
+	artistData.forEach((artist) => {
+		const creationYear = artist.creationDate;
+		const albumYear = artist.firstAlbum
+			? parseInt(artist.firstAlbum.split("-").pop())
+			: null;
+
+		// Update creation date range
+		if (creationYear) {
+			this.yearRanges.minCreationDate = Math.min(
+				this.yearRanges.minCreationDate,
+				creationYear
+			);
+			this.yearRanges.maxCreationDate = Math.max(
+				this.yearRanges.maxCreationDate,
+				creationYear
+			);
+		}
+
+		// Update album release date range
+		if (albumYear) {
+			this.yearRanges.minAlbumDate = Math.min(
+				this.yearRanges.minAlbumDate,
+				albumYear
+			);
+			this.yearRanges.maxAlbumDate = Math.max(
+				this.yearRanges.maxAlbumDate,
+				albumYear
+			);
+		}
+	});
+
+	// Ensure reasonable defaults if no valid years are found
+	this.yearRanges.minCreationDate =
+		this.yearRanges.minCreationDate === Infinity
+			? 0
+			: this.yearRanges.minCreationDate;
+	this.yearRanges.maxCreationDate =
+		this.yearRanges.maxCreationDate === -Infinity
+			? new Date().getFullYear()
+			: this.yearRanges.maxCreationDate;
+	this.yearRanges.minAlbumDate =
+		this.yearRanges.minAlbumDate === Infinity
+			? 0
+			: this.yearRanges.minAlbumDate;
+	this.yearRanges.maxAlbumDate =
+		this.yearRanges.maxAlbumDate === -Infinity
+			? new Date().getFullYear()
+			: this.yearRanges.maxAlbumDate;
+
+	// After calculating min and max years, update the sliders
+	this.setRangeFilterDefaults();
+};
+
+/**
+ * Updates the slider values by setting the min, max, and current values.
+ * @param {HTMLElement} fromSlider - The "from" slider element.
+ * @param {HTMLElement} toSlider - The "to" slider element.
+ * @param {number} minYear - The minimum year value for the slider.
+ * @param {number} maxYear - The maximum year value for the slider.
+ */
+ArtistApp.prototype.updateSliderValues = function (
+	fromSlider,
+	toSlider,
+	minYear,
+	maxYear
+) {
+	fromSlider.min = minYear;
+	fromSlider.max = maxYear;
+	fromSlider.value = minYear;
+
+	toSlider.min = minYear;
+	toSlider.max = maxYear;
+	toSlider.value = maxYear;
+};
+
+/**
+ * Attaches slider events to control the "from" and "to" sliders for interactivity.
+ * @param {HTMLElement} fromSlider - The "from" slider element.
+ * @param {HTMLElement} toSlider - The "to" slider element.
+ * @param {HTMLElement} fromTooltip - The tooltip element for the "from" slider.
+ * @param {HTMLElement} toTooltip - The tooltip element for the "to" slider.
+ * @param {string} trackColor - The color of the slider track.
+ * @param {string} rangeColor - The color of the slider range.
+ */
+ArtistApp.prototype.attachSliderEvents = function (
+	fromSlider,
+	toSlider,
+	fromTooltip,
+	toTooltip,
+	trackColor,
+	rangeColor
+) {
+	fromSlider.oninput = () =>
+		controlFromSlider(
+			fromSlider,
+			toSlider,
+			fromTooltip,
+			toTooltip,
+			trackColor,
+			rangeColor
+		);
+
+	toSlider.oninput = () =>
+		controlToSlider(
+			fromSlider,
+			toSlider,
+			fromTooltip,
+			toTooltip,
+			trackColor,
+			rangeColor
+		);
+};
+
+/**
+ * Initializes the slider visuals by setting the track and range colors, tooltips, and accessibility settings.
+ * @param {HTMLElement} fromSlider - The "from" slider element.
+ * @param {HTMLElement} toSlider - The "to" slider element.
+ * @param {string} trackColor - The color of the slider track.
+ * @param {string} rangeColor - The color of the slider range.
+ * @param {HTMLElement} fromTooltip - The tooltip element for the "from" slider.
+ * @param {HTMLElement} toTooltip - The tooltip element for the "to" slider.
+ */
+ArtistApp.prototype.initializeSliderVisuals = function (
+	fromSlider,
+	toSlider,
+	trackColor,
+	rangeColor,
+	fromTooltip,
+	toTooltip
+) {
+	fillSlider(fromSlider, toSlider, trackColor, rangeColor, toSlider);
+	setToggleAccessible(toSlider);
+	setTooltip(fromSlider, fromTooltip);
+	setTooltip(toSlider, toTooltip);
+};
+
+/**
+ * Sets the default values for range filters (creation dates and album releases)
+ * Consumes the pre-calculated min/max years and initializes slider visuals.
+ */
+ArtistApp.prototype.setRangeFilterDefaults = function () {
 	const {
 		fromSlider1,
 		toSlider1,
@@ -541,125 +694,65 @@ ArtistApp.prototype.setRangeFilterDefaults = function (artistData) {
 		toTooltip2,
 	} = this.domElements;
 
-	// Colors for Slider 1 (Creation Date)
-	const COLOR_TRACK_SLIDER1 = "#FF6347";
-	const COLOR_RANGE_SLIDER1 = "#0EA5E9";
+	const { minCreationDate, maxCreationDate, minAlbumDate, maxAlbumDate } =
+		this.yearRanges;
 
-	// Colors for Slider 2 (First Album)
-	const COLOR_TRACK_SLIDER2 = "#FF6347";
-	const COLOR_RANGE_SLIDER2 = "#FFD700";
-
-	let minYear1 = Infinity;
-	let maxYear1 = -Infinity;
-	let minYear2 = Infinity;
-	let maxYear2 = -Infinity;
-
-	// Loop through artist data to get min/max for creationDate (Slider 1)
-	artistData.forEach((artist) => {
-		let year = artist["creationDate"];
-		if (year) {
-			if (year < minYear1) minYear1 = year;
-			if (year > maxYear1) maxYear1 = year;
-		}
-	});
-
-	// Loop through artist data to get min/max for firstAlbum (Slider 2)
-	artistData.forEach((artist) => {
-		let year = artist["firstAlbum"];
-		if (year) {
-			const parts = year.split("-");
-			year = parseInt(parts[parts.length - 1], 10);
-			if (year < minYear2) minYear2 = year;
-			if (year > maxYear2) maxYear2 = year;
-		}
-	});
-
-	// Handle default min/max values if no valid years were found
-	minYear1 = minYear1 === Infinity ? 0 : minYear1;
-	maxYear1 = maxYear1 === -Infinity ? new Date().getFullYear() : maxYear1;
-
-	minYear2 = minYear2 === Infinity ? 0 : minYear2;
-	maxYear2 = maxYear2 === -Infinity ? new Date().getFullYear() : maxYear2;
-
-	// Assign values to Slider 1 (creationDate)
-	fromSlider1.min = minYear1;
-	fromSlider1.max = maxYear1;
-	fromSlider1.value = minYear1;
-
-	toSlider1.min = minYear1;
-	toSlider1.max = maxYear1;
-	toSlider1.value = maxYear1;
-
-	// Assign values to Slider 2 (firstAlbum)
-	fromSlider2.min = minYear2;
-	fromSlider2.max = maxYear2;
-	fromSlider2.value = minYear2;
-
-	toSlider2.min = minYear2;
-	toSlider2.max = maxYear2;
-	toSlider2.value = maxYear2;
-
-	// Attach events to the sliders
-	fromSlider1.oninput = () =>
-		controlFromSlider(
-			fromSlider1,
-			toSlider1,
-			fromTooltip1,
-			toTooltip1,
-			COLOR_TRACK_SLIDER1,
-			COLOR_RANGE_SLIDER1
-		);
-	toSlider1.oninput = () =>
-		controlToSlider(
-			fromSlider1,
-			toSlider1,
-			fromTooltip1,
-			toTooltip1,
-			COLOR_TRACK_SLIDER1,
-			COLOR_RANGE_SLIDER1
-		);
-
-	fromSlider2.oninput = () =>
-		controlFromSlider(
-			fromSlider2,
-			toSlider2,
-			fromTooltip2,
-			toTooltip2,
-			COLOR_TRACK_SLIDER2,
-			COLOR_RANGE_SLIDER2
-		);
-	toSlider2.oninput = () =>
-		controlToSlider(
-			fromSlider2,
-			toSlider2,
-			fromTooltip2,
-			toTooltip2,
-			COLOR_TRACK_SLIDER2,
-			COLOR_RANGE_SLIDER2
-		);
-
-	// Initialize slider visuals
-	fillSlider(
+	// Set values for Creation Date Slider
+	this.updateSliderValues(
 		fromSlider1,
 		toSlider1,
-		COLOR_TRACK_SLIDER1,
-		COLOR_RANGE_SLIDER1,
-		toSlider1
+		minCreationDate,
+		maxCreationDate
 	);
-	setToggleAccessible(toSlider1);
-	setTooltip(fromSlider1, fromTooltip1);
-	setTooltip(toSlider1, toTooltip1);
 
-	fillSlider(
+	// Set values for Album Release Slider
+	this.updateSliderValues(fromSlider2, toSlider2, minAlbumDate, maxAlbumDate);
+
+	// Attach slider events for both sliders
+	this.attachSliderEvents(
+		fromSlider1,
+		toSlider1,
+		fromTooltip1,
+		toTooltip1,
+		"#FF6347",
+		"#0EA5E9"
+	);
+	this.attachSliderEvents(
 		fromSlider2,
 		toSlider2,
-		COLOR_TRACK_SLIDER2,
-		COLOR_RANGE_SLIDER2,
-		toSlider2
+		fromTooltip2,
+		toTooltip2,
+		"#FFD700",
+		"#FF6347"
 	);
-	setToggleAccessible(toSlider2);
-	setTooltip(fromSlider2, fromTooltip2);
-	setTooltip(toSlider2, toTooltip2);
+
+	// Initialize slider visuals for Creation Date slider if tooltips exist
+	if (fromTooltip1 && toTooltip1) {
+		this.initializeSliderVisuals(
+			fromSlider1,
+			toSlider1,
+			"#FF6347",
+			"#0EA5E9",
+			fromTooltip1,
+			toTooltip1
+		);
+	} else {
+		console.error("Creation Date tooltips are missing.");
+	}
+
+	// Initialize slider visuals for Album Release slider if tooltips exist
+	if (fromTooltip2 && toTooltip2) {
+		this.initializeSliderVisuals(
+			fromSlider2,
+			toSlider2,
+			"#FF6347",
+			"#FFD700",
+			fromTooltip2,
+			toTooltip2
+		);
+	} else {
+		console.error("Album Release tooltips are missing.");
+	}
 };
 
 /**
