@@ -108,11 +108,6 @@ ArtistApp.prototype.setupEventListeners = function () {
 			event: "click",
 			handler: this.resetFilters,
 		},
-		{
-			element: this.domElements.membersFilter,
-			event: "change",
-			handler: this.applyAllFilters,
-		},
 	]);
 
 	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
