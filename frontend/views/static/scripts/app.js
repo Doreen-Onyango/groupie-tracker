@@ -140,6 +140,7 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByConcertFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
+		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (activeQueries.length > 0) {
@@ -147,6 +148,7 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByNameFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
+		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (activeQueries.length > 0) {
@@ -154,6 +156,7 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByAlbumReleaseFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
+		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (activeQueries.length > 0) {
@@ -161,10 +164,12 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByCreationDateFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
+		this.calculateMinMaxYears(accumulatedResults);
 	}
 
-	if (accumulatedResults.length > 0) {
+	if (accumulatedResults.length > 0 && this.activeQueries.length > 0) {
 		filteredData = accumulatedResults;
+		this.calculateMinMaxYears(filteredData);
 	}
 
 	// range filters
@@ -174,7 +179,12 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	// checkbox filters
 	filteredData = this.applyMembersFilter(filteredData);
 
-	this.renderFilteredData(filteredData);
+	if (filteredData.length > 0) {
+		this.renderFilteredData(filteredData);
+		return;
+	}
+
+	this.renderFilteredData(this.artistsData.data);
 };
 
 /**
