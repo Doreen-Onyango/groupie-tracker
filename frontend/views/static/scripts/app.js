@@ -184,13 +184,13 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
  * Applies range filters (creation date and first album) and returns the filtered data
  */
 ArtistApp.prototype.applyRangeFilters = function (data) {
-	this.calculateMinMaxYears(data);
 	let creationDateFilteredData = this.applyCreationDateFilter([...data]);
 	let albumReleaseFilteredData = this.applyFirstAlbumFilter([...data]);
 	let finalFilteredData = creationDateFilteredData.filter((artist) =>
 		albumReleaseFilteredData.some((a) => a.id === artist.id)
 	);
-
+	//TODO
+	// add labels for rangefilters this.calculateMinMaxYears(finalFilteredData);
 	return finalFilteredData;
 };
 
