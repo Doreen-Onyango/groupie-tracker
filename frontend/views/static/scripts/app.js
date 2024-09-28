@@ -59,6 +59,12 @@ ArtistApp.prototype.initialize = async function () {
 
 	// Calculate and set year ranges
 	this.calculateMinMaxYears(this.artistsData.data);
+	this.defaults = {
+		fromSlider1: this.yearRanges.minCreationDate,
+		toSlider1: this.yearRanges.maxCreationDate,
+		fromSlider2: this.yearRanges.minAlbumDate,
+		toSlider2: this.yearRanges.maxAlbumDate,
+	};
 
 	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
@@ -140,7 +146,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByConcertFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
-		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (activeQueries.length > 0) {
@@ -148,7 +153,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByNameFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
-		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (activeQueries.length > 0) {
@@ -156,7 +160,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByAlbumReleaseFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
-		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (activeQueries.length > 0) {
@@ -164,17 +167,13 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 			const result = this.applySearchByCreationDateFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
-		this.calculateMinMaxYears(accumulatedResults);
 	}
 
 	if (accumulatedResults.length > 0 && this.activeQueries.length > 0) {
 		filteredData = accumulatedResults;
-		this.calculateMinMaxYears(filteredData);
 	}
 
 	filteredData = this.applyMembersFilter(filteredData);
-
-	// range filters
 	filteredData = this.applyRangeFilters(filteredData);
 
 	this.renderFilteredData(filteredData);
@@ -790,10 +789,14 @@ ArtistApp.prototype.resetFilters = function () {
 	this.activeQueries = [];
 
 	// Reset sliders
-	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
-	this.domElements.toSlider1.value = this.domElements.toSlider1.max;
-	this.domElements.fromSlider2.value = this.domElements.fromSlider2.min;
-	this.domElements.toSlider2.value = this.domElements.toSlider2.max;
+	// this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
+	// this.domElements.toSlider1.value = this.domElements.toSlider1.max;
+	// this.domElements.fromSlider2.value = this.domElements.fromSlider2.min;
+	// this.domElements.toSlider2.value = this.domElements.toSlider2.max;
+	this.domElements.fromSlider1.value = this.defaults.fromSlider1;
+	this.domElements.toSlider1.value = this.defaults.toSlider1;
+	this.domElements.fromSlider2.value = this.defaults.fromSlider2;
+	this.domElements.toSlider2.value = this.defaults.toSlider2;
 
 	// Reset tooltips and slider visuals
 	setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
