@@ -172,19 +172,26 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 		this.calculateMinMaxYears(filteredData);
 	}
 
-	// range filters
-	filteredData = this.applyCreationDateFilter(filteredData);
-	filteredData = this.applyFirstAlbumFilter(filteredData);
-
-	// checkbox filters
 	filteredData = this.applyMembersFilter(filteredData);
 
-	if (filteredData.length > 0) {
-		this.renderFilteredData(filteredData);
-		return;
-	}
+	// range filters
+	filteredData = this.applyRangeFilters(filteredData);
 
-	this.renderFilteredData(this.artistsData.data);
+	this.renderFilteredData(filteredData);
+};
+
+/**
+ * Applies range filters (creation date and first album) and returns the filtered data
+ */
+ArtistApp.prototype.applyRangeFilters = function (data) {
+	this.calculateMinMaxYears(data);
+	let creationDateFilteredData = this.applyCreationDateFilter([...data]);
+	let albumReleaseFilteredData = this.applyFirstAlbumFilter([...data]);
+	let finalFilteredData = creationDateFilteredData.filter((artist) =>
+		albumReleaseFilteredData.some((a) => a.id === artist.id)
+	);
+
+	return finalFilteredData;
 };
 
 /**
