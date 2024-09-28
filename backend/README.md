@@ -37,5 +37,20 @@ Key Functionality:
     - Ensures thread-safe app state management.
 
 6. **Fetch Data**
+The Fetch Data package is responsible for data retrieval from a given URL. It also handles the unmarshaling of artist data and processes it for easier access and management.
+Key Functionality:
+    - Retrieves data from a specified URL.
+    - Unmarshals and processes artist data for easier access.
+
 7. **Models**
+The Models package defines the application's core data structures. It uses the singleton App instance to manage the application's lifecycle, and calls the CreateTemplateCache() method to set up or load template data.
+Key Functionality:
+    - Defines core application data structures.
+    - Manages application lifecycle using a singleton pattern.
+    - Sets up the template cache via CreateTemplateCache().
+
 8. **Response**
+he Response package provides utilities for handling JSON-based HTTP responses. It manages error handling, response formatting, and content types using the JSONRes struct and related methods.
+Key Functionality include:
+    - Handles JSON responses and errors.
+    - Provides methods like ErrJSON, ReadJSON, and WriteJSON for request/response management.
