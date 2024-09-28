@@ -740,8 +740,8 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		toSlider2,
 		fromTooltip2,
 		toTooltip2,
-		"#FFD700",
-		"#FF6347"
+		"#FF6347",
+		"#FFD700"
 	);
 
 	// Initialize slider visuals for Creation Date slider if tooltips exist
