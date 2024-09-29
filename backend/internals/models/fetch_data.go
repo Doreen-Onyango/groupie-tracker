@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 )
@@ -196,4 +197,35 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 		return nil, fmt.Errorf("404 data not found %s", id)
 	}
 	return res, nil
+}
+
+// Function to geocode a location using the Google Maps API
+func (r *ResponseData) GeocodeLocation(location string) (float64, float64, error) {
+	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
+	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", location, apiKey)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return 0, 0, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	var geocodeResponse GeocodeResponse
+	err = json.Unmarshal(body, &geocodeResponse)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	if geocodeResponse.Status != "OK" {
+		return 0, 0, fmt.Errorf("geocoding failed: %s", geocodeResponse.Status)
+	}
+
+	lat := geocodeResponse.Results[0].Geometry.Location.Lat
+	lng := geocodeResponse.Results[0].Geometry.Location.Lng
+	return lat, lng, nil
 }

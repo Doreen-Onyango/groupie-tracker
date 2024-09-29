@@ -177,3 +177,23 @@ func NewResponseData() *ResponseData {
 		Relations: make(map[string]Relation),
 	}
 }
+
+type GeocodeResponse struct {
+	Results []struct {
+		Geometry struct {
+			Location struct {
+				Lat float64 `json:"lat"`
+				Lng float64 `json:"lng"`
+			} `json:"location"`
+		} `json:"geometry"`
+	} `json:"results"`
+	Status string `json:"status"`
+}
+
+// Concert struct with geolocation
+type MapConcert struct {
+	Location  string  `json:"location"`
+	Date      string  `json:"date"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
