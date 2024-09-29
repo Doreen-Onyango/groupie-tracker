@@ -284,3 +284,16 @@ func (r *ResponseData) AddCoordinates() error {
 
 	return nil
 }
+
+// Method to get the coordinates of a specific location
+func (r *ResponseData) GetCoordinates(location string) (GeoLocation, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	geoLocation, exists := r.GeoLocations[location]
+	if !exists {
+		return GeoLocation{}, fmt.Errorf("location not found")
+	}
+
+	return geoLocation, nil
+}
