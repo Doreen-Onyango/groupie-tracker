@@ -162,19 +162,21 @@ func (a *Artist) UnmarshalJSON(data []byte) error {
 }
 
 type ResponseData struct {
-	Artists   map[string]Artist
-	Locations map[string]Locations `json:"locations"`
-	Concerts  map[string]Concerts  `json:"concertDates"`
-	Relations map[string]Relation  `json:"relations"`
-	mu        sync.RWMutex
+	Artists      map[string]Artist
+	Locations    map[string]Locations   `json:"locations"`
+	Concerts     map[string]Concerts    `json:"concertDates"`
+	Relations    map[string]Relation    `json:"relations"`
+	GeoLocations map[string]GeoLocation `json:"geoLocation"`
+	mu           sync.RWMutex
 }
 
 func NewResponseData() *ResponseData {
 	return &ResponseData{
-		Artists:   make(map[string]Artist),
-		Locations: make(map[string]Locations),
-		Concerts:  make(map[string]Concerts),
-		Relations: make(map[string]Relation),
+		Artists:      make(map[string]Artist),
+		Locations:    make(map[string]Locations),
+		Concerts:     make(map[string]Concerts),
+		Relations:    make(map[string]Relation),
+		GeoLocations: make(map[string]GeoLocation),
 	}
 }
 
@@ -190,10 +192,9 @@ type GeocodeResponse struct {
 	Status string `json:"status"`
 }
 
-// Concert struct with geolocation
-type MapConcert struct {
+// GeoLocation struct with geolocation
+type GeoLocation struct {
 	Location  string  `json:"location"`
-	Date      string  `json:"date"`
 	Latitude  float64 `json:"latitude"`
 	Longitude float64 `json:"longitude"`
 }

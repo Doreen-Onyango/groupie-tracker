@@ -88,26 +88,45 @@ func (r *ResponseData) processRelations(id string, data []byte, firstErr *error)
 }
 
 func (r *ResponseData) AddArtist(api *MainApi) error {
+	// Fetch artist data from the API
 	data, err := api.fetchData("artists")
 	if err != nil {
 		instance.Err = err
 		return fmt.Errorf("no internet connection %v", err)
 	}
 
+	// Unmarshal the data into the artists slice
 	var artists []Artist
 	if err := json.Unmarshal(data, &artists); err != nil {
 		return fmt.Errorf("oops! connection problem")
 	}
 
+	// Lock the response data to safely add artists
 	r.mu.Lock()
-	defer r.mu.Unlock()
-
 	for _, artist := range artists {
 		r.Artists[artist.ID] = artist
 	}
+	r.mu.Unlock()
 
-	go r.SetData(api)
+	// Use a WaitGroup to ensure that AddCoordinates() only runs after SetData() is complete
+	var wg sync.WaitGroup
+	wg.Add(1) // Add a counter for SetData
+
+	// Run SetData(api) in a goroutine
+	go func() {
+		defer wg.Done() // Mark the goroutine as done when finished
+		r.SetData(api)
+	}()
+
+	// Once SetData completes, run AddCoordinates
+	go func() {
+		wg.Wait() // Wait for SetData to complete
+		r.AddCoordinates()
+	}()
+
+	// Signal that all artists are set
 	allArtists <- struct{}{}
+
 	return nil
 }
 
@@ -199,33 +218,69 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 	return res, nil
 }
 
-// Function to geocode a location using the Google Maps API
-func (r *ResponseData) GeocodeLocation(location string) (float64, float64, error) {
+// Function to AddCoordinates using the Google Maps API
+func (r *ResponseData) AddCoordinates() error {
+	var wg sync.WaitGroup
 	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
-	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", location, apiKey)
+	errCh := make(chan error, 1)
 
-	resp, err := http.Get(url)
-	if err != nil {
-		return 0, 0, err
+	for _, artist := range r.Locations {
+		for _, location := range artist.Locations {
+			wg.Add(1)
+
+			go func(loc string) {
+				defer wg.Done()
+
+				url := fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", loc, apiKey)
+				resp, err := http.Get(url)
+				if err != nil {
+					errCh <- err
+					return
+				}
+				defer resp.Body.Close()
+
+				body, err := io.ReadAll(resp.Body)
+				if err != nil {
+					errCh <- err
+					return
+				}
+
+				var geocodeResponse GeocodeResponse
+				err = json.Unmarshal(body, &geocodeResponse)
+				if err != nil {
+					errCh <- err
+					return
+				}
+
+				if geocodeResponse.Status != "OK" {
+					errCh <- fmt.Errorf("geocoding failed: %s", geocodeResponse.Status)
+					return
+				}
+
+				// Prepare the GeoLocation data
+				geoLocation := GeoLocation{
+					Location:  loc,
+					Latitude:  geocodeResponse.Results[0].Geometry.Location.Lat,
+					Longitude: geocodeResponse.Results[0].Geometry.Location.Lng,
+				}
+
+				// Safely store the result using mutex
+				r.mu.Lock()
+				r.GeoLocations[loc] = geoLocation
+				r.mu.Unlock()
+
+			}(location)
+		}
 	}
-	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return 0, 0, err
+	// Wait for all goroutines to finish
+	wg.Wait()
+	close(errCh)
+
+	// Check for errors and return if any occurred
+	if len(errCh) > 0 {
+		return <-errCh
 	}
 
-	var geocodeResponse GeocodeResponse
-	err = json.Unmarshal(body, &geocodeResponse)
-	if err != nil {
-		return 0, 0, err
-	}
-
-	if geocodeResponse.Status != "OK" {
-		return 0, 0, fmt.Errorf("geocoding failed: %s", geocodeResponse.Status)
-	}
-
-	lat := geocodeResponse.Results[0].Geometry.Location.Lat
-	lng := geocodeResponse.Results[0].Geometry.Location.Lng
-	return lat, lng, nil
+	return nil
 }
