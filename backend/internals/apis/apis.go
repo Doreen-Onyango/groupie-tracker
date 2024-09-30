@@ -20,6 +20,7 @@ func (m *Apis) ApiRoutes() http.Handler {
 
 	mux.HandleFunc("/api/getallartists", m.repo.GetAllArtists)
 	mux.HandleFunc("/api/getartistbyid", m.repo.GetArtistById)
+	mux.HandleFunc("/api/getcoordinates", m.repo.GetConcertLocation)
 
 	return middlewares.CORSMiddleware(mux)
 }

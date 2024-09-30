@@ -164,4 +164,4 @@ export function fetchMap(id) {
 			});
 		})
 		.catch((error) => console.error("Error fetching concert data:", error));
-}
+};

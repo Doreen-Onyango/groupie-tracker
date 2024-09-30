@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 )
@@ -221,7 +220,8 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 // Function to AddCoordinates using the Google Maps API
 func (r *ResponseData) AddCoordinates() error {
 	var wg sync.WaitGroup
-	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
+	// apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
+	apiKey := "AIzaSyA4suaIQ9MD2C-s4fD0IzxWs3Xb0BE9UNc"
 	errCh := make(chan error, 1)
 
 	for _, artist := range r.Locations {
