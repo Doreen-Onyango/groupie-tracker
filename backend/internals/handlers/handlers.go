@@ -78,7 +78,7 @@ func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
 // API handler to get artist concert locations with geocoding
 func (m *Repo) GetConcertLocation(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
-		Request string `json:"artist_id"`
+		Request string `json:"location"`
 	}
 
 	err := m.res.ReadJSON(w, r, &requestData)

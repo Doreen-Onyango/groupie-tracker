@@ -36,6 +36,8 @@ const fetchData = async (endpoint, bodyData = {}) => {
 export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
+export const getCoordinates = () =>
+	fetchData("getcoordinates", { location: "lyon" });
 
 export function controlFromSlider(
 	fromSlider,
@@ -136,32 +138,3 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
 export function sortById(items) {
 	return items.sort((a, b) => a.id - b.id);
 }
-
-export function fetchMap(id) {
-	const map = new google.maps.Map(document.getElementById("map"), {
-		zoom: 4,
-		center: { lat: 39.8283, lng: -98.5795 }, // Center of the USA
-	});
-
-	// Fetch the concert locations with lat/lng from the backend
-	fetch(`/api/artist/concerts?artist_id=${id}`)
-		.then((response) => response.json())
-		.then((data) => {
-			data.concerts.forEach((concert) => {
-				const marker = new google.maps.Marker({
-					map: map,
-					position: { lat: concert.latitude, lng: concert.longitude },
-					title: concert.location,
-				});
-
-				const infoWindow = new google.maps.InfoWindow({
-					content: `<h3>${concert.location}</h3><p>Date: ${concert.date}</p>`,
-				});
-
-				marker.addListener("click", () => {
-					infoWindow.open(map, marker);
-				});
-			});
-		})
-		.catch((error) => console.error("Error fetching concert data:", error));
-};

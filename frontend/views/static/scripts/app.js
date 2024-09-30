@@ -7,6 +7,7 @@ import {
 	controlToSlider,
 	controlFromSlider,
 	sortById,
+	getCoordinates,
 } from "/static/scripts/helpers.js";
 import { renderAllArtists, showModal } from "/static/scripts/renders.js";
 
@@ -56,6 +57,11 @@ ArtistApp.prototype.initialize = async function () {
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.allArtistDetails = await this.fetchAllArtistDetails();
+	this.locationData = await getCoordinates().then((location) => {
+		if (location) {
+			console.log("Geocoded data:", location);
+		}
+	});
 
 	// Calculate and set year ranges
 	this.calculateMinMaxYears(this.artistsData.data);
