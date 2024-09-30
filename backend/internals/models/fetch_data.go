@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 )
@@ -220,15 +221,14 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 // Function to AddCoordinates using the Google Maps API
 func (r *ResponseData) AddCoordinates() error {
 	var wg sync.WaitGroup
-	// apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
-	apiKey := "AIzaSyA4suaIQ9MD2C-s4fD0IzxWs3Xb0BE9UNc"
+	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY") // Use the env variable
 	errCh := make(chan error, 1)
 
-	for _, artist := range r.Locations {
+	for key, artist := range r.Locations {
 		for _, location := range artist.Locations {
 			wg.Add(1)
 
-			go func(loc string) {
+			go func(loc, artistID string) {
 				defer wg.Done()
 
 				url := fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", loc, apiKey)
@@ -266,10 +266,11 @@ func (r *ResponseData) AddCoordinates() error {
 
 				// Safely store the result using mutex
 				r.mu.Lock()
-				r.GeoLocations[loc] = geoLocation
+				// Append the location to the slice of GeoLocations for this artist
+				r.GeoLocations[artistID] = append(r.GeoLocations[artistID], geoLocation)
 				r.mu.Unlock()
 
-			}(location)
+			}(location, key)
 		}
 	}
 
@@ -286,13 +287,13 @@ func (r *ResponseData) AddCoordinates() error {
 }
 
 // Method to get the coordinates of a specific location
-func (r *ResponseData) GetCoordinates(location string) (GeoLocation, error) {
+func (r *ResponseData) GetCoordinates(location string) ([]GeoLocation, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
 	geoLocation, exists := r.GeoLocations[location]
 	if !exists {
-		return GeoLocation{}, fmt.Errorf("location not found")
+		return []GeoLocation{}, fmt.Errorf("location not found")
 	}
 
 	return geoLocation, nil

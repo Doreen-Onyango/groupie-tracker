@@ -163,10 +163,10 @@ func (a *Artist) UnmarshalJSON(data []byte) error {
 
 type ResponseData struct {
 	Artists      map[string]Artist
-	Locations    map[string]Locations   `json:"locations"`
-	Concerts     map[string]Concerts    `json:"concertDates"`
-	Relations    map[string]Relation    `json:"relations"`
-	GeoLocations map[string]GeoLocation `json:"geoLocation"`
+	Locations    map[string]Locations     `json:"locations"`
+	Concerts     map[string]Concerts      `json:"concertDates"`
+	Relations    map[string]Relation      `json:"relations"`
+	GeoLocations map[string][]GeoLocation `json:"geoLocation"`
 	mu           sync.RWMutex
 }
 
@@ -176,7 +176,7 @@ func NewResponseData() *ResponseData {
 		Locations:    make(map[string]Locations),
 		Concerts:     make(map[string]Concerts),
 		Relations:    make(map[string]Relation),
-		GeoLocations: make(map[string]GeoLocation),
+		GeoLocations: make(map[string][]GeoLocation),
 	}
 }
 
