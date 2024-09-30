@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -30,7 +31,8 @@ func AppState() *App {
 		}
 
 		// Load the .env file
-		err := LoadEnv(".env")
+		envPath := GetProjectRoute(".env")
+		err := LoadEnv(envPath)
 		if err != nil {
 			log.Fatalf("Error loading .env file: %v", err)
 		}
@@ -74,4 +76,17 @@ func LoadEnv(filename string) error {
 	}
 
 	return nil
+}
+
+// getProjectRoute returns the project root path and joins it with the provided paths.
+func GetProjectRoute(paths ...string) string {
+	cwd, _ := os.Getwd()
+	baseDir := cwd
+	if strings.HasSuffix(baseDir, "/cmd") || strings.HasSuffix(baseDir, "/tests") {
+		baseDir = filepath.Join(cwd, "../../")
+	} else {
+		baseDir = filepath.Join(cwd, "../")
+	}
+	allPaths := append([]string{baseDir}, paths...)
+	return filepath.Join(allPaths...)
 }
