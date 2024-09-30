@@ -221,7 +221,7 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 // Function to AddCoordinates using the Google Maps API
 func (r *ResponseData) AddCoordinates() error {
 	var wg sync.WaitGroup
-	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY") // Use the env variable
+	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
 	errCh := make(chan error, 1)
 
 	for key, artist := range r.Locations {
