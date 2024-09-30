@@ -57,11 +57,6 @@ ArtistApp.prototype.initialize = async function () {
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.allArtistDetails = await this.fetchAllArtistDetails();
-	this.locationData = await getCoordinates().then((location) => {
-		if (location) {
-			console.log("Geocoded data:", location);
-		}
-	});
 
 	// Calculate and set year ranges
 	this.calculateMinMaxYears(this.artistsData.data);
@@ -78,6 +73,8 @@ ArtistApp.prototype.fetchAllArtistDetails = async function () {
 	const artistDetails = await Promise.all(
 		this.artistsData.data.map(async (artist) => {
 			const data = await getArtistById(artist.id);
+			const locations = await getCoordinates(artist.id);
+			console.log(locations);
 			return data;
 		})
 	);

@@ -37,7 +37,7 @@ export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
 export const getCoordinates = () =>
-	fetchData("getcoordinates", { location: "lyon" });
+	fetchData("getcoordinates", { artist_id: id });
 
 export function controlFromSlider(
 	fromSlider,
