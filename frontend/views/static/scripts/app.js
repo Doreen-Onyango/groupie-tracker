@@ -544,7 +544,7 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 	);
 
 	if (artistData) {
-		showModal(artistData, artistData.geoLocations);
+		showModal(artistData);
 	} else {
 		console.error("Artist data not found.");
 	}
