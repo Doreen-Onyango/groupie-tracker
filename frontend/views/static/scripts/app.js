@@ -56,7 +56,10 @@ ArtistApp.prototype.initialize = async function () {
 
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
-	this.allArtistDetails = await this.fetchAllArtistDetails();
+
+	const { allArtistDetails, locations } = await this.fetchAllArtistDetails();
+	this.allArtistDetails = allArtistDetails;
+	this.locations = locations;
 
 	// Calculate and set year ranges
 	this.calculateMinMaxYears(this.artistsData.data);
@@ -74,8 +77,7 @@ ArtistApp.prototype.fetchAllArtistDetails = async function () {
 		this.artistsData.data.map(async (artist) => {
 			const data = await getArtistById(artist.id);
 			const locations = await getCoordinates(artist.id);
-			console.log(locations);
-			return data;
+			return { data, locations };
 		})
 	);
 	return artistDetails;

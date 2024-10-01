@@ -259,6 +259,7 @@ func (r *ResponseData) AddCoordinates() error {
 
 				// Prepare the GeoLocation data
 				geoLocation := GeoLocation{
+					ArtistID:  artistID,
 					Location:  loc,
 					Latitude:  geocodeResponse.Results[0].Geometry.Location.Lat,
 					Longitude: geocodeResponse.Results[0].Geometry.Location.Lng,

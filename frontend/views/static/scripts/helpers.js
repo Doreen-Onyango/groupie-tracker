@@ -36,7 +36,7 @@ const fetchData = async (endpoint, bodyData = {}) => {
 export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
-export const getCoordinates = () =>
+export const getCoordinates = (id) =>
 	fetchData("getcoordinates", { artist_id: id });
 
 export function controlFromSlider(
