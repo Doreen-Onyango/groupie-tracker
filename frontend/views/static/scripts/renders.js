@@ -50,6 +50,7 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
  * @param {Object} artistData - Contains details about the artist and associated data
  */
 export function showModal(artistData) {
+	console.log(artistData);
 	const { data, message, error } = artistData;
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");

@@ -57,9 +57,14 @@ ArtistApp.prototype.initialize = async function () {
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 
-	const { allArtistDetails, locations } = await this.fetchAllArtistDetails();
-	this.allArtistDetails = allArtistDetails;
-	this.locations = locations;
+	// Fetch artist details and geolocation data
+	const artistDetails = await this.fetchAllArtistDetails();
+
+	// Merge artist data and geolocation into a single object for each artist
+	this.allArtistDetails = artistDetails.map((detail) => ({
+		...detail.artistData,
+		geoLocations: detail.geoLocations,
+	}));
 
 	// Calculate and set year ranges
 	this.calculateMinMaxYears(this.artistsData.data);
@@ -75,9 +80,9 @@ ArtistApp.prototype.initialize = async function () {
 ArtistApp.prototype.fetchAllArtistDetails = async function () {
 	const artistDetails = await Promise.all(
 		this.artistsData.data.map(async (artist) => {
-			const data = await getArtistById(artist.id);
-			const locations = await getCoordinates(artist.id);
-			return { data, locations };
+			const artistData = await getArtistById(artist.id);
+			const geoLocations = await getCoordinates(artist.id);
+			return { artistData, geoLocations };
 		})
 	);
 	return artistDetails;
@@ -533,8 +538,16 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 		.getAttribute("data-artist-id");
 	if (!artistId) return;
 
-	const data = await getArtistById(artistId);
-	showModal(data);
+	// Find the artist details in `allArtistDetails`
+	const artistData = this.allArtistDetails.find(
+		(artist) => artist.data.artist.id === artistId
+	);
+
+	if (artistData) {
+		showModal(artistData, artistData.geoLocations);
+	} else {
+		console.error("Artist data not found.");
+	}
 };
 
 /**
