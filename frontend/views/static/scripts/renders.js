@@ -138,23 +138,26 @@ function generateArtistDetailsHTML(data, geoLocations) {
 
 			<p><strong>GeoLocations:</strong></p>
 			<div id="map" style="width: 100%; height: 400px;"></div>
-
-			${geoLocations
-				.map(
-					(loc) => `
-						<gmp-map 
-							center="${loc.latitude},${loc.longitude}" 
-							zoom="4" 
-							map-id="DEMO_MAP_ID"
-							style="width: 100%; height: 400px;"
-						>
-							<gmp-advanced-marker 
-								position="${loc.latitude},${loc.longitude}" 
-								title="${formatLocation(loc.location)}"
-							></gmp-advanced-marker>
-						</gmp-map>`
-				)
-				.join("")}
+			<gmp-map 
+				 center="${
+						geoLocations.length > 0
+							? `${geoLocations[0].latitude},${geoLocations[0].longitude}`
+							: "0,0"
+					}"
+				zoom="2" 
+				map-id="DEMO_MAP_ID"
+				style="width: 100%; height: 400px;"
+				>
+					${geoLocations
+						.map(
+							(loc) => `
+									<gmp-advanced-marker 
+										position="${loc.latitude},${loc.longitude}" 
+										title="${formatLocation(loc.location)}"
+									></gmp-advanced-marker>`
+						)
+						.join("")}
+			</gmp-map>				
 		</div>`;
 }
 
