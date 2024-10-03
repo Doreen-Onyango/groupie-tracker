@@ -143,53 +143,59 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
 
-	let filteredData = [...this.artistsData.data];
 	let accumulatedResults = [];
+	if (activeQueries.length === 0 || activeQueries.length === undefined)
+		this.filteredData = [...this.artistsData.data];
 
 	// search bar filters
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
-			const result = this.applySearchByConcertFilter(filteredData, query);
+			const result = this.applySearchByConcertFilter(this.filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
 
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
-			const result = this.applySearchByNameFilter(filteredData, query);
+			const result = this.applySearchByNameFilter(this.filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
 
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
-			const result = this.applySearchByMembersFilter(filteredData, query);
+			const result = this.applySearchByMembersFilter(this.filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
 
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
-			const result = this.applySearchByAlbumReleaseFilter(filteredData, query);
+			const result = this.applySearchByAlbumReleaseFilter(
+				this.filteredData,
+				query
+			);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
 
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
-			const result = this.applySearchByCreationDateFilter(filteredData, query);
+			const result = this.applySearchByCreationDateFilter(
+				this.filteredData,
+				query
+			);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
 
 	if (accumulatedResults.length > 0 && this.activeQueries.length > 0) {
-		filteredData = accumulatedResults;
+		this.filteredData = accumulatedResults;
 	}
+	this.filteredData = this.applyMembersFilter(this.filteredData);
+	this.filteredData = this.applyRangeFilters(this.filteredData);
 
-	filteredData = this.applyMembersFilter(filteredData);
-	filteredData = this.applyRangeFilters(filteredData);
-
-	this.renderFilteredData(filteredData);
+	this.renderFilteredData(this.filteredData);
 };
 
 /**
@@ -873,6 +879,9 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.toSlider1.value = this.domElements.toSlider1.max;
 	this.domElements.fromSlider2.value = this.domElements.fromSlider2.min;
 	this.domElements.toSlider2.value = this.domElements.toSlider2.max;
+
+	// Reset data
+	this.filteredData = [...this.artistsData.data];
 
 	// Reset tooltips and slider visuals
 	setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
