@@ -163,6 +163,13 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 
 	if (activeQueries.length > 0) {
 		activeQueries.forEach((query) => {
+			const result = this.applySearchByMembersFilter(filteredData, query);
+			accumulatedResults = [...accumulatedResults, ...result];
+		});
+	}
+
+	if (activeQueries.length > 0) {
+		activeQueries.forEach((query) => {
 			const result = this.applySearchByAlbumReleaseFilter(filteredData, query);
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
@@ -314,6 +321,24 @@ ArtistApp.prototype.applySearchByNameFilter = function (
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
 	});
+};
+
+/**
+ * Apply search by members filter.
+ * @param {Array} filteredData - The current filtered artist data.
+ * @param {string} nameQuery - The search query for the member name.
+ * @returns {Array} - The data filtered by artist members.
+ */
+ArtistApp.prototype.applySearchByMembersFilter = function (
+	filteredData,
+	nameQuery
+) {
+	// Filter the data by checking if any member of the artist matches the query
+	return filteredData.filter((artist) =>
+		artist.members.some((member) =>
+			member.toLowerCase().includes(nameQuery.toLowerCase())
+		)
+	);
 };
 
 /**
