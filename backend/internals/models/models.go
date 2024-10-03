@@ -180,6 +180,7 @@ func NewResponseData() *ResponseData {
 	}
 }
 
+// Google api response structure
 type GeocodeResponse struct {
 	Results []struct {
 		Geometry struct {
@@ -192,7 +193,7 @@ type GeocodeResponse struct {
 	Status string `json:"status"`
 }
 
-// GeoLocation struct with geolocation
+// GeoLocation struct with geolocation data
 type GeoLocation struct {
 	ArtistID  string  `json:"id"`
 	Location  string  `json:"location"`
