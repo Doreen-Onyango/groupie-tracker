@@ -144,8 +144,8 @@ function generateArtistDetailsHTML(data, geoLocations) {
 							? `${geoLocations[0].latitude},${geoLocations[0].longitude}`
 							: "0,0"
 					}"
-				zoom="2" 
-				map-id="DEMO_MAP_ID"
+				zoom="4" 
+				map-id="ARTIST_LOCATIONS"
 				style="width: 100%; height: 400px;"
 				>
 					${geoLocations
