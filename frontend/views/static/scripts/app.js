@@ -566,16 +566,28 @@ ArtistApp.prototype.applyMembersFilter = function (filteredData) {
 };
 
 /**
- * Renders the filtered data
- * @param {Array} filteredData - the current filtered artist data
+ * Removes duplicate artist data and renders the filtered data.
+ * @param {Array} filteredData - The current filtered artist data.
  */
 ArtistApp.prototype.renderFilteredData = function (filteredData) {
+	const uniqueArtists = [];
+	const seenIds = new Set();
+
+	filteredData.forEach((artist) => {
+		if (!seenIds.has(artist.id)) {
+			uniqueArtists.push(artist);
+			seenIds.add(artist.id);
+		}
+	});
+
+	// Prepare the data object with deduplicated artists
 	const data = {
-		data: filteredData,
+		data: uniqueArtists,
 		message: this.artistsData.message,
 		error: this.artistsData.error,
 	};
 
+	// Render the unique artist data
 	renderAllArtists(data, sortById);
 };
 
