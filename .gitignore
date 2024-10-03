@@ -1,3 +1,5 @@
 # build files
 *tmp
 .env
+
+# Todo: ignore build files
