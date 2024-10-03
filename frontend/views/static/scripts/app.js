@@ -33,6 +33,7 @@ ArtistApp.prototype.initialize = async function () {
 		creationDateSuggestions: document.getElementById("creationDateSuggestions"),
 		searchByAlbumRelease: document.getElementById("searchByAlbumRelease"),
 		albumReleaseSuggestions: document.getElementById("albumReleaseSuggestions"),
+		membersSuggestions: document.getElementById("membersSuggestions"),
 		searchSummary: document.getElementById("searchSummary"),
 		searchUnified: document.getElementById("searchUnified"),
 		unifiedSuggestions: document.getElementById("unifiedSuggestions"),
@@ -52,6 +53,7 @@ ArtistApp.prototype.initialize = async function () {
 
 		// hidden data fields
 		searchByName: document.getElementById("searchByName"),
+		searchByMembers: document.getElementById("searchByMembers"),
 	};
 
 	this.artistsData = await getAllArtists();
@@ -202,10 +204,11 @@ ArtistApp.prototype.applyRangeFilters = function (data) {
  */
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase().trim();
-	this.handleNameSearchInput(query);
-	this.handleConcertSearchInput(query);
 	this.handleCreationDateSearchInput(query);
 	this.handleAlbumReleaseSearchInput(query);
+	this.handleConcertSearchInput(query);
+	this.handleMembersSearchInput(query);
+	this.handleNameSearchInput(query);
 };
 
 /**
@@ -332,6 +335,33 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 		: "none";
 
 	this.addSuggestionClick("nameSuggestions", "searchByName");
+};
+
+/**
+ * Handles input event for searching by artist members.
+ * @param {string} query - The search query entered by the user.
+ */
+ArtistApp.prototype.handleMembersSearchInput = function (query) {
+	// Flatten the members from all artists and filter by the search query
+	const membersSuggestions = this.artistsData.data
+		.flatMap((artist) =>
+			artist.members.filter((member) =>
+				member.toLowerCase().includes(query.toLowerCase())
+			)
+		)
+		.map(
+			(member) =>
+				`<div class="suggestion-item" data-members="${member}">${member}</div>`
+		)
+		.join("");
+
+	// Update the suggestions container with the filtered results
+	this.domElements.membersSuggestions.innerHTML = membersSuggestions;
+	this.domElements.membersSuggestions.style.display = membersSuggestions
+		? "block"
+		: "none";
+
+	this.addSuggestionClick("membersSuggestions", "searchByMembers");
 };
 
 /**
