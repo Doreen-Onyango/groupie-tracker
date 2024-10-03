@@ -428,6 +428,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 	const inputField = this.domElements[inputElementId];
 	const attributeMapping = {
 		searchByName: "data-name",
+		searchByMembers: "data-members",
 		searchByConcert: "data-location",
 		searchByCreationDate: "data-creationdate",
 		searchByAlbumRelease: "data-albumRelease",
