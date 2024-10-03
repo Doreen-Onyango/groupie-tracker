@@ -88,43 +88,35 @@ func (r *ResponseData) processRelations(id string, data []byte, firstErr *error)
 }
 
 func (r *ResponseData) AddArtist(api *MainApi) error {
-	// Fetch artist data from the API
 	data, err := api.fetchData("artists")
 	if err != nil {
 		instance.Err = err
 		return fmt.Errorf("no internet connection %v", err)
 	}
 
-	// Unmarshal the data into the artists slice
 	var artists []Artist
 	if err := json.Unmarshal(data, &artists); err != nil {
 		return fmt.Errorf("oops! connection problem")
 	}
 
-	// Lock the response data to safely add artists
 	r.mu.Lock()
 	for _, artist := range artists {
 		r.Artists[artist.ID] = artist
 	}
 	r.mu.Unlock()
 
-	// Use a WaitGroup to ensure that AddCoordinates() only runs after SetData() is complete
 	var wg sync.WaitGroup
-	wg.Add(1) // Add a counter for SetData
+	wg.Add(1)
 
-	// Run SetData(api) in a goroutine
 	go func() {
-		defer wg.Done() // Mark the goroutine as done when finished
+		defer wg.Done()
 		r.SetData(api)
 	}()
 
-	// Once SetData completes, run AddCoordinates
 	go func() {
-		wg.Wait() // Wait for SetData to complete
+		wg.Wait()
 		r.AddCoordinates()
 	}()
-
-	// Signal that all artists are set
 	allArtists <- struct{}{}
 
 	return nil
@@ -257,7 +249,6 @@ func (r *ResponseData) AddCoordinates() error {
 					return
 				}
 
-				// Prepare the GeoLocation data
 				geoLocation := GeoLocation{
 					ArtistID:  artistID,
 					Location:  loc,
@@ -265,9 +256,7 @@ func (r *ResponseData) AddCoordinates() error {
 					Longitude: geocodeResponse.Results[0].Geometry.Location.Lng,
 				}
 
-				// Safely store the result using mutex
 				r.mu.Lock()
-				// Append the location to the slice of GeoLocations for this artist
 				r.GeoLocations[artistID] = append(r.GeoLocations[artistID], geoLocation)
 				r.mu.Unlock()
 
@@ -275,11 +264,9 @@ func (r *ResponseData) AddCoordinates() error {
 		}
 	}
 
-	// Wait for all goroutines to finish
 	wg.Wait()
 	close(errCh)
 
-	// Check for errors and return if any occurred
 	if len(errCh) > 0 {
 		return <-errCh
 	}
