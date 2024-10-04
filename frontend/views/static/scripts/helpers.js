@@ -138,3 +138,28 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
 export function sortById(items) {
 	return items.sort((a, b) => a.id - b.id);
 }
+
+// TODO: set data change listeners
+
+// // Getter and Setter for filteredData
+// get filteredData() {
+// 	return this._filteredData;
+// }
+
+// set filteredData(value) {
+// 	this._filteredData = value;
+// 	// Automatically trigger calculation when data is updated
+// 	this.calculateMinMaxYears(); // This is where the calculation is triggered
+// }
+
+// data = new Proxy([...this.artistsData.data], {
+// 	set: (target, property, value) => {
+// 		target[property] = value;
+// 		// Ensure calculateMinMaxYears is only called when the array is modified
+// 		if (property === "length" || property in target) {
+// 			this.calculateMinMaxYears(); // Recalculate year ranges
+// 			this.renderFilteredData(target); // Ensure data is re-rendered
+// 		}
+// 		return true;
+// 	},
+// });
