@@ -33,7 +33,7 @@
 
 <div class="artists">
 	<h1>Artists</h1>
-	{{block "searchFilter" .}}{{end}}
+	{{block "searchBar" .}}{{end}} {{block "searchSummary" .}}{{end}}
 	<!-- filters -->
 	{{ block "membersFilter" .}}{{end}} {{ block "rangeFilter" .}} {{end}}
 	<!-- end -->
@@ -49,6 +49,12 @@
 	<script
 		type="module"
 		src="/static/scripts/app.js"
+	></script>
+	<!-- google map secured api -->
+	<script
+		async
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq5mzpJrW8v5fuummRIScHEv3pY62iQ2g&callback=console.debug&libraries=maps,marker&v=beta"
+		defer
 	></script>
 	{{end}}
 </div>

@@ -56,6 +56,9 @@
 .range_firstAlbum::after,
 .range_concertDate::after {
 	content: "To"; /* "To" label */
+	position: absolute;
+	top: -25%;
+	right: 15%;
 }
 
 /* Existing styling for the main data label */
@@ -158,13 +161,53 @@ input[type="range"] {
 	z-index: -10;
 }
 
-.hidden {
-	display: none;
+.unified-suggestions {
+	display: flex;
+	flex-direction: column;
+	/* height: fit-content; */
+	overflow-y: auto;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
 }
 
-/* suggestions dropdown */
-.suggestions-container {
-	position: relative;
+.suggestion-category {
+	margin-bottom: 10px;
+}
+
+.suggestion-title {
+	font-weight: bold;
+	padding: 5px;
+	background-color: #f1f1f1;
+	border-bottom: 1px solid #ddd;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.suggestion-items {
+	max-height: 150px;
+	overflow-y: auto;
+}
+
+.suggestion-item {
+	padding: 10px;
+	cursor: pointer;
+	border-bottom: 1px solid #ddd;
+}
+
+.suggestion-item:hover {
+	background-color: #eaeaea;
+}
+
+.unified-suggestions::-webkit-scrollbar {
+	width: 8px;
+}
+
+.unified-suggestions::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
 }
 
 .suggestions-dropdown {
@@ -177,15 +220,39 @@ input[type="range"] {
 	display: none; /* Initially hidden */
 }
 
-.suggestion-title {
-	position: relative;
+/* .searchSummaryContainer {
+	width:min-content;
+} */
+
+.searchSummary {
+	display: flex;
+	font-size: 12px;
+	padding-right: 2%;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
 }
 
-.suggestion-item {
-	padding: 8px;
+.searchSummaryItem {
+	display: flex;
+	align-items: center;
+	background-color: #f0f0f0;
+	padding: 5px 10px;
+	border-radius: 5px;
+}
+
+.searchSummaryItem p {
+	margin: 0;
+	padding-right: 5px;
+}
+
+.closeIcon {
 	cursor: pointer;
+	color: red;
+	font-weight: bold;
+	margin-left: 5px;
 }
 
-.suggestion-item:hover {
-	background-color: #aaa;
+.hidden {
+	display: none;
 }

@@ -1,7 +1,8 @@
-<!-- search filters -->
-{{define "searchFilter"}}
+<!-- search bar -->
+{{define "searchBar"}}
+<!-- data placeholders -->
+
 <!-- searchByName -->
-<label for="searchByName">Search By Name</label>
 <input
 	name="searchByName"
 	type="text"
@@ -9,97 +10,123 @@
 	placeholder="Search for artists..."
 	class="hidden"
 />
+<!-- end of searchByName -->
 
-<label for="searchUnified">Unified Search</label>
+<!-- searchByMembers -->
 <input
-	name="searchUnified"
+	name="searchByMembers"
 	type="text"
-	id="searchUnified"
-	placeholder="Search by name, concert, creation date, or album release..."
+	id="searchByMembers"
+	placeholder="Search for members..."
+	class="hidden"
 />
-<div class="suggestions-container">
-	<div
-		id="unifiedSuggestions"
-		class="suggestions-dropdown"
-	></div>
-</div>
+<!-- end of searchByMembers -->
 
-<div
-	class="searchSummary"
-	id="searchSummary"
->
-	search summary
-</div>
+<!-- searchByConcert -->
+<input
+	name="searchByConcert"
+	type="text"
+	id="searchByConcert"
+	placeholder="Search for concerts..."
+	class="hidden"
+/>
+<!-- end of searchByConcert -->
 
-<form id="searchForm">
-	<!-- searchByConcert -->
-	<label for="searchByConcert">Search By Concert</label>
-	<input
-		name="searchByConcert"
-		type="text"
-		id="searchByConcert"
-		placeholder="Search for concerts..."
-		class="hidden"
-	/>
-</form>
-
-<!-- search by creation date -->
-<label for="searchByCreationDate">Search By Creation Date</label>
+<!-- searchByCreation date -->
 <input
 	name="searchByCreationDate"
 	type="text"
 	id="searchByCreationDate"
 	placeholder="Search by creation date..."
+	class="hidden"
 />
+<!-- end of searchByCreationDate -->
 
-<div
-	id="creationDateSuggestions"
-	class="suggestions-dropdown"
->
-	<!-- Creation date suggestions with data-creationdate attribute -->
-	<div
-		class="suggestion-item"
-		data-creationdate="1990"
-	>
-		1990
-	</div>
-	<div
-		class="suggestion-item"
-		data-creationdate="2000"
-	>
-		2000
-	</div>
-</div>
-
-<!-- search by album release -->
-<label for="searchByAlbumRelease">Search By Album Release</label>
+<!-- searchByAlbumRelease -->
 <input
 	name="searchByAlbumRelease"
 	type="text"
 	id="searchByAlbumRelease"
 	placeholder="Search by album release..."
+	class="hidden"
 />
+<!-- end of searchByAlbumRelease -->
+<!-- end of data placeholders -->
+
+<!-- UnifiedSearch -->
+<label for="searchUnified">Unified Search</label>
+<input
+	id="searchUnified"
+	type="text"
+	placeholder="Search for artists, concerts, performed locations and album release...."
+/>
+<!-- end of UnifiedSearch -->
+
+<!-- Suggestions dropdowns for Unified search -->
 <div
-	id="albumReleaseSuggestions"
-	class="suggestions-dropdown"
+	class="unified-suggestions hidden"
+	id="unifiedSuggestions"
 >
-	<!-- Album release suggestions with data-albumrelease attribute -->
-	<div
-		class="suggestion-item"
-		data-albumrelease="1995"
-	>
-		1995
+	<!-- artist nameSuggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by Artist Name</p>
+		<div
+			class="suggestion-items"
+			id="nameSuggestions"
+		></div>
 	</div>
-	<div
-		class="suggestion-item"
-		data-albumrelease="2005"
-	>
-		2005
+
+	<!-- artist membersSuggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by members</p>
+		<div
+			class="suggestion-items"
+			id="membersSuggestions"
+		></div>
+	</div>
+
+	<!-- concertSuggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by Concerts</p>
+		<div
+			class="suggestion-items"
+			id="concertSuggestions"
+		></div>
+	</div>
+
+	<!-- creationDateSuggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by Creation Date</p>
+		<div
+			class="suggestion-items"
+			id="creationDateSuggestions"
+		></div>
+	</div>
+
+	<!-- albumReleaseSuggestions -->
+	<div class="suggestion-category">
+		<p class="suggestion-title">Search by Album Release</p>
+		<div
+			class="suggestion-items"
+			id="albumReleaseSuggestions"
+		></div>
 	</div>
 </div>
-
+<!-- end of suggestions dropdowns for Unified search -->
 {{end}}
-<!-- end of search filter -->
+<!-- end of search bar -->
+
+<!-- searchSummary -->
+{{define "searchSummary"}}
+<div class="searchSummaryContainer">
+	<p>search summary</p>
+	<div
+		class="searchSummary"
+		id="searchSummary"
+	></div>
+</div>
+{{end}}
+<!-- end of searchSummary -->
 
 <!-- members filter -->
 {{define "membersFilter"}}

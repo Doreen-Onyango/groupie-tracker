@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 )
@@ -104,19 +105,29 @@ func (r *ResponseData) AddArtist(api *MainApi) error {
 	}
 
 	r.mu.Lock()
-	defer r.mu.Unlock()
-
 	for _, artist := range artists {
 		r.Artists[artist.ID] = artist
 	}
+	r.mu.Unlock()
 
-	// set additional data and signal completion through channel
-	go r.SetData(api)
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		r.SetData(api)
+	}()
+
+	go func() {
+		wg.Wait()
+		r.AddCoordinates()
+	}()
 	allArtists <- struct{}{}
+
 	return nil
 }
 
-// process all artists in a concurrently using goroutines and 
+// process all artists in a concurrently using goroutines and
 // tracking their completion with a WaitGroup.
 func (r *ResponseData) SetData(api *MainApi) error {
 	var wg sync.WaitGroup
@@ -139,7 +150,7 @@ func (r *ResponseData) processArtist(id string, wg *sync.WaitGroup, api *MainApi
 	r.processUrl(id, artist.Relations, wg, api, firstErr)
 }
 
-//  categorizes the fetched data based on the URL content and processes it accordingly
+// categorizes the fetched data based on the URL content and processes it accordingly
 func (r *ResponseData) processUrl(id, url string, wg *sync.WaitGroup, api *MainApi, firstErr *error) {
 	wg.Add(1)
 	go func() {
@@ -207,4 +218,81 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 		return nil, fmt.Errorf("404 data not found %s", id)
 	}
 	return res, nil
+}
+
+// Function to AddCoordinates using the Google Maps API
+func (r *ResponseData) AddCoordinates() error {
+	var wg sync.WaitGroup
+	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
+	errCh := make(chan error, 1)
+
+	for key, artist := range r.Locations {
+		for _, location := range artist.Locations {
+			wg.Add(1)
+
+			go func(loc, artistID string) {
+				defer wg.Done()
+
+				url := fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", loc, apiKey)
+				resp, err := http.Get(url)
+				if err != nil {
+					errCh <- err
+					return
+				}
+				defer resp.Body.Close()
+
+				body, err := io.ReadAll(resp.Body)
+				if err != nil {
+					errCh <- err
+					return
+				}
+
+				var geocodeResponse GeocodeResponse
+				err = json.Unmarshal(body, &geocodeResponse)
+				if err != nil {
+					errCh <- err
+					return
+				}
+
+				if geocodeResponse.Status != "OK" {
+					errCh <- fmt.Errorf("geocoding failed: %s", geocodeResponse.Status)
+					return
+				}
+
+				geoLocation := GeoLocation{
+					ArtistID:  artistID,
+					Location:  loc,
+					Latitude:  geocodeResponse.Results[0].Geometry.Location.Lat,
+					Longitude: geocodeResponse.Results[0].Geometry.Location.Lng,
+				}
+
+				r.mu.Lock()
+				r.GeoLocations[artistID] = append(r.GeoLocations[artistID], geoLocation)
+				r.mu.Unlock()
+
+			}(location, key)
+		}
+	}
+
+	wg.Wait()
+	close(errCh)
+
+	if len(errCh) > 0 {
+		return <-errCh
+	}
+
+	return nil
+}
+
+// Method to get the coordinates of a specific location
+func (r *ResponseData) GetCoordinates(location string) ([]GeoLocation, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	geoLocation, exists := r.GeoLocations[location]
+	if !exists {
+		return []GeoLocation{}, fmt.Errorf("location not found")
+	}
+
+	return geoLocation, nil
 }
