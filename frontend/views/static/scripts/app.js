@@ -417,7 +417,16 @@ ArtistApp.prototype.applySearchByConcertFilter = function (
  * Handles input event for searching by concert.
  * @param {string} query - The search query entered by the user.
  */
-ArtistApp.prototype.handleConcertSearchInput = function (query) {
+ArtistApp.prototype.handleConcertSearchInput = function (data) {
+	const locQuery = data
+    .toLowerCase()
+    .replace(/,/g, "")
+    .trim();
+
+	const query = locQuery
+    .replace(/\s+/g, ",") // Replace all spaces with commas
+    .replace(/,/g, "-"); // Replace commas with hyphens
+
 	const concertSuggestions = this.allArtistDetails
 		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
 		.filter((location) => location.toLowerCase().includes(query))
