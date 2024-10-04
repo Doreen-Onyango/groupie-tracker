@@ -69,7 +69,7 @@ ArtistApp.prototype.initialize = async function () {
 	}));
 
 	// Calculate and set year ranges
-	this.calculateMinMaxYears(this.artistsData.data);
+	this.calculateMinMaxYears();
 
 	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
@@ -628,8 +628,8 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
  * Calculates the minimum and maximum years for creation dates and album releases
  * @param {Array} artistData - The array of artist data
  */
-ArtistApp.prototype.calculateMinMaxYears = function (artistData) {
-	if (!artistData || artistData.length === 0) return;
+ArtistApp.prototype.calculateMinMaxYears = function () {
+	if (!this.filteredData || this.filteredData.length === 0) return;
 
 	this.yearRanges = {
 		minCreationDate: Infinity,
@@ -639,7 +639,7 @@ ArtistApp.prototype.calculateMinMaxYears = function (artistData) {
 	};
 
 	// Loop through artist data to calculate min/max values
-	artistData.forEach((artist) => {
+	this.filteredData.forEach((artist) => {
 		const creationYear = artist.creationDate;
 		const albumYear = artist.firstAlbum
 			? parseInt(artist.firstAlbum.split("-").pop())
