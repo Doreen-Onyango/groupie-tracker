@@ -488,7 +488,14 @@ ArtistApp.prototype.addSuggestionClick = function (
 					inputField.value = value;
 					suggestionBox.style.display = "none";
 
-					this.activeQueries.push(value.toLowerCase().trim());
+					const lowerCaseValue = value.toLowerCase().trim();
+					if (!this.activeQueries.includes(lowerCaseValue)) {
+						this.activeQueries.push(lowerCaseValue);
+					} else {
+						this.applyAllFilters(this.activeQueries);
+						return;
+					}
+
 					this.applyAllFilters(this.activeQueries);
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
