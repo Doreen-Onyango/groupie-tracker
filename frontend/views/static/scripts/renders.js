@@ -57,13 +57,17 @@ export function showModal(artistData) {
 	// Extract geoLocations directly from data (assuming it's inside the data object)
 	const geoLocations = artistData.geoLocations.data || [];
 
+	setTimeout(() => {
+		initMap(geoLocations);
+	}, 300);
+
 	// Handle error state
 	artistDetailsSection.innerHTML = error
 		? `<div class="error-message">
 				<h2>Oops, there is a network issue!</h2>
 				<p>${message}</p>
 			</div>`
-		: generateArtistDetailsHTML(data, geoLocations);
+		: generateArtistDetailsHTML(data);
 
 	modal.classList.add("show");
 
@@ -84,7 +88,7 @@ export function showModal(artistData) {
  * @param {Array} geoLocations - The geolocation data associated with the artist.
  * @returns {string} - The generated HTML string.
  */
-function generateArtistDetailsHTML(data, geoLocations) {
+function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
 
 	return `
@@ -137,28 +141,51 @@ function generateArtistDetailsHTML(data, geoLocations) {
 			</ul>
 
 			<p><strong>GeoLocations:</strong></p>
-			<div id="map" style="width: 100%; height: 400px;"></div>
-			<gmp-map 
-				 center="${
-						geoLocations.length > 0
-							? `${geoLocations[0].latitude},${geoLocations[0].longitude}`
-							: "0,0"
-					}"
-				zoom="4" 
-				map-id="ARTIST_LOCATIONS"
-				style="width: 100%; height: 400px;"
-				>
-					${geoLocations
-						.map(
-							(loc) => `
-									<gmp-advanced-marker 
-										position="${loc.latitude},${loc.longitude}" 
-										title="${formatLocation(loc.location)}"
-									></gmp-advanced-marker>`
-						)
-						.join("")}
-			</gmp-map>				
-		</div>`;
+			<div id="map" style="width: 100%; height: 400px;"></div>`;
+}
+
+function initMap(geoLocations) {
+	// Set the center of the map to the first location or default to (0,0)
+	const mapCenter =
+		geoLocations.length > 0
+			? { lat: geoLocations[0].latitude, lng: geoLocations[0].longitude }
+			: { lat: 0, lng: 0 };
+
+	// Initialize the map and attach it to the 'map' element
+	const map = new google.maps.Map(document.getElementById("map"), {
+		zoom: 4,
+		center: mapCenter,
+	});
+
+	// Add markers for each location
+	const markers = geoLocations.map((location) => {
+		return new google.maps.Marker({
+			position: { lat: location.latitude, lng: location.longitude },
+			map: map,
+			title: location.location,
+		});
+	});
+
+	// Create the path for the polyline based on locations
+	const pathCoordinates = geoLocations.map((location) => ({
+		lat: location.latitude,
+		lng: location.longitude,
+	}));
+
+	// Check if the pathCoordinates array has enough data to draw the polyline
+	if (pathCoordinates.length > 1) {
+		// Create and set the polyline on the map
+		const artistPath = new google.maps.Polyline({
+			path: pathCoordinates,
+			geodesic: true,
+			strokeColor: "#FF6347",
+			strokeOpacity: 1.0,
+			strokeWeight: 2,
+		});
+
+		// Display the polyline on the map
+		artistPath.setMap(map);
+	}
 }
 
 /**
