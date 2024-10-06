@@ -241,7 +241,9 @@ ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 		.filter((year) => year.toString().startsWith(query))
 		.map(
 			(year) =>
-				`<div class="suggestion-item" data-albumrelease="${year}">${year}</div>`
+				`<div class="suggestion-item" data-albumrelease="${year}" data-label="album released">
+					${year}
+				</div>`
 		)
 		.join("");
 
@@ -302,7 +304,9 @@ ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 		.filter((date) => date.toString().startsWith(query))
 		.map(
 			(date) =>
-				`<div class="suggestion-item" data-creationdate="${date}">${date}</div>`
+				`<div class="suggestion-item" data-creationdate="${date}" data-label="creation date">
+					${date}
+				</div>`
 		)
 		.join("");
 
@@ -356,7 +360,9 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 		.filter((artist) => artist.name.toLowerCase().includes(query))
 		.map(
 			(artist) =>
-				`<div class="suggestion-item" data-name="${artist.name}">${artist.name}</div>`
+				`<div class="suggestion-item" data-name="${artist.name}" data-label="artist name">
+					${artist.name}
+				</div>`
 		)
 		.join("");
 
@@ -382,7 +388,7 @@ ArtistApp.prototype.handleMembersSearchInput = function (query) {
 		)
 		.map(
 			(member) =>
-				`<div class="suggestion-item" data-members="${member}">${member}</div>`
+				`<div class="suggestion-item" data-members="${member}" data-label="member">${member}</div>`
 		)
 		.join("");
 
@@ -418,21 +424,18 @@ ArtistApp.prototype.applySearchByConcertFilter = function (
  * @param {string} query - The search query entered by the user.
  */
 ArtistApp.prototype.handleConcertSearchInput = function (data) {
-	const locQuery = data
-    .toLowerCase()
-    .replace(/,/g, "")
-    .trim();
+	const locQuery = data.toLowerCase().replace(/,/g, "").trim();
 
 	const query = locQuery
-    .replace(/\s+/g, ",") // Replace all spaces with commas
-    .replace(/,/g, "-"); // Replace commas with hyphens
+		.replace(/\s+/g, ",") // Replace all spaces with commas
+		.replace(/,/g, "-"); // Replace commas with hyphens
 
 	const concertSuggestions = this.allArtistDetails
 		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
 		.filter((location) => location.toLowerCase().includes(query))
 		.map(
 			(location) =>
-				`<div class="suggestion-item" data-location="${location}">${location
+				`<div class="suggestion-item" data-location="${location}" data-label="location">${location
 					.split("-")
 					.join(" ")}</div>`
 		)

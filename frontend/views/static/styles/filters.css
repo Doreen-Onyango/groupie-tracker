@@ -176,16 +176,6 @@ input[type="range"] {
 	margin-bottom: 10px;
 }
 
-.suggestion-title {
-	font-weight: bold;
-	padding: 5px;
-	background-color: #f1f1f1;
-	border-bottom: 1px solid #ddd;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-}
-
 .suggestion-items {
 	max-height: 150px;
 	overflow-y: auto;
@@ -195,6 +185,13 @@ input[type="range"] {
 	padding: 10px;
 	cursor: pointer;
 	border-bottom: 1px solid #ddd;
+}
+
+.suggestion-item[data-label]::after {
+	content: " - " attr(data-label);
+	color: #666;
+	font-size: 0.9em;
+	margin-left: 5px;
 }
 
 .suggestion-item:hover {
