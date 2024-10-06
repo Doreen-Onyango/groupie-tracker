@@ -144,57 +144,60 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
 
 	let accumulatedResults = [];
-	if (activeQueries.length === 0 || activeQueries.length === undefined)
+	if (activeQueries.length === 0 || activeQueries.length === undefined) {
 		this.filteredData = [...this.artistsData.data];
-
-	// search bar filters
-	if (activeQueries.length > 0) {
+	} else {
+		// Iterate over each query and apply the respective filter
 		activeQueries.forEach((query) => {
-			const result = this.applySearchByConcertFilter(this.filteredData, query);
+			let result = [];
+
+			switch (query.type) {
+				case "searchByConcert":
+					result = this.applySearchByConcertFilter(
+						this.filteredData,
+						query.value
+					);
+					break;
+				case "searchByName":
+					result = this.applySearchByNameFilter(this.filteredData, query.value);
+					break;
+				case "searchByMembers":
+					result = this.applySearchByMembersFilter(
+						this.filteredData,
+						query.value
+					);
+					break;
+				case "searchByAlbumRelease":
+					result = this.applySearchByAlbumReleaseFilter(
+						this.filteredData,
+						query.value
+					);
+					break;
+				case "searchByCreationDate":
+					result = this.applySearchByCreationDateFilter(
+						this.filteredData,
+						query.value
+					);
+					break;
+				default:
+					break;
+			}
+
+			// Accumulate results from each filter
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
 
-	if (activeQueries.length > 0) {
-		activeQueries.forEach((query) => {
-			const result = this.applySearchByNameFilter(this.filteredData, query);
-			accumulatedResults = [...accumulatedResults, ...result];
-		});
-	}
-
-	if (activeQueries.length > 0) {
-		activeQueries.forEach((query) => {
-			const result = this.applySearchByMembersFilter(this.filteredData, query);
-			accumulatedResults = [...accumulatedResults, ...result];
-		});
-	}
-
-	if (activeQueries.length > 0) {
-		activeQueries.forEach((query) => {
-			const result = this.applySearchByAlbumReleaseFilter(
-				this.filteredData,
-				query
-			);
-			accumulatedResults = [...accumulatedResults, ...result];
-		});
-	}
-
-	if (activeQueries.length > 0) {
-		activeQueries.forEach((query) => {
-			const result = this.applySearchByCreationDateFilter(
-				this.filteredData,
-				query
-			);
-			accumulatedResults = [...accumulatedResults, ...result];
-		});
-	}
-
-	if (accumulatedResults.length > 0 && this.activeQueries.length > 0) {
+	// If results exist after applying filters, update filteredData
+	if (accumulatedResults.length > 0) {
 		this.filteredData = accumulatedResults;
 	}
+
+	// Apply additional filters and render the results
 	this.filteredData = this.applyMembersFilter(this.filteredData);
 	this.filteredData = this.applyRangeFilters(this.filteredData);
 
+	// Finally, render the filtered data
 	this.renderFilteredData(this.filteredData);
 };
 
@@ -484,6 +487,21 @@ ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 };
 
 /**
+ * Updates or adds a new query to the active queries list
+ */
+ArtistApp.prototype.addQuery = function (type, value) {
+	const existingQueryIndex = this.activeQueries.findIndex(
+		(q) => q.type === type
+	);
+
+	if (existingQueryIndex === -1) {
+		this.activeQueries.push({ type, value });
+	} else {
+		this.activeQueries[existingQueryIndex].value = value;
+	}
+};
+
+/**
  * Adds click behavior for selecting a suggestion
  * @param {string} suggestionElementId - The ID of the suggestions dropdown
  * @param {string} inputElementId - The ID of the input field
@@ -513,14 +531,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					inputField.value = value;
 					suggestionBox.style.display = "none";
 
-					const lowerCaseValue = value.toLowerCase().trim();
-					if (!this.activeQueries.includes(lowerCaseValue)) {
-						this.activeQueries.push(lowerCaseValue);
-					} else {
-						this.applyAllFilters(this.activeQueries);
-						return;
-					}
-
+					this.addQuery(inputElementId, value.toLowerCase().trim());
 					this.applyAllFilters(this.activeQueries);
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
@@ -547,7 +558,7 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 
 	closeIcon.addEventListener("click", (e) => {
 		this.activeQueries = this.activeQueries.filter(
-			(query) => query.toLowerCase().trim() !== value.toLowerCase().trim()
+			(query) => query.value.toLowerCase().trim() !== value.toLowerCase().trim()
 		);
 		item.remove();
 		this.applyAllFilters(this.activeQueries);
