@@ -145,10 +145,12 @@ function generateArtistDetailsHTML(data) {
 }
 
 function initMap(geoLocations) {
+	const sortedLocations = sortByDate(geoLocations, "date");
+
 	// Set the center of the map to the first location or default to (0,0)
 	const mapCenter =
-		geoLocations.length > 0
-			? { lat: geoLocations[0].latitude, lng: geoLocations[0].longitude }
+		sortedLocations.length > 0
+			? { lat: sortedLocations[0].latitude, lng: sortedLocations[0].longitude }
 			: { lat: 0, lng: 0 };
 
 	// Initialize the map and attach it to the 'map' element
@@ -158,7 +160,7 @@ function initMap(geoLocations) {
 	});
 
 	// Add markers for each location
-	geoLocations.forEach((location) => {
+	sortedLocations.forEach((location) => {
 		new google.maps.Marker({
 			position: { lat: location.latitude, lng: location.longitude },
 			map: map,
@@ -167,7 +169,7 @@ function initMap(geoLocations) {
 	});
 
 	// Create the path for the polyline based on locations
-	const pathCoordinates = geoLocations.map((location) => ({
+	const pathCoordinates = sortedLocations.map((location) => ({
 		lat: location.latitude,
 		lng: location.longitude,
 	}));
@@ -194,6 +196,30 @@ function initMap(geoLocations) {
 		// Display the polyline on the map
 		artistPath.setMap(map);
 	}
+}
+
+/**
+ * Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
+ * @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
+ * @returns {string} - The date string in 'YYYY-MM-DD' format.
+ */
+function convertDateFormat(dateStr) {
+	const [day, month, year] = dateStr.split("-");
+	return `${year}-${month}-${day}`; // Return the date in 'YYYY-MM-DD' format
+}
+
+/**
+ * Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
+ * @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
+ * @param {string} dateProperty - The property name that holds the date value in each object.
+ * @returns {Array} - The sorted array of objects.
+ */
+function sortByDate(data, dateProperty) {
+	return data.sort((a, b) => {
+		const dateA = Date.parse(convertDateFormat(a[dateProperty]));
+		const dateB = Date.parse(convertDateFormat(b[dateProperty]));
+		return dateA - dateB; // Sort in ascending order (earliest to latest)
+	});
 }
 
 /**

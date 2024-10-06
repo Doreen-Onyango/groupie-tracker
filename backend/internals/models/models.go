@@ -197,9 +197,9 @@ type GeocodeResponse struct {
 
 // GeoLocation struct with geolocation data
 type GeoLocation struct {
-	ArtistID  string   `json:"id"`
-	Location  string   `json:"location"`
-	Latitude  float64  `json:"latitude"`
-	Longitude float64  `json:"longitude"`
-	Date      []string `json:"date"`
+	ArtistID  string  `json:"id"`
+	Location  string  `json:"location"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Date      string  `json:"date"`
 }
