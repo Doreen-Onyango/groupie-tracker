@@ -264,6 +264,7 @@ func (r *ResponseData) AddCoordinates() error {
 					Location:  loc,
 					Latitude:  geocodeResponse.Results[0].Geometry.Location.Lat,
 					Longitude: geocodeResponse.Results[0].Geometry.Location.Lng,
+					Date:      r.Relations[key].DatesLocations[loc],
 				}
 
 				r.mu.Lock()

@@ -19,7 +19,7 @@ type Concerts struct {
 	ConcertDates []string `json:"dates"`
 }
 
-//  handle various types for the ID and process concert dates, allowing for flexible and robust data handling
+// handle various types for the ID and process concert dates, allowing for flexible and robust data handling
 func (c *Concerts) UnmarshalJSON(data []byte) error {
 	var aux struct {
 		ID           interface{} `json:"id"`
@@ -50,7 +50,6 @@ func (c *Concerts) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
-
 
 type Relation struct {
 	ID             int                 `json:"id"`
@@ -172,7 +171,7 @@ type ResponseData struct {
 	mu           sync.RWMutex
 }
 
-// efficient data storage and retrieval for an application that likely deals with artists 
+// efficient data storage and retrieval for an application that likely deals with artists
 func NewResponseData() *ResponseData {
 	return &ResponseData{
 		Artists:      make(map[string]Artist),
@@ -198,8 +197,9 @@ type GeocodeResponse struct {
 
 // GeoLocation struct with geolocation data
 type GeoLocation struct {
-	ArtistID  string  `json:"id"`
-	Location  string  `json:"location"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
+	ArtistID  string   `json:"id"`
+	Location  string   `json:"location"`
+	Latitude  float64  `json:"latitude"`
+	Longitude float64  `json:"longitude"`
+	Date      []string `json:"date"`
 }
