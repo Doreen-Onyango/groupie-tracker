@@ -576,7 +576,10 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	item.className = "searchSummaryItem";
 
 	const itemText = document.createElement("p");
-	itemText.textContent = `${inputElementId}: ${value}`;
+	const splitId = inputElementId.split("By");
+	const type = splitId[splitId.length - 1];
+
+	itemText.textContent = `${type}: ${value}`;
 
 	// Create the close icon
 	const closeIcon = document.createElement("span");
