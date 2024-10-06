@@ -379,12 +379,24 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
  * @param {string} query - The search query entered by the user.
  */
 ArtistApp.prototype.handleMembersSearchInput = function (query) {
+	// track uniques to prevent duplicates
+	const uniqueMembers = new Set();
+
 	// Flatten the members from all artists and filter by the search query
 	const membersSuggestions = this.artistsData.data
 		.flatMap((artist) =>
-			artist.members.filter((member) =>
-				member.toLowerCase().includes(query.toLowerCase())
-			)
+			artist.members.filter((member) => {
+				const lowerCaseMember = member.toLowerCase();
+
+				if (
+					lowerCaseMember.includes(query.toLowerCase()) &&
+					!uniqueMembers.has(lowerCaseMember)
+				) {
+					uniqueMembers.add(lowerCaseMember);
+					return true;
+				}
+				return false;
+			})
 		)
 		.map(
 			(member) =>
@@ -424,11 +436,10 @@ ArtistApp.prototype.applySearchByConcertFilter = function (
  * @param {string} query - The search query entered by the user.
  */
 ArtistApp.prototype.handleConcertSearchInput = function (data) {
-	const locQuery = data.toLowerCase().replace(/,/g, "").trim();
-
-	const query = locQuery
-		.replace(/\s+/g, ",") // Replace all spaces with commas
-		.replace(/,/g, "-"); // Replace commas with hyphens
+	const query = data
+		.toLowerCase()
+		.replace(/[^a-z]+/g, "-")
+		.trim();
 
 	const concertSuggestions = this.allArtistDetails
 		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
