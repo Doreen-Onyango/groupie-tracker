@@ -561,6 +561,9 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 			(query) => query.value.toLowerCase().trim() !== value.toLowerCase().trim()
 		);
 		item.remove();
+
+		if (this.activeQueries.length < 1)
+			this.domElements.searchSummary.innerHTML = "";
 		this.applyAllFilters(this.activeQueries);
 	});
 
