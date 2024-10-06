@@ -147,43 +147,66 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (activeQueries.length === 0 || activeQueries.length === undefined) {
 		this.filteredData = [...this.artistsData.data];
 	} else {
-		// Iterate over each query and apply the respective filter
+		// Iterate over each query type and apply the respective filter for each value in the array
 		activeQueries.forEach((query) => {
 			let result = [];
 
 			switch (query.type) {
 				case "searchByConcert":
-					result = this.applySearchByConcertFilter(
-						this.filteredData,
-						query.value
-					);
+					// Apply filter for each concert value in the array
+					query.value.forEach((concertValue) => {
+						const concertResult = this.applySearchByConcertFilter(
+							this.filteredData,
+							concertValue
+						);
+						result = [...result, ...concertResult];
+					});
 					break;
 				case "searchByName":
-					result = this.applySearchByNameFilter(this.filteredData, query.value);
+					// Apply filter for each name value in the array
+					query.value.forEach((nameValue) => {
+						const nameResult = this.applySearchByNameFilter(
+							this.filteredData,
+							nameValue
+						);
+						result = [...result, ...nameResult];
+					});
 					break;
 				case "searchByMembers":
-					result = this.applySearchByMembersFilter(
-						this.filteredData,
-						query.value
-					);
+					// Apply filter for each member value in the array
+					query.value.forEach((memberValue) => {
+						const memberResult = this.applySearchByMembersFilter(
+							this.filteredData,
+							memberValue
+						);
+						result = [...result, ...memberResult];
+					});
 					break;
 				case "searchByAlbumRelease":
-					result = this.applySearchByAlbumReleaseFilter(
-						this.filteredData,
-						query.value
-					);
+					// Apply filter for each album release value in the array
+					query.value.forEach((albumValue) => {
+						const albumResult = this.applySearchByAlbumReleaseFilter(
+							this.filteredData,
+							albumValue
+						);
+						result = [...result, ...albumResult];
+					});
 					break;
 				case "searchByCreationDate":
-					result = this.applySearchByCreationDateFilter(
-						this.filteredData,
-						query.value
-					);
+					// Apply filter for each creation date value in the array
+					query.value.forEach((creationValue) => {
+						const creationResult = this.applySearchByCreationDateFilter(
+							this.filteredData,
+							creationValue
+						);
+						result = [...result, ...creationResult];
+					});
 					break;
 				default:
 					break;
 			}
 
-			// Accumulate results from each filter
+			// Accumulate results from each filter applied to all values of the query
 			accumulatedResults = [...accumulatedResults, ...result];
 		});
 	}
@@ -487,17 +510,21 @@ ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 };
 
 /**
- * Updates or adds a new query to the active queries list
+ * Updates or adds a new query to the active queries list.
+ * It stores multiple values for any query type (like name, members, concerts, etc.) in an array.
  */
 ArtistApp.prototype.addQuery = function (type, value) {
 	const existingQueryIndex = this.activeQueries.findIndex(
 		(q) => q.type === type
 	);
 
+	// If the query type is new, add it with the value in an array
 	if (existingQueryIndex === -1) {
-		this.activeQueries.push({ type, value });
+		this.activeQueries.push({ type, value: [value] });
 	} else {
-		this.activeQueries[existingQueryIndex].value = value;
+		if (!this.activeQueries[existingQueryIndex].value.includes(value)) {
+			this.activeQueries[existingQueryIndex].value.push(value);
+		}
 	}
 };
 
@@ -557,21 +584,28 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	closeIcon.textContent = "×";
 
 	closeIcon.addEventListener("click", (e) => {
-		this.activeQueries = this.activeQueries.filter(
-			(query) => query.value.toLowerCase().trim() !== value.toLowerCase().trim()
-		);
+		this.activeQueries = this.activeQueries
+			.map((query) => {
+				if (query.value.includes(value.toLowerCase().trim())) {
+					query.value = query.value.filter(
+						(val) => val.toLowerCase().trim() !== value.toLowerCase().trim()
+					);
+				}
+				return query;
+			})
+			.filter((query) => query.value.length > 0);
+
 		item.remove();
 
-		if (this.activeQueries.length < 1)
+		if (this.activeQueries.length < 1) {
 			this.domElements.searchSummary.innerHTML = "";
+		}
+
 		this.applyAllFilters(this.activeQueries);
 	});
 
-	// Append the text and close icon to the item div
 	item.appendChild(itemText);
 	item.appendChild(closeIcon);
-
-	// Append the item to the search summary container
 	summaryContainer.appendChild(item);
 };
 
