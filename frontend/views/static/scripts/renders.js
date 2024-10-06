@@ -158,8 +158,8 @@ function initMap(geoLocations) {
 	});
 
 	// Add markers for each location
-	const markers = geoLocations.map((location) => {
-		return new google.maps.Marker({
+	geoLocations.forEach((location) => {
+		new google.maps.Marker({
 			position: { lat: location.latitude, lng: location.longitude },
 			map: map,
 			title: location.location,
@@ -174,13 +174,21 @@ function initMap(geoLocations) {
 
 	// Check if the pathCoordinates array has enough data to draw the polyline
 	if (pathCoordinates.length > 1) {
-		// Create and set the polyline on the map
+		// Create and set the polyline on the map with arrows
 		const artistPath = new google.maps.Polyline({
 			path: pathCoordinates,
 			geodesic: true,
 			strokeColor: "#FF6347",
 			strokeOpacity: 1.0,
 			strokeWeight: 2,
+			icons: [
+				{
+					icon: {
+						path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+					},
+					offset: "100%", // Position the arrow at the end of the path
+				},
+			],
 		});
 
 		// Display the polyline on the map
