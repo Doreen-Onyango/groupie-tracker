@@ -441,9 +441,23 @@ ArtistApp.prototype.handleConcertSearchInput = function (data) {
 		.replace(/[^a-z]+/g, "-")
 		.trim();
 
+	// track unique location suggestions
+	const uniqueLocations = new Set();
+
 	const concertSuggestions = this.allArtistDetails
 		.flatMap((artistDetail) => artistDetail.data.locations?.locations || [])
-		.filter((location) => location.toLowerCase().includes(query))
+		.filter((location) => {
+			const lowerCaseLocation = location.toLowerCase();
+
+			if (
+				lowerCaseLocation.includes(query) &&
+				!uniqueLocations.has(lowerCaseLocation)
+			) {
+				uniqueLocations.add(lowerCaseLocation);
+				return true;
+			}
+			return false;
+		})
 		.map(
 			(location) =>
 				`<div class="suggestion-item" data-location="${location}" data-label="location">${location
