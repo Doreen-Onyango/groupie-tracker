@@ -21,7 +21,7 @@
 .range_concertDate::before {
 	content: "From"; /* Label before the slider */
 	position: absolute;
-	top: -40px;
+	top: -20px;
 	left: 0;
 	font-size: 0.8rem; /* Smaller size */
 	color: var(--_marker-border-clr); /* Same color as the main label */
@@ -33,7 +33,7 @@
 .range_concertDate::after {
 	content: "To"; /* Label after the slider */
 	position: absolute;
-	top: -40px;
+	top: -20px;
 	right: 0;
 	font-size: 0.8rem; /* Smaller size */
 	color: var(--_marker-border-clr); /* Same color as the main label */
@@ -57,8 +57,8 @@
 .range_concertDate::after {
 	content: "To"; /* "To" label */
 	position: absolute;
-	top: -25%;
-	right: 15%;
+	top: -20%;
+	right: 10%;
 }
 
 /* Existing styling for the main data label */
