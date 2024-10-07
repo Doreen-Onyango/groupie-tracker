@@ -10,8 +10,15 @@
 	width: 60%;
 	height: 3em !important;
 	border-radius: 15px;
-	padding: 0 5%;
+	padding: 1.3em;
 	font-size: 1.2em !important;
+	margin: 10em auto 0.8em auto;
+}
+
+#membersFilter {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 1.2em;
 }
 
 .range_firstAlbum,

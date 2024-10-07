@@ -17,6 +17,9 @@
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <header>
 {{block "searchBar" .}}{{end}} {{block "searchSummary" .}}{{end}}
+<!-- filters -->
+	{{ block "membersFilter" .}}{{end}} {{ block "rangeFilter" .}} {{end}}
+	<!-- end -->
 </header>
 <div class="home-page">
 	<h1 id="home-page">Welcome to the Groupie Tracker</h1>
@@ -36,9 +39,7 @@
 
 <div class="artists">
 	
-	<!-- filters -->
-	{{ block "membersFilter" .}}{{end}} {{ block "rangeFilter" .}} {{end}}
-	<!-- end -->
+	
 
 	<!-- artist cards -->
 	{{ block "artistCardTemplate" .}}{{end}}
