@@ -6,22 +6,22 @@
 	box-sizing: border-box;
 }
 
-#searchUnified {
+.searchUnified {
 	width: 60%;
 	height: 3em !important;
 	border-radius: 15px;
 	padding: 1.3em;
 	font-size: 1.2em !important;
-	margin: -10em auto 0.8em auto;
-	position: inherit;
+	margin-top: 5em !important;
 	z-index: 10;
 }
 
-#membersFilter {
+.membersFilter #membersFilter {
 	display: flex;
 	flex-wrap: wrap;
 	font-size: 1.2em;
 	margin-top: 15em;
+	height: 10px !important;
 }
 
 .range_firstAlbum,
