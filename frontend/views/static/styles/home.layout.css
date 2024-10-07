@@ -5,10 +5,11 @@
 }
 
 header {
+	position: absolute;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin: 20px auto;
+	margin: 2em auto;
 	height: 25vh;
 }

@@ -12,13 +12,16 @@
 	border-radius: 15px;
 	padding: 1.3em;
 	font-size: 1.2em !important;
-	margin: 10em auto 0.8em auto;
+	margin: -10em auto 0.8em auto;
+	position: inherit;
+	z-index: 10;
 }
 
 #membersFilter {
 	display: flex;
 	flex-wrap: wrap;
 	font-size: 1.2em;
+	margin-top: 15em;
 }
 
 .range_firstAlbum,
@@ -176,15 +179,16 @@ input[type="range"] {
 	z-index: -10;
 }
 
-.unified-suggestions {
+.unified-suggestions #unifiedSuggestions {
 	display: flex;
+	width: 100%;
 	flex-direction: column;
-	/* height: fit-content; */
-	overflow-y: auto;
 	border: 1px solid #ddd;
 	border-radius: 4px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	background-color: #fff;
+	background-color: #f40606;
+	position: absolute;
+	top: 20em;
 }
 
 .suggestion-category {
