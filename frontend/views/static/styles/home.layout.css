@@ -25,13 +25,16 @@ header {
 	margin-left: 20px;
 	margin-top: -10px;
 	cursor: pointer;
+	background-color: #a1a1a2;
+	z-index: 20;
+	border-radius: 50%;
 }
 
 #resetButton:hover {
 	box-shadow: 0px 2px 8px rgb(0, 0, 0);
-	border-radius: 50%;
 	transition: box-shadow 0.5s ease-in-out;
 	transform: rotate(45deg);
+	background-color: #78797b;
 }
 
 .range-filters {
@@ -43,7 +46,7 @@ header {
 	width: 100%;
 	padding: 20px;
 	margin-top: -3em;
-	border: 0.5px solid rgb(0, 93, 170);
+	border: 1px solid #194374;
 	border-radius: 20px;
-	max-height: 250px;
+	max-height: 180px;
 }

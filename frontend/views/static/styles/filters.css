@@ -22,14 +22,14 @@
 	padding: 15px 50px 15px 20px;
 	font-size: 1.1rem;
 	border-radius: 25px;
-	border: 2px solid #ccc;
+	border: 1px solid #194374;
 	outline: none;
 	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 	transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 .searchUnified:focus {
-	border-color: #0ea5e9;
+	border-color: #194374;
 	box-shadow: 0px 4px 12px rgba(14, 165, 233, 0.4);
 }
 
@@ -60,19 +60,24 @@
 		width: 95%;
 	}
 }
-.membersFilter #membersFilter {
+
+.membersFilter {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 10px;
 	font-size: 1.2em;
 	height: 10px !important;
 	padding: 5px;
+	color: #194374;
+	margin-bottom: 10px;
+	z-index: 20;
 }
 
 .range_firstAlbum,
 .range_concertDate {
 	width: 80%;
 	max-width: 550px;
-	margin-top: 80px;
+	margin: 60px auto;
 	border: 2px solid var(--_marker-border-clr);
 	border-radius: 8px;
 	padding: 60px 25px 15px 25px;
@@ -92,14 +97,14 @@
 
 .range_firstAlbum::after,
 .range_concertDate::after {
-	content: "To"; /* Label after the slider */
+	content: "To";
 	position: absolute;
 	top: -20px;
 	right: 0;
-	font-size: 0.8rem; /* Smaller size */
-	color: var(--_marker-border-clr); /* Same color as the main label */
-	font-weight: normal; /* Make it less prominent */
-	background: none; /* No background */
+	font-size: 0.8rem;
+	color: var(--_marker-border-clr);
+	font-weight: normal;
+	background: none;
 }
 
 .range_firstAlbum::before,
@@ -111,12 +116,12 @@
 
 .range_firstAlbum::before,
 .range_concertDate::before {
-	content: "From"; /* "From" label */
+	content: "From";
 }
 
 .range_firstAlbum::after,
 .range_concertDate::after {
-	content: "To"; /* "To" label */
+	content: "To";
 	position: absolute;
 	top: -20%;
 	right: 10%;
@@ -125,7 +130,7 @@
 /* Existing styling for the main data label */
 .range_firstAlbum[data-label]::before,
 .range_concertDate[data-label]::before {
-	content: attr(data-label); /* Main label in the middle */
+	content: attr(data-label);
 	position: absolute;
 	top: -20px;
 	left: 50%;
@@ -139,7 +144,7 @@
 }
 
 .range_firstAlbum {
-	--_marker-border-clr: #ffd700;
+	--_marker-border-clr: #194374;
 	--_marker-size: 15px;
 	--_track-heigt: 3px;
 
@@ -148,7 +153,7 @@
 }
 
 .range_concertDate {
-	--_marker-border-clr: #0ea5e9;
+	--_marker-border-clr: #194374;
 	--_marker-size: 15px;
 	--_track-heigt: 3px;
 

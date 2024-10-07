@@ -913,7 +913,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		fromTooltip1,
 		toTooltip1,
 		"#FF6347",
-		"#0EA5E9"
+		"#194374"
 	);
 	this.attachSliderEvents(
 		fromSlider2,
@@ -921,7 +921,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		fromTooltip2,
 		toTooltip2,
 		"#FF6347",
-		"#FFD700"
+		"#194374"
 	);
 
 	// Initialize slider visuals for Creation Date slider if tooltips exist
@@ -930,7 +930,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 			fromSlider1,
 			toSlider1,
 			"#FF6347",
-			"#0EA5E9",
+			"#194374",
 			fromTooltip1,
 			toTooltip1
 		);
@@ -944,7 +944,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 			fromSlider2,
 			toSlider2,
 			"#FF6347",
-			"#FFD700",
+			"#194374",
 			fromTooltip2,
 			toTooltip2
 		);
@@ -988,14 +988,14 @@ ArtistApp.prototype.resetFilters = function () {
 		this.domElements.fromSlider1,
 		this.domElements.toSlider1,
 		"#FF6347",
-		"#0EA5E9",
+		"#194374",
 		this.domElements.toSlider1
 	);
 	fillSlider(
 		this.domElements.fromSlider2,
 		this.domElements.toSlider2,
 		"#FF6347",
-		"#FFD700",
+		"#194374",
 		this.domElements.toSlider2
 	);
 
