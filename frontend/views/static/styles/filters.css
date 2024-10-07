@@ -227,15 +227,14 @@ input[type="range"] {
 	z-index: -10;
 }
 
-.unified-suggestions #unifiedSuggestions {
+.unified-suggestions {
 	display: flex;
 	width: 100%;
 	flex-direction: column;
 	border: 1px solid #ddd;
 	border-radius: 4px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	background-color: #f40606;
-	position: absolute;
+	background-color: #8d8e8f;
 	top: 20em;
 }
 
