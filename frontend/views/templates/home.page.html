@@ -16,13 +16,23 @@
 />
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <header>
-	<!-- Search Bar -->
-	{{block "searchBar" .}}{{end}}
-	<!-- end of Search Bar -->
+	<div class="search-container">
+		<!-- Search Bar -->
+		{{block "searchBar" .}}{{end}}
+		<!-- end of Search Bar -->
 
-	<!-- search summary -->
-	{{block "searchSummary" .}}{{end}}
-	<!-- end of search summary -->
+		<!-- search summary -->
+		{{block "searchSummary" .}}{{end}}
+		<!-- end of search summary -->
+		<!-- Reset Button -->
+		<button
+			class="reset"
+			id="resetButton"
+			type="button"
+		>
+			Reset Filters
+		</button>
+	</div>
 
 	<!-- members filter -->
 	{{ block "membersFilter" .}}{{end}}
@@ -34,14 +44,6 @@
 <div class="home-page">
 	<h1 id="home-page">Groupie Tracker</h1>
 </div>
-
-<!-- Reset Button -->
-<button
-	id="resetButton"
-	type="button"
->
-	Reset Filters
-</button>
 
 <div class="artists">
 	<!-- artist cards -->
