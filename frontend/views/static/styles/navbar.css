@@ -67,7 +67,7 @@
 
 .navbar ul li a {
 	display: block;
-	color: rgb(167, 96, 3);
+	color: #68aaf5;
 	text-align: center;
 	padding: 10px;
 	text-decoration: none;
@@ -75,7 +75,8 @@
 }
 
 .navbar ul li a:hover {
-	color: rgb(1, 2, 19);
+	color: #c8dff9;
+	box-shadow: 0 2px 10px rgba(14, 36, 70, 0.84);
 }
 
 .navbar #logout {

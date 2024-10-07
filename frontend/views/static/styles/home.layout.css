@@ -50,3 +50,36 @@ header {
 	border-radius: 20px;
 	max-height: 180px;
 }
+
+.pagination-controls {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.pagination-button {
+	padding: 10px 20px;
+	margin: 0 10px;
+	font-size: 1em;
+	color: white;
+	background-color: #4a7f86;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.pagination-button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+.pagination-button:hover:not(:disabled) {
+	background-color: #3b6a69;
+}
+
+#paginationInfo {
+	font-size: 1em;
+	color: #333;
+}

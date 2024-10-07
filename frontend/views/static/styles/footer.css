@@ -1,10 +1,7 @@
 .wrapper {
 	margin-top: 10%;
-	/* width: 100vw; */
-	/* position: absolute; */
-	/* bottom: 0%; */
 	background-color: #194374;
-	color: rgb(167, 96, 3);
+	color: #c3daf5;
 }
 
 svg {
