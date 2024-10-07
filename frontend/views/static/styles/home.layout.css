@@ -1,5 +1,14 @@
 /* Home page styles */
 .home-page {
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: 0px;
+}
+
+header {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 20px auto;
+	height: 25vh;
 }

@@ -15,6 +15,9 @@
 	type="text/css"
 />
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
+<header>
+{{block "searchBar" .}}{{end}} {{block "searchSummary" .}}{{end}}
+</header>
 <div class="home-page">
 	<h1 id="home-page">Welcome to the Groupie Tracker</h1>
 	<p>
@@ -32,8 +35,7 @@
 </button>
 
 <div class="artists">
-	<h1>Artists</h1>
-	{{block "searchBar" .}}{{end}} {{block "searchSummary" .}}{{end}}
+	
 	<!-- filters -->
 	{{ block "membersFilter" .}}{{end}} {{ block "rangeFilter" .}} {{end}}
 	<!-- end -->

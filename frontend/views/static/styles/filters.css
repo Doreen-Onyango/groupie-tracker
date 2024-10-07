@@ -6,6 +6,14 @@
 	box-sizing: border-box;
 }
 
+#searchUnified {
+	width: 60%;
+	height: 3em !important;
+	border-radius: 15px;
+	padding: 0 5%;
+	font-size: 1.2em !important;
+}
+
 .range_firstAlbum,
 .range_concertDate {
 	width: 100%;
