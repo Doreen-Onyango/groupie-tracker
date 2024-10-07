@@ -9,6 +9,7 @@
 /* Container for search input and icon */
 .search-input-container {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	position: relative;
