@@ -70,8 +70,8 @@
 
 .range_firstAlbum,
 .range_concertDate {
-	width: 100%;
-	max-width: 600px;
+	width: 80%;
+	max-width: 550px;
 	margin-top: 80px;
 	border: 2px solid var(--_marker-border-clr);
 	border-radius: 8px;
@@ -81,14 +81,13 @@
 
 .range_firstAlbum::before,
 .range_concertDate::before {
-	content: "From"; /* Label before the slider */
+	content: "From";
 	position: absolute;
 	top: -20px;
 	left: 0;
-	font-size: 0.8rem; /* Smaller size */
-	color: var(--_marker-border-clr); /* Same color as the main label */
-	font-weight: normal; /* Make it less prominent */
-	background: none; /* No background */
+	font-size: 0.8em;
+	color: var(--_marker-border-clr);
+	background: none;
 }
 
 .range_firstAlbum::after,
@@ -133,7 +132,7 @@
 	transform: translateX(-50%);
 	background-color: white;
 	padding: 10px;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	color: var(--_marker-border-clr);
 	font-weight: bold;
 	border-radius: 10px;

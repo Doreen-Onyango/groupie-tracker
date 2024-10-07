@@ -33,3 +33,17 @@ header {
 	transition: box-shadow 0.5s ease-in-out;
 	transform: rotate(45deg);
 }
+
+.range-filters {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-items: center;
+	width: 100%;
+	padding: 20px;
+	margin-top: -3em;
+	border: 0.5px solid rgb(0, 93, 170);
+	border-radius: 20px;
+	max-height: 250px;
+}
