@@ -65,7 +65,7 @@
 .membersFilter {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: 5px;
 	font-size: 1em;
 	padding: 5px 10px;
 	color: #194374;
