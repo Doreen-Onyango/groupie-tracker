@@ -30,11 +30,18 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 		image.alt = `${artist.name} image`;
 
 		const membersList = card.querySelector(".artist-members");
-		artist.members.forEach((member) => {
-			const li = document.createElement("li");
-			li.textContent = member;
-			membersList.appendChild(li);
-		});
+		const memberCount = artist.members.length;
+		const li = document.createElement("li");
+
+		if (memberCount > 0) {
+			const membersInWords = numberToWords(memberCount);
+			li.textContent = `This band has ${membersInWords} member${
+				memberCount > 1 ? "s" : ""
+			}`;
+		} else {
+			li.textContent = `This band has no members`;
+		}
+		membersList.appendChild(li);
 
 		card.querySelector(".artist-creationDate").textContent =
 			artist.creationDate || "Unknown Creation Date";
@@ -220,6 +227,54 @@ function sortByDate(data, dateProperty) {
 		const dateB = Date.parse(convertDateFormat(b[dateProperty]));
 		return dateA - dateB; // Sort in ascending order (earliest to latest)
 	});
+}
+
+/**
+ *
+ * @param {*} num
+ * @returns
+ */
+function numberToWords(num) {
+	const words = [
+		"zero",
+		"one",
+		"two",
+		"three",
+		"four",
+		"five",
+		"six",
+		"seven",
+		"eight",
+		"nine",
+		"ten",
+		"eleven",
+		"twelve",
+		"thirteen",
+		"fourteen",
+		"fifteen",
+		"sixteen",
+		"seventeen",
+		"eighteen",
+		"nineteen",
+	];
+	const tens = [
+		"",
+		"",
+		"twenty",
+		"thirty",
+		"forty",
+		"fifty",
+		"sixty",
+		"seventy",
+		"eighty",
+		"ninety",
+	];
+
+	if (num < 20) return words[num];
+	const digit = num % 10;
+	if (num < 100)
+		return tens[Math.floor(num / 10)] + (digit ? "-" + words[digit] : "");
+	return "too many members";
 }
 
 /**
