@@ -63,7 +63,7 @@ header {
 	margin: 0 10px;
 	font-size: 1em;
 	color: white;
-	background-color: #4a7f86;
+	background-color: #194374;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
@@ -71,7 +71,7 @@ header {
 }
 
 .pagination-button:disabled {
-	background-color: #ccc;
+	background-color: #ddd;
 	cursor: not-allowed;
 }
 

@@ -18,6 +18,9 @@ class ArtistApp {
 	constructor() {
 		this.domElements = {};
 		this.activeQueries = [];
+		this.currentPage = 1;
+		this.itemsPerPage = 10;
+		this.totalPages = 0;
 
 		this.initialize();
 		this.setupEventListeners();
@@ -58,6 +61,7 @@ ArtistApp.prototype.initialize = async function () {
 
 	this.artistsData = await getAllArtists();
 	this.filteredData = [...this.artistsData.data];
+	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
 
 	// Fetch artist details and geolocation data
 	const artistDetails = await this.fetchAllArtistDetails();
@@ -73,6 +77,7 @@ ArtistApp.prototype.initialize = async function () {
 
 	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
+	this.updatePaginationInfo();
 };
 
 /**
@@ -116,6 +121,16 @@ ArtistApp.prototype.setupEventListeners = function () {
 			handler: this.handleAlbumReleaseSearchInput,
 		},
 		{
+			element: document.getElementById("nextPage"),
+			event: "click",
+			handler: () => this.changePage(this.currentPage + 1),
+		},
+		{
+			element: document.getElementById("prevPage"),
+			event: "click",
+			handler: () => this.changePage(this.currentPage - 1),
+		},
+		{
 			element: this.domElements.resetButton,
 			event: "click",
 			handler: this.resetFilters,
@@ -134,6 +149,42 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 	listeners.forEach(({ element, event, handler }) => {
 		element.addEventListener(event, handler.bind(this));
 	});
+};
+
+/**
+ * Updates the pagination controls and renders the correct page
+ */
+ArtistApp.prototype.changePage = function (page) {
+	if (page < 1 || page > this.totalPages) return;
+
+	this.currentPage = page;
+	this.renderPaginatedArtists();
+	this.updatePaginationInfo();
+
+	// Disable/Enable the pagination buttons
+	document.getElementById("prevPage").disabled = this.currentPage === 1;
+	document.getElementById("nextPage").disabled =
+		this.currentPage === this.totalPages;
+};
+
+/**
+ * Updates the pagination info display
+ */
+ArtistApp.prototype.updatePaginationInfo = function () {
+	document.getElementById(
+		"paginationInfo"
+	).textContent = `Page ${this.currentPage} of ${this.totalPages}`;
+};
+
+/**
+ * Renders the artist cards for the current page
+ */
+ArtistApp.prototype.renderPaginatedArtists = function () {
+	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+	const endIndex = startIndex + this.itemsPerPage;
+
+	const paginatedData = this.filteredData.slice(startIndex, endIndex);
+	this.renderFilteredData(paginatedData);
 };
 
 /**
@@ -220,8 +271,11 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	this.filteredData = this.applyMembersFilter(this.filteredData);
 	this.filteredData = this.applyRangeFilters(this.filteredData);
 
-	// Finally, render the filtered data
-	this.renderFilteredData(this.filteredData);
+	// Calculate total pages after filtering
+	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
+
+	// Render the paginated data
+	this.renderPaginatedArtists();
 };
 
 /**
