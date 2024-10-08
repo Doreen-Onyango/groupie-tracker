@@ -1,9 +1,14 @@
 /* artis card styles */
 .artists {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding: 20px;
+	margin: auto;
+	width: 100%;
 }
 
-.artists-container {
+#artistsContainer {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 20px;

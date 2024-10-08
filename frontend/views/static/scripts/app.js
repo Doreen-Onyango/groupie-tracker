@@ -77,7 +77,6 @@ ArtistApp.prototype.initialize = async function () {
 
 	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
-	this.updatePaginationInfo();
 };
 
 /**
@@ -237,7 +236,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 
 	// Render the paginated data
 	this.renderPaginatedArtists();
-	this.updatePaginationInfo();
 };
 
 /**
@@ -263,23 +261,11 @@ ArtistApp.prototype.changePage = function (page) {
 
 	this.currentPage = page;
 	this.renderPaginatedArtists();
-	this.updatePaginationInfo();
 
 	// Update pagination button states
 	document.getElementById("prevPage").disabled = this.currentPage === 1;
 	document.getElementById("nextPage").disabled =
 		this.currentPage === this.totalPages;
-};
-
-/**
- * Updates the pagination info display based on the filtered data and current page
- */
-ArtistApp.prototype.updatePaginationInfo = function () {
-	if (this.currentPage > this.totalPages) this.currentPage = 1;
-
-	document.getElementById(
-		"paginationInfo"
-	).textContent = `Page ${this.currentPage} of ${this.totalPages}`;
 };
 
 /**
