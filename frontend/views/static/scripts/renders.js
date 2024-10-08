@@ -4,7 +4,7 @@
  */
 export const renderAllArtists = ({ data, message, error }, sortById) => {
 	const container = document.querySelector("#artistsContainer");
-	const template = document.getElementById("artistCardTemplate");
+	const template = document.getElementById("artistCardTemplate"); // Reference the template
 
 	container.innerHTML = error
 		? `<div class="error-message">
@@ -18,8 +18,10 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 	const sortedArtistData = sortById(data);
 
 	sortedArtistData.forEach((artist) => {
+		// Clone the template content
 		const card = template.content.cloneNode(true);
 
+		// Set artist-specific data
 		const artistCard = card.querySelector(".artist-card");
 		artistCard.setAttribute("data-artist-id", artist.id);
 
@@ -29,25 +31,26 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 		image.src = artist.image;
 		image.alt = `${artist.name} image`;
 
-		const membersList = card.querySelector(".artist-members");
 		const memberCount = artist.members.length;
-		const li = document.createElement("li");
+		const membersList = card.querySelector(".artist-members");
+		const membersText = document.createElement("li");
 
 		if (memberCount > 0) {
 			const membersInWords = numberToWords(memberCount);
-			li.textContent = `This band has ${membersInWords} member${
+			membersText.textContent = `This band has ${membersInWords} member${
 				memberCount > 1 ? "s" : ""
 			}`;
 		} else {
-			li.textContent = `This band has no members`;
+			membersText.textContent = `This band has no members`;
 		}
-		membersList.appendChild(li);
+		membersList.appendChild(membersText);
 
 		card.querySelector(".artist-creationDate").textContent =
 			artist.creationDate || "Unknown Creation Date";
 		card.querySelector(".artist-firstAlbum").textContent =
 			formatDate(artist.firstAlbum) || "Unknown First Album";
 
+		// Append the filled card to the container
 		container.appendChild(card);
 	});
 };

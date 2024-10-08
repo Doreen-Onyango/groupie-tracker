@@ -47,7 +47,24 @@
 
 <div class="artists">
 	<!-- artist cards -->
-	{{ block "artistCardTemplate" .}}{{end}}
+	 <div id="artistsContainer"></div>
+	 
+	<template id="artistCardTemplate">
+	<div class="artist-card" data-artist-id="">
+		<div class="artist-image-container">
+			<img class="artist-image" src="" alt="Artist Name image">
+		</div>
+		<div class="artist-details">
+			<h2 class="artist-name">Artist Name</h2>
+			<p class="artist-creationDate">Creation Date</p>
+			<p class="artist-firstAlbum">First Album</p>
+			<ul class="artist-members">
+				<li>This band has X members</li>
+			</ul>
+		</div>
+	</div>
+</template>
+
 	<!-- end -->
 
 	<!-- modal -->
