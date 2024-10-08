@@ -152,42 +152,6 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 };
 
 /**
- * Updates the pagination controls and renders the correct page
- */
-ArtistApp.prototype.changePage = function (page) {
-	if (page < 1 || page > this.totalPages) return;
-
-	this.currentPage = page;
-	this.renderPaginatedArtists();
-	this.updatePaginationInfo();
-
-	// Disable/Enable the pagination buttons
-	document.getElementById("prevPage").disabled = this.currentPage === 1;
-	document.getElementById("nextPage").disabled =
-		this.currentPage === this.totalPages;
-};
-
-/**
- * Updates the pagination info display
- */
-ArtistApp.prototype.updatePaginationInfo = function () {
-	document.getElementById(
-		"paginationInfo"
-	).textContent = `Page ${this.currentPage} of ${this.totalPages}`;
-};
-
-/**
- * Renders the artist cards for the current page
- */
-ArtistApp.prototype.renderPaginatedArtists = function () {
-	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-	const endIndex = startIndex + this.itemsPerPage;
-
-	const paginatedData = this.filteredData.slice(startIndex, endIndex);
-	this.renderFilteredData(paginatedData);
-};
-
-/**
  * Applies all active filters (search, members, and range filters)
  * Filters artist cards based on the current state of all filters
  */
@@ -195,6 +159,8 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 	if (!this.artistsData) return;
 
 	let accumulatedResults = [];
+
+	// If no queries are present, use the full dataset
 	if (activeQueries.length === 0 || activeQueries.length === undefined) {
 		this.filteredData = [...this.artistsData.data];
 	} else {
@@ -204,7 +170,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 
 			switch (query.type) {
 				case "searchByConcert":
-					// Apply filter for each concert value in the array
 					query.value.forEach((concertValue) => {
 						const concertResult = this.applySearchByConcertFilter(
 							this.filteredData,
@@ -214,7 +179,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 					});
 					break;
 				case "searchByName":
-					// Apply filter for each name value in the array
 					query.value.forEach((nameValue) => {
 						const nameResult = this.applySearchByNameFilter(
 							this.filteredData,
@@ -224,7 +188,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 					});
 					break;
 				case "searchByMembers":
-					// Apply filter for each member value in the array
 					query.value.forEach((memberValue) => {
 						const memberResult = this.applySearchByMembersFilter(
 							this.filteredData,
@@ -234,7 +197,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 					});
 					break;
 				case "searchByAlbumRelease":
-					// Apply filter for each album release value in the array
 					query.value.forEach((albumValue) => {
 						const albumResult = this.applySearchByAlbumReleaseFilter(
 							this.filteredData,
@@ -244,7 +206,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 					});
 					break;
 				case "searchByCreationDate":
-					// Apply filter for each creation date value in the array
 					query.value.forEach((creationValue) => {
 						const creationResult = this.applySearchByCreationDateFilter(
 							this.filteredData,
@@ -276,6 +237,50 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 
 	// Render the paginated data
 	this.renderPaginatedArtists();
+	this.updatePaginationInfo();
+};
+
+/**
+ * Renders the artist cards for the current page based on the filtered data
+ */
+ArtistApp.prototype.renderPaginatedArtists = function () {
+	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+	const endIndex = startIndex + this.itemsPerPage;
+
+	const paginatedData = this.filteredData.slice(startIndex, endIndex);
+	if (paginatedData.length < 10) this.renderFilteredData(this.filteredData);
+	this.renderFilteredData(paginatedData);
+
+	console.log("Filtered data: " + this.filteredData.length);
+	console.log("paginated data: " + paginatedData.length);
+	console.log("page:" + this.currentPage);
+};
+
+/**
+ * Handles page changes and ensures filtered data is paginated correctly
+ */
+ArtistApp.prototype.changePage = function (page) {
+	if (page < 1 || page > this.totalPages) return;
+
+	this.currentPage = page;
+	this.renderPaginatedArtists();
+	this.updatePaginationInfo();
+
+	// Update pagination button states
+	document.getElementById("prevPage").disabled = this.currentPage === 1;
+	document.getElementById("nextPage").disabled =
+		this.currentPage === this.totalPages;
+};
+
+/**
+ * Updates the pagination info display based on the filtered data and current page
+ */
+ArtistApp.prototype.updatePaginationInfo = function () {
+	if (this.currentPage > this.totalPages) this.currentPage = 1;
+
+	document.getElementById(
+		"paginationInfo"
+	).textContent = `Page ${this.currentPage} of ${this.totalPages}`;
 };
 
 /**
