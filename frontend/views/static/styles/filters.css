@@ -18,7 +18,8 @@
 }
 
 .searchUnified {
-	width: 100%;
+	margin-left: -20px;
+	width: 90%;
 	padding: 15px 50px 15px 20px;
 	font-size: 1.1rem;
 	border-radius: 25px;
@@ -37,7 +38,7 @@
 /* Style the search icon */
 .search-icon {
 	margin-top: -20px;
-	margin-right: 40px;
+	margin-right: 80px;
 	width: 20px;
 	height: 20px;
 	cursor: pointer;
