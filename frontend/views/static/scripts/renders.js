@@ -33,17 +33,29 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 
 		const memberCount = artist.members.length;
 		const membersList = card.querySelector(".artist-members");
-		const membersText = document.createElement("li");
 
-		if (memberCount > 0) {
-			const membersInWords = numberToWords(memberCount);
-			membersText.textContent = `This band has ${membersInWords} member${
-				memberCount > 1 ? "s" : ""
-			}`;
-		} else {
-			membersText.textContent = `This band has no members`;
-		}
+		// Clear the list before appending new members
+		membersList.innerHTML = "";
+
+		// Create and append the list item for the member count
+		const membersText = document.createElement("li");
+		membersText.textContent = `This band has ${memberCount} member${
+			memberCount > 1 ? "s" : ""
+		}`;
 		membersList.appendChild(membersText);
+
+		// If there are members, append each one to the list
+		if (memberCount > 0) {
+			artist.members.forEach((member) => {
+				const memberItem = document.createElement("li");
+				memberItem.textContent = member.name; // Assuming `name` is the member property
+				membersList.appendChild(memberItem);
+			});
+		} else {
+			const noMembersItem = document.createElement("li");
+			noMembersItem.textContent = "This band has no members";
+			membersList.appendChild(noMembersItem);
+		}
 
 		card.querySelector(".artist-creationDate").textContent =
 			artist.creationDate || "Unknown Creation Date";
