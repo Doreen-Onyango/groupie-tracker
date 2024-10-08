@@ -17,6 +17,9 @@
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <header>
 	<div class="search-container">
+		<div class="home-page">
+			<h1 id="home-page">Groupie Tracker</h1>
+		</div>
 		<!-- Search Bar -->
 		{{block "searchBar" .}}{{end}}
 		<!-- end of Search Bar -->
@@ -41,10 +44,6 @@
 	<!-- end of range filters -->
 	</div>
 </header>
-<div class="home-page">
-	<h1 id="home-page">Groupie Tracker</h1>
-</div>
-
 <div class="artists">
 	 <!-- Pagination controls -->
 	<div id="pagination" class="pagination-controls">
@@ -55,19 +54,22 @@
 	 
 	<template id="artistCardTemplate">
 	<div class="artist-card">
-		<div class="artist-image-container">
-			<img class="artist-image" src="" alt="Artist Name image">
-		</div>
 		<div class="artist-details">
-			<h2 class="artist-name">Artist Name</h2>
-			<p class="artist-creationDate">Creation Date</p>
-			<p class="artist-firstAlbum">First Album</p>
-			<ul class="artist-members">
-			</ul>
+			<div class="artist-image-container">
+				<img class="artist-image" src="" alt="Artist Name image">
+				<div class="creation-date">
+					<p class="artist-name">Artist Name</p>
+					<p class="artist-creationDate-value">Creation Date: </p>
+				</div>
+			</div>
+		</div>
+		<div>
+			<h3 class="artist-firstAlbum">First Album:</h3>
+			<p class="artist-firstAlbum-value"></p>
+			<ul class="artist-members"></ul>
 		</div>
 	</div>
 </template>
-
 	<!-- end -->
 	 <!-- Pagination controls -->
 	<div id="pagination" class="pagination-controls">

@@ -1,6 +1,8 @@
 /* Home page styles */
 .home-page {
-	text-align: center;
+	position: relative;
+	left: -20px;
+	top: -10px;
 	margin-bottom: 0px;
 }
 

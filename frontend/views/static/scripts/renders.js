@@ -57,9 +57,9 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 			membersList.appendChild(noMembersItem);
 		}
 
-		card.querySelector(".artist-creationDate").textContent =
+		card.querySelector(".artist-creationDate-value").textContent +=
 			artist.creationDate || "Unknown Creation Date";
-		card.querySelector(".artist-firstAlbum").textContent =
+		card.querySelector(".artist-firstAlbum-value").textContent =
 			formatDate(artist.firstAlbum) || "Unknown First Album";
 
 		// Append the filled card to the container
