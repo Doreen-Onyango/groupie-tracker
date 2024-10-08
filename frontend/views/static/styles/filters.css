@@ -61,6 +61,7 @@
 	}
 }
 
+/* Add hover effect for the entire .membersFilter container */
 .membersFilter {
 	display: flex;
 	flex-wrap: wrap;
@@ -74,6 +75,75 @@
 	border-radius: 10px;
 	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.333);
 	transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+/* Styling the individual checkbox items */
+.membersFilter label {
+	display: flex;
+	align-items: center;
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out, border-color 0.9s ease-in-out;
+}
+
+/* Checkbox hover effect */
+.membersFilter label:hover {
+	padding: 2px 8px;
+	background-color: #eaeaea;
+	border: 1px solid #ccc;
+	border-color: #0073e6;
+	box-shadow: 0 4px 12px rgba(0, 115, 230, 0.2);
+}
+
+/* Hide the default checkbox */
+.membersFilter input[type="checkbox"] {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 20px;
+	height: 20px;
+	margin: 0 3px;
+	border: 2px solid #0073e6; /* Blueish border */
+	border-radius: 4px;
+	background-color: #fff;
+	cursor: pointer;
+	position: relative;
+	transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Add blue background when the checkbox is checked */
+.membersFilter input[type="checkbox"]:checked {
+	background-color: #0073e6;
+}
+
+/* Add a checkmark when the checkbox is checked */
+.membersFilter input[type="checkbox"]:checked::after {
+	content: "";
+	position: absolute;
+	top: 3px;
+	left: 5px;
+	width: 4px;
+	height: 8px;
+	border: solid white;
+	border-width: 0 1px 1px 0;
+	transform: rotate(45deg);
+}
+
+/* Styling for hover and focus states */
+.membersFilter input[type="checkbox"]:hover {
+	border-color: #005bb5;
+}
+
+.membersFilter input[type="checkbox"]:focus {
+	outline: none;
+	box-shadow: 0 0 3px #194374;
+}
+
+/* Adding hover effect for the entire container */
+.membersFilter:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	border-color: #194374;
 }
 
 .range_firstAlbum,
