@@ -248,12 +248,11 @@ ArtistApp.prototype.renderPaginatedArtists = function () {
 	const endIndex = startIndex + this.itemsPerPage;
 
 	const paginatedData = this.filteredData.slice(startIndex, endIndex);
-	if (paginatedData.length < 10) this.renderFilteredData(this.filteredData);
-	this.renderFilteredData(paginatedData);
-
-	console.log("Filtered data: " + this.filteredData.length);
-	console.log("paginated data: " + paginatedData.length);
-	console.log("page:" + this.currentPage);
+	if (this.currentPage > this.totalPages) {
+		this.renderFilteredData(this.filteredData);
+	} else {
+		this.renderFilteredData(paginatedData);
+	}
 };
 
 /**
