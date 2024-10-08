@@ -48,7 +48,7 @@
 
 .username {
 	font-weight: bold;
-	color: #4a7f86;
+	color: #68aaf5;
 }
 
 .navbar ul {
@@ -139,6 +139,6 @@
 
 	.navbar ul li a {
 		padding: 15px;
-		color: #fff;
+		color: #68aaf5;
 	}
 }

@@ -172,8 +172,8 @@
 	top: -3rem;
 	left: 0;
 	width: fit-content;
-	background-color: var(--_tooltip-bg-clr);
-	color: var(--_tooltip-txt-clr);
+	background-color: #194374;
+	color: #68aaf5;
 	font-size: 0.8rem;
 	border-radius: 4px;
 	padding: 0.5rem 1rem;
