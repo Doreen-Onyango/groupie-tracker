@@ -79,7 +79,6 @@ header {
 .pagination-button.disabled {
 	cursor: not-allowed;
 	opacity: 0.3; /* Reduce opacity to indicate the disabled state */
-	pointer-events: none; /* Prevent any interaction */
 }
 
 /* Hover state for enabled pagination buttons */
