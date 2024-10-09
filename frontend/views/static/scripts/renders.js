@@ -111,8 +111,16 @@ export function showModal(artistData) {
  */
 function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
+	const memberCount = artist.members.length;
+	const membersInWords = numberToWords(memberCount);
+	let membersTitle = "";
 
-	// Format the members into a sentence like "Abu, Martin, Mary and Moses"
+	if (memberCount > 0) {
+		membersTitle = `${membersInWords} member${memberCount > 1 ? "s" : ""}`;
+	} else {
+		membersTitle = `no members`;
+	}
+
 	const memberSentence =
 		artist.members.length > 1
 			? `${artist.members.slice(0, -1).join(", ")} and ${artist.members.slice(
@@ -134,7 +142,7 @@ function generateArtistDetailsHTML(data) {
 				</p>
 			</div>
 			<div class="modal-artist-members">
-				<p><strong>Members:</strong></p>
+				<p><strong>${toTitleCase(membersTitle)}</strong></p>
 				<p>${memberSentence}</p>
 				<p><strong>Concerts Held:</strong></p>
 				<ul>
@@ -233,6 +241,14 @@ function sortByDate(data, dateProperty) {
 		const dateB = Date.parse(convertDateFormat(b[dateProperty]));
 		return dateA - dateB; // Sort in ascending order (earliest to latest)
 	});
+}
+
+function toTitleCase(str) {
+	return str
+		.toLowerCase()
+		.split(" ")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ");
 }
 
 /**
