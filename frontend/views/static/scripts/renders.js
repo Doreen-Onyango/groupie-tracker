@@ -35,11 +35,11 @@ export const renderAllArtists = ({ data, message, error }) => {
 
 		if (memberCount > 0) {
 			const membersInWords = numberToWords(memberCount);
-			li.textContent = `This band has ${membersInWords} member${
+			li.textContent = `Has ${membersInWords} member${
 				memberCount > 1 ? "s" : ""
 			}`;
 		} else {
-			li.textContent = `This band has no members`;
+			li.textContent = `Has no members`;
 		}
 		membersList.appendChild(li);
 
@@ -47,12 +47,12 @@ export const renderAllArtists = ({ data, message, error }) => {
 		if (memberCount > 0) {
 			artist.members.forEach((member) => {
 				const memberItem = document.createElement("li");
-				memberItem.textContent = member.name; // Assuming `name` is the member property
+				memberItem.textContent = member.name;
 				membersList.appendChild(memberItem);
 			});
 		} else {
 			const noMembersItem = document.createElement("li");
-			noMembersItem.textContent = "This band has no members";
+			noMembersItem.textContent = "Has no members";
 			membersList.appendChild(noMembersItem);
 		}
 
