@@ -105,4 +105,5 @@ header {
 	align-items: center;
 	margin: auto;
 	width: 100%;
+	min-height: 430px;
 }
