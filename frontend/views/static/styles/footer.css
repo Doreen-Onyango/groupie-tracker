@@ -1,5 +1,6 @@
 .wrapper {
 	color: #c3daf5;
+	margin-top: -160px;
 }
 
 svg {
@@ -8,7 +9,7 @@ svg {
 
 .my-footer {
 	padding: 10px;
-	margin: 0 auto;
+	margin: auto;
 	text-align: center;
 	display: flex;
 	flex-wrap: wrap;
