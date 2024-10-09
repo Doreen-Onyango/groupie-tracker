@@ -172,8 +172,8 @@
 .range_concertDate::after {
 	content: "To";
 	position: absolute;
-	top: -20px;
-	right: 0;
+	top: -20%;
+	right: 10%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
 	font-weight: normal;
@@ -187,17 +187,16 @@
 	white-space: nowrap;
 }
 
-.range_firstAlbum::before,
-.range_concertDate::before {
+.range_labels::before,
+.range_labels::before {
 	content: "From";
-}
-
-.range_firstAlbum::after,
-.range_concertDate::after {
-	content: "To";
 	position: absolute;
 	top: -20%;
-	right: 10%;
+	left: 10%;
+	font-size: 0.8rem;
+	color: var(--_marker-border-clr);
+	font-weight: normal;
+	background: none;
 }
 
 /* Existing styling for the main data label */
@@ -208,7 +207,7 @@
 	top: -20px;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: white;
+	background-color: #68aaf5;
 	padding: 10px;
 	font-size: 1rem;
 	color: var(--_marker-border-clr);
@@ -246,7 +245,7 @@
 	left: 0;
 	width: fit-content;
 	background-color: #194374;
-	color: #68aaf5;
+	color: white;
 	font-size: 0.8rem;
 	border-radius: 4px;
 	padding: 0.5rem 1rem;
