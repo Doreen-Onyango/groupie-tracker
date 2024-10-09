@@ -20,6 +20,7 @@
 	min-height: 200px;
 	text-align: center;
 	cursor: pointer;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.89);
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -43,7 +44,7 @@
 
 .artist-card:hover {
 	transform: translateY(-5px);
-	box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.703);
 }
 
 .artist-image {
