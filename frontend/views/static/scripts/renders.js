@@ -115,6 +115,7 @@ function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
 
 	return `
+	<div class="artist-details">
 		<div class="artist-info">
 			<img src="${artist.image}" alt="${artist.name}" class="artist-image"/>
 			<h2>${artist.name}</h2>
@@ -123,32 +124,31 @@ function generateArtistDetailsHTML(data) {
 				formatDate(artist.firstAlbum) || "Unknown"
 			}</p>
 		</div>
-		<div class="artist-details">
-			<strong>Members:</strong>
-			<ul id="artistMembersList">
+		<strong>Members:</strong>
+		<ul id="artistMembersList">
 				${artist.members.map((member) => `<li>${member}</li>`).join("")}
-			</ul>
+		</ul>
 
-			<p><strong>Locations:</strong></p>
-			<ul>
+		<p><strong>Locations:</strong></p>
+		<ul>
 				${
 					locations.locations.length
 						? locations.locations.map(formatLocation).join(", ")
 						: "<li>No locations set at the moment</li>"
 				}
-			</ul>
+		</ul>
 
-			<p><strong>Concert Dates:</strong></p>
-			<ul>
+		<p><strong>Concert Dates:</strong></p>
+		<ul>
 				${
 					concertDates.dates.length
 						? concertDates.dates.map(formatDate).join(", ")
 						: "<li>No concert dates set at the moment</li>"
 				}
-			</ul>
+		</ul>
 
-			<p><strong>Relations:</strong></p>
-			<ul>
+		<p><strong>Relations:</strong></p>
+		<ul>
 				${
 					Object.entries(relations.datesLocations).length
 						? Object.entries(relations.datesLocations)
@@ -161,10 +161,11 @@ function generateArtistDetailsHTML(data) {
 								.join("")
 						: "<li>No relations set at the moment</li>"
 				}
-			</ul>
+		</ul>
 
-			<p><strong>GeoLocations:</strong></p>
-			<div id="map" style="width: 100%; height: 400px;"></div>`;
+		<p><strong>GeoLocations:</strong></p>
+		<div id="map" style="width: 100%; height: 400px;"></div>
+	</div>`;
 }
 
 function initMap(geoLocations) {
