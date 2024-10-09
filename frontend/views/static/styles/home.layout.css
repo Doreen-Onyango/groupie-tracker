@@ -7,7 +7,7 @@
 
 .home-page #home-groupie {
 	position: absolute;
-	background-color: #a09d9d;
+	background-color: #bebebe;
 	right: 100px;
 	top: -25px;
 }
@@ -40,7 +40,7 @@ header {
 	margin-left: 20px;
 	margin-top: -10px;
 	cursor: pointer;
-	background-color: #a09d9d;
+	background-color: #bebebe;
 	z-index: 20;
 	border-radius: 50%;
 }
