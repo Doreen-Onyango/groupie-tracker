@@ -14,13 +14,13 @@
 	align-items: center;
 	position: relative;
 	width: 70%;
+	margin-left: -15%;
 	max-width: 1200px;
 }
 
 .searchUnified {
-	margin-left: -20px;
 	width: 90%;
-	padding: 15px 50px 15px 20px;
+	padding: 10px 50px 10px 20px;
 	font-size: 1.1rem;
 	border-radius: 25px;
 	border: 2px solid #194374;
@@ -67,8 +67,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 5px;
-	font-size: 1em;
-	padding: 5px 10px;
+	font-size: 0.8em;
+	padding: 3px 10px;
 	color: #194374;
 	margin: 10px;
 	z-index: 20;
@@ -82,7 +82,7 @@
 .membersFilter label {
 	display: flex;
 	align-items: center;
-	padding: 5px 10px;
+	padding: 3px 5px;
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background-color 0.3s ease-in-out, border-color 0.9s ease-in-out;
@@ -90,7 +90,7 @@
 
 /* Checkbox hover effect */
 .membersFilter label:hover {
-	padding: 2px 8px;
+	padding: 2px 3px;
 	background-color: #eaeaea;
 	border: 1px solid #ccc;
 	border-color: #0073e6;
