@@ -165,6 +165,10 @@ function generateArtistDetailsHTML(data) {
 	</div>`;
 }
 
+/**
+ * Initializes a Google Map and adds markers and a polyline to represent artist locations.
+ * @param {Array} geoLocations - Array of objects containing latitude, longitude, date, and location name.
+ */
 function initMap(geoLocations) {
 	const sortedLocations = sortByDate(geoLocations, "date");
 
@@ -243,6 +247,11 @@ function sortByDate(data, dateProperty) {
 	});
 }
 
+/**
+ * Converts a given string to title case, where the first letter of each word is capitalized.
+ * @param {string} str - The string to be converted to title case.
+ * @returns {string} - The title-cased string.
+ */
 function toTitleCase(str) {
 	return str
 		.toLowerCase()
