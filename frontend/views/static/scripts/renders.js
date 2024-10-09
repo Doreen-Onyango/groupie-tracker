@@ -112,59 +112,48 @@ export function showModal(artistData) {
 function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
 
+	// Format the members into a sentence like "Abu, Martin, Mary and Moses"
+	const memberSentence =
+		artist.members.length > 1
+			? `${artist.members.slice(0, -1).join(", ")} and ${artist.members.slice(
+					-1
+			  )}`
+			: artist.members[0] || "No members";
+
 	return `
-	<div class="artist-details">
-		<div>
-			<div class="artist-info">
-				<img src="${artist.image}" alt="${artist.name}" class="artist-image"/>
+	<div class="modal-artist-details">
+		<div class="modal-artist-data">
+			<div class="modal-artist-info">
+				<img src="${artist.image}" alt="${artist.name}" class="modal-artist-image"/>
 				<h2>${artist.name}</h2>
-				<p><strong>Creation Date:</strong> ${artist.creationDate || "Unknown"}</p>
-				<p><strong>First Album:</strong> ${
-					formatDate(artist.firstAlbum) || "Unknown"
-				}</p>
+				<p>
+					<strong>Creation Date:</strong> ${artist.creationDate || "Unknown"}
+				</p>
+				<p>
+					<strong>First Album:</strong> ${formatDate(artist.firstAlbum) || "Unknown"}
+				</p>
 			</div>
-			<strong>Members:</strong>
-			<ul id="artistMembersList">
-					${artist.members.map((member) => `<li>${member}</li>`).join("")}
-			</ul>
-
-			<p><strong>Locations:</strong></p>
-			<ul>
-					${
-						locations.locations.length
-							? locations.locations.map(formatLocation).join(", ")
-							: "<li>No locations set at the moment</li>"
-					}
-			</ul>
-
-			<p><strong>Concert Dates:</strong></p>
-			<ul>
-					${
-						concertDates.dates.length
-							? concertDates.dates.map(formatDate).join(", ")
-							: "<li>No concert dates set at the moment</li>"
-					}
-			</ul>
-			<p><strong>Relations:</strong></p>
-			<ul>
+			<div class="modal-artist-members">
+				<p><strong>Members:</strong></p>
+				<p>${memberSentence}</p>
+				<p><strong>Concerts Held:</strong></p>
+				<ul>
 					${
 						Object.entries(relations.datesLocations).length
 							? Object.entries(relations.datesLocations)
 									.map(
 										([location, dates]) =>
-											`<li>${formatLocation(location)}: ${dates
+											`<li>${formatLocation(location)} on ${dates
 												.map(formatDate)
 												.join(", ")}</li>`
 									)
 									.join("")
-							: "<li>No relations set at the moment</li>"
+							: "<li>No concerts held</li>"
 					}
-			</ul>
+				</ul>
+			</div>
 		</div>
-		<div>
-			<p><strong>GeoLocations:</strong></p>
-			<div id="map" style="width: 100%; height: 400px;"></div>
-		</div>
+		<div id="map" style="width: 100%; height: 400px;"></div>
 	</div>`;
 }
 
