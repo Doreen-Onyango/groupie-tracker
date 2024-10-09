@@ -2,7 +2,7 @@
  * Renders all artists or displays an error message if there's an issue
  * @param {Object} artistsData - The data object containing artists, message, and error status
  */
-export const renderAllArtists = ({ data, message, error }, sortById) => {
+export const renderAllArtists = ({ data, message, error }) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate"); // Reference the template
 
@@ -15,9 +15,7 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 
 	if (error) return;
 
-	const sortedArtistData = sortById(data);
-
-	sortedArtistData.forEach((artist) => {
+	data.forEach((artist) => {
 		// Clone the template content
 		const card = template.content.cloneNode(true);
 

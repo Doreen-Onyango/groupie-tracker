@@ -136,7 +136,7 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
  * @returns {Array<Object>} - The sorted array.
  */
 export function sortById(items) {
-	return items.sort((a, b) => a.id - b.id);
+	return items.sort((a, b) => Number(a.id) - Number(b.id));
 }
 
 // TODO: set data change listeners

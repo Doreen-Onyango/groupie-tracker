@@ -245,6 +245,8 @@ ArtistApp.prototype.renderPaginatedArtists = function () {
 	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 	const endIndex = startIndex + this.itemsPerPage;
 
+	this.filteredData = sortById(this.filteredData);
+
 	const paginatedData = this.filteredData.slice(startIndex, endIndex);
 	if (this.currentPage > this.totalPages) {
 		this.renderFilteredData(this.filteredData);
@@ -733,7 +735,7 @@ ArtistApp.prototype.renderFilteredData = function (filteredData) {
 	};
 
 	// Render the unique artist data
-	renderAllArtists(data, sortById);
+	renderAllArtists(data);
 };
 
 /**
