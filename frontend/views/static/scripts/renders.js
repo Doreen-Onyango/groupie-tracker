@@ -31,18 +31,19 @@ export const renderAllArtists = ({ data, message, error }, sortById) => {
 		image.src = artist.image;
 		image.alt = `${artist.name} image`;
 
-		const memberCount = artist.members.length;
 		const membersList = card.querySelector(".artist-members");
+		const memberCount = artist.members.length;
+		const li = document.createElement("li");
 
-		// Clear the list before appending new members
-		membersList.innerHTML = "";
-
-		// Create and append the list item for the member count
-		const membersText = document.createElement("li");
-		membersText.textContent = `This band has ${memberCount} member${
-			memberCount > 1 ? "s" : ""
-		}`;
-		membersList.appendChild(membersText);
+		if (memberCount > 0) {
+			const membersInWords = numberToWords(memberCount);
+			li.textContent = `This band has ${membersInWords} member${
+				memberCount > 1 ? "s" : ""
+			}`;
+		} else {
+			li.textContent = `This band has no members`;
+		}
+		membersList.appendChild(li);
 
 		// If there are members, append each one to the list
 		if (memberCount > 0) {
