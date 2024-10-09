@@ -1,18 +1,9 @@
-/* artis card styles */
-.artists {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 0 10px;
-	margin: auto;
-	width: 100%;
-}
-
 #artistsContainer {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 	gap: 10px;
-	margin: 10px 0;
+	margin: 10px auto;
 	width: 100%;
 }
 
@@ -25,6 +16,8 @@
 	padding: 10px;
 	max-width: 200px;
 	min-width: 200px;
+	max-height: 200px;
+	min-height: 200px;
 	text-align: center;
 	cursor: pointer;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;

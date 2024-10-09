@@ -98,3 +98,12 @@ header {
 	font-size: 1em;
 	color: #333;
 }
+
+/* artis card styles */
+.artists {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	width: 100%;
+}

@@ -1,6 +1,4 @@
 .wrapper {
-	margin-top: 10%;
-	background-color: #194374;
 	color: #c3daf5;
 }
 
@@ -8,39 +6,8 @@ svg {
 	padding: 10px;
 }
 
-.authors {
-	margin: 1% auto -8em auto;
-}
-
-.authors p {
-	margin-top: -1.5em;
-	font-size: 0.7em;
-	text-shadow: 0 0 0.5em rgb(254, 228, 196);
-	text-shadow: 1px 1px 2px rgb(1, 2, 19), 0 0 5px #222;
-}
-
-.author {
-	display: inline-block;
-	margin: 5%;
-	text-align: center;
-	font-size: medium;
-}
-
-.author img {
-	border-radius: 50%;
-	width: 80px;
-	height: 80px;
-	object-fit: cover;
-	box-shadow: 2px 8px 15px rgb(1, 2, 19);
-}
-
-.author-name {
-	margin-top: 10px;
-	font-size: 1.2em;
-}
-
 .my-footer {
-	padding: 1% 20%;
+	padding: 10px;
 	margin: 0 auto;
 	text-align: center;
 	display: flex;
@@ -48,8 +15,7 @@ svg {
 	align-items: center;
 	justify-content: space-between;
 	align-items: center;
-	border-top: 1px solid #444;
-	border-bottom: 1px solid #444;
+	background-color: #194374;
 }
 
 .my-footer svg {
@@ -59,20 +25,4 @@ svg {
 
 .my-footer span {
 	font-size: 0.8em;
-}
-
-@media screen and (max-width: 544px) {
-	p {
-		padding: 0;
-		font-size: 0.9em;
-	}
-
-	h2 {
-		font-size: 1.2em;
-	}
-
-	.authors p {
-		margin-top: -1.2em;
-		font-size: 0.5em;
-	}
 }
