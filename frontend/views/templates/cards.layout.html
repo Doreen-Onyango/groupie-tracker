@@ -1,0 +1,31 @@
+{{define "artistCard"}}
+<div id="artistsContainer"></div>
+
+<template id="artistCardTemplate">
+	<div class="artist-card-link">
+		<div
+			class="artist-card"
+			data-artist-id=""
+		>
+			<div class="artist-details">
+				<div class="artist-image-container">
+					<img
+						class="artist-image"
+						src=""
+						alt="Artist Name image"
+					/>
+					<div class="creation-date">
+						<p class="artist-name">Artist Name</p>
+						<p class="artist-creationDate-value">Creation Date:</p>
+					</div>
+				</div>
+			</div>
+			<div>
+				<h3 class="artist-firstAlbum">First Album:</h3>
+				<p class="artist-firstAlbum-value"></p>
+				<ul class="artist-members"></ul>
+			</div>
+		</div>
+	</div>
+</template>
+{{end}}
