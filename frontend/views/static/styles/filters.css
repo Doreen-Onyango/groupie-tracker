@@ -71,7 +71,6 @@
 	padding: 3px 10px;
 	color: #194374;
 	margin: 10px;
-	z-index: 20;
 	background-color: #ddd;
 	border-radius: 10px;
 	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.333);
@@ -264,7 +263,6 @@
 	width: 0.5rem;
 	height: 0.5rem;
 	rotate: 45deg;
-	z-index: -1;
 	background-color: inherit;
 }
 
@@ -277,7 +275,6 @@ input[type="range"]::-webkit-slider-thumb {
 	border-radius: 50%;
 	box-shadow: 0 0 0 1px var(--_marker-border-clr);
 	cursor: pointer;
-	z-index: 20;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -298,7 +295,6 @@ input[type="range"] {
 	position: absolute;
 	background-color: var(--_marker-border-clr);
 	pointer-events: none;
-	z-index: -10;
 }
 
 .unified-suggestions {
@@ -353,7 +349,6 @@ input[type="range"] {
 	border: 1px solid #ccc;
 	max-height: 150px;
 	overflow-y: auto;
-	z-index: 10;
 	display: none; /* Initially hidden */
 }
 
