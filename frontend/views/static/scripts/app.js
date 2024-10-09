@@ -57,6 +57,7 @@ ArtistApp.prototype.initialize = async function () {
 		// hidden data fields
 		searchByName: document.getElementById("searchByName"),
 		searchByMembers: document.getElementById("searchByMembers"),
+		prevPageButton: document.getElementById("prevPage"),
 	};
 
 	this.artistsData = await getAllArtists();
@@ -77,6 +78,8 @@ ArtistApp.prototype.initialize = async function () {
 
 	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
+	if (this.currentPage === 1)
+		this.domElements.prevPageButton.classList.add("disabled");
 };
 
 /**
@@ -259,15 +262,30 @@ ArtistApp.prototype.renderPaginatedArtists = function () {
  * Handles page changes and ensures filtered data is paginated correctly
  */
 ArtistApp.prototype.changePage = function (page) {
+	// Ensure the page is within bounds
 	if (page < 1 || page > this.totalPages) return;
 
+	// Update the current page and render the paginated artists
 	this.currentPage = page;
 	this.renderPaginatedArtists();
 
 	// Update pagination button states
-	document.getElementById("prevPage").disabled = this.currentPage === 1;
-	document.getElementById("nextPage").disabled =
-		this.currentPage === this.totalPages;
+	const prevPageButton = document.getElementById("prevPage");
+	const nextPageButton = document.getElementById("nextPage");
+
+	// Enable/disable the "Previous" button
+	if (this.currentPage === 1) {
+		prevPageButton.classList.add("disabled");
+	} else {
+		prevPageButton.classList.remove("disabled");
+	}
+
+	// Enable/disable the "Next" button
+	if (this.currentPage === this.totalPages) {
+		nextPageButton.classList.add("disabled");
+	} else {
+		nextPageButton.classList.remove("disabled");
+	}
 };
 
 /**

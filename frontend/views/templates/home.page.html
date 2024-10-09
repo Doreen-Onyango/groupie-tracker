@@ -47,16 +47,16 @@
 </header>
 <div class="artists">
 	 <!-- Pagination controls -->
-	<div id="pagination" class="pagination-controls">
-		<button id="prevPage" class="pagination-button" disabled>Previous</button>
+	<div id="pagination">
+		<img id="prevPage" class="pagination-button" disabled src="/static/images/icon-back.png" alt="Previous">
 	</div>
 	<!-- artist cards -->
 	{{block "artistCard" .}}{{end}}
 
 	<!-- end -->
 	 <!-- Pagination controls -->
-	<div id="pagination" class="pagination-controls">
-		<button id="nextPage" class="pagination-button">Next</button>
+	<div id="pagination">
+		<img id="nextPage" class="pagination-button" src="/static/images/icon-foward.png" alt="Next">
 	</div>
 
 	<!-- modal -->
