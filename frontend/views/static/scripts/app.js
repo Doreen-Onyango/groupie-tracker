@@ -158,7 +158,7 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
  * Filters artist cards based on the current state of all filters
  */
 ArtistApp.prototype.applyAllFilters = function (activeQueries) {
-	if (!this.artistsData) return;
+	if (!this.artistsData || this.activeQueries.length > 3) return;
 
 	let accumulatedResults = [];
 
@@ -635,6 +635,9 @@ ArtistApp.prototype.addSuggestionClick = function (
 
 // Function to add an item to the search summary and handle removal with filtering
 ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
+	if (this.activeQueries.length > 3) return;
+	console.log(this.activeQueries.length);
+	// TODO: add a toast
 	const summaryContainer = document.getElementById("searchSummary");
 	const item = document.createElement("div");
 	item.className = "searchSummaryItem";
@@ -644,6 +647,11 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	const type = splitId[splitId.length - 1];
 
 	itemText.textContent = `${type}: ${value}`;
+	if (this.activeQueries.length > 0) {
+		const items = 3 - this.activeQueries.length;
+		this.domElements.searchUnified.placeholder =
+			items < 2 ? `add ${items} item` : `add ${items} items`;
+	}
 
 	// Create the close icon
 	const closeIcon = document.createElement("span");
