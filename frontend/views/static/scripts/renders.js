@@ -142,23 +142,27 @@ function generateArtistDetailsHTML(data) {
 				</p>
 			</div>
 			<div class="modal-artist-members">
-				<p><strong>${toTitleCase(membersTitle)}</strong></p>
-				<p>${memberSentence}</p>
-				<p><strong>Concerts Held:</strong></p>
-				<ul>
-					${
-						Object.entries(relations.datesLocations).length
-							? Object.entries(relations.datesLocations)
-									.map(
-										([location, dates]) =>
-											`<li>${formatLocation(location)} on ${dates
-												.map(formatDate)
-												.join(", ")}</li>`
-									)
-									.join("")
-							: "<li>No concerts held</li>"
-					}
-				</ul>
+				<div class="modal-artist-members-data">
+					<p><strong>${toTitleCase(membersTitle)}</strong></p>
+					<p>${memberSentence}</p>
+				</div>
+				<div class="modal-artist-concerts-data">
+					<p><strong>Concerts Held:</strong></p>
+					<ul>
+						${
+							Object.entries(relations.datesLocations).length
+								? Object.entries(relations.datesLocations)
+										.map(
+											([location, dates]) =>
+												`<li>${formatLocation(location)} on ${dates
+													.map(formatDate)
+													.join(", ")}</li>`
+										)
+										.join("")
+								: "<li>No concerts held</li>"
+						}
+					</ul>
+				</div>
 			</div>
 		</div>
 		<div id="map" style="width: 100%; height: 400px;"></div>
