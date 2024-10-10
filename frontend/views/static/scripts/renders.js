@@ -152,12 +152,14 @@ function generateArtistDetailsHTML(data) {
 						${
 							Object.entries(relations.datesLocations).length
 								? Object.entries(relations.datesLocations)
-										.map(
-											([location, dates]) =>
-												`<li>${formatLocation(location)} on ${dates
-													.map(formatDate)
-													.join(", ")}</li>`
-										)
+										.map(([location, dates]) => {
+											const sortedDates = dates.sort(
+												(a, b) => new Date(a) - new Date(b)
+											);
+											return `<li>${formatLocation(location)} on ${sortedDates
+												.map(formatDate)
+												.join(", ")}</li>`;
+										})
 										.join("")
 								: "<li>No concerts held</li>"
 						}
@@ -247,7 +249,7 @@ function sortByDate(data, dateProperty) {
 	return data.sort((a, b) => {
 		const dateA = Date.parse(convertDateFormat(a[dateProperty]));
 		const dateB = Date.parse(convertDateFormat(b[dateProperty]));
-		return dateA - dateB; // Sort in ascending order (earliest to latest)
+		return dateA - dateB;
 	});
 }
 
