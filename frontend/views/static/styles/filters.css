@@ -55,12 +55,7 @@
 	transform: rotate(90deg);
 }
 
-/* Adjust for mobile responsiveness */
-@media screen and (max-width: 768px) {
-	.searchUnified {
-		width: 95%;
-	}
-}
+
 
 /* Add hover effect for the entire .membersFilter container */
 .membersFilter {
@@ -390,4 +385,23 @@ input[type="range"] {
 
 .hidden {
 	display: none;
+}
+
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 1153px) {
+	.range_firstAlbum,
+	.range_concertDate {
+		max-width: 45%;
+	}
+}
+
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 868px) {
+	.search-container .home-page {
+		left: 3%;
+	}
+
+	.search-container img {
+		right: -3%;
+	}
 }

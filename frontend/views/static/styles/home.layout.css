@@ -105,3 +105,8 @@ header {
 	width: 100%;
 	min-height: 430px;
 }
+
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 768px) {
+	
+}
