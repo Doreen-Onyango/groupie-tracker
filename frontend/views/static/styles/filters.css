@@ -415,7 +415,7 @@ input[type="range"] {
 	}
 
 	.search-container .home-page {
-		left: 8%;
+		display: none;
 	}
 
 	.search-container img {

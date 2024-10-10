@@ -93,6 +93,27 @@
 	background-color: rgb(76, 2, 91);
 }
 
+.nav-logo {
+	display: none;
+	color: #ddd;
+	font-weight: bolder;
+	font-size: 1.4em;
+	position: absolute;
+	left: 40%;
+}
+
+.nav-logo #nav-groupie {
+	position: relative;
+	left: 20%;
+	top: -10px;
+}
+
+.nav-logo #nav-tracker {
+	position: relative;
+	left: -31%;
+	top: 8px;
+}
+
 /* Show hamburger icon on small screens */
 @media (max-width: 768px) {
 	.hamburger {
@@ -140,5 +161,9 @@
 	.navbar ul li a {
 		padding: 15px;
 		color: #68aaf5;
+	}
+
+	.nav-logo {
+		display: block;
 	}
 }
