@@ -665,7 +665,12 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 		item.remove();
 
 		if (this.activeQueries.length < 1) {
+			const searchIcon =
+				this.domElements.searchSummary.querySelector(".search-icon");
 			this.domElements.searchSummary.innerHTML = "";
+			if (searchIcon) {
+				this.domElements.searchSummary.appendChild(searchIcon);
+			}
 		}
 
 		this.applyAllFilters(this.activeQueries);
@@ -1029,8 +1034,13 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.searchByAlbumRelease.value = "";
 	this.activeQueries = [];
 
-	// Reset summary
+	// Reset summary but retain the search icon
+	const searchIcon =
+		this.domElements.searchSummary.querySelector(".search-icon");
 	this.domElements.searchSummary.innerHTML = "";
+	if (searchIcon) {
+		this.domElements.searchSummary.appendChild(searchIcon);
+	}
 	this.activeQueries = [];
 
 	// Reset sliders
