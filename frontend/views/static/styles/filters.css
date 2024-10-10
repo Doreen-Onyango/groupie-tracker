@@ -405,3 +405,29 @@ input[type="range"] {
 		right: -3%;
 	}
 }
+
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 768px) {
+	.membersFilter {
+		gap: 3px;
+		font-size: 0.8em;
+		padding: 0.2% 0%;
+	}
+
+	.search-container .home-page {
+		left: 8%;
+	}
+
+	.search-container img {
+		right: -7%;
+	}
+}
+
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 712px) {
+	.search-container .home-page {
+		margin-left: 10%
+	}
+}
+
+
