@@ -39,27 +39,3 @@ h1 {
 	text-decoration: none;
 	box-shadow: 0 2px 15px rgb(1, 2, 19);
 }
-
-.footer {
-	background-color: rgb(14, 37, 40);
-	color: #fff;
-	text-align: center;
-	padding: 20px;
-	position: relative;
-	bottom: 0;
-	width: 100%;
-}
-
-.footer p {
-	margin: 0;
-	font-size: 0.9em;
-}
-
-.footer a {
-	color: rgb(167, 96, 3);
-	text-decoration: none;
-}
-
-.footer a:hover {
-	color: #fff;
-}
