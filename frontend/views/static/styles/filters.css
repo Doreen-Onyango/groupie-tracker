@@ -445,3 +445,15 @@ input[type="range"] {
 		width: 90%;
 	}
 }
+
+@media screen and (max-width: 412px) {
+	.range_concertDate {
+		margin-top: 40%;
+	}
+}
+
+@media screen and (max-width: 328px) {
+	.range_concertDate {
+		margin-top: 60%;
+	}
+}

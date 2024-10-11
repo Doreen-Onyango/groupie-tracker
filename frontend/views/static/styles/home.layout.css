@@ -132,3 +132,9 @@ header {
 		max-height: 15%;
 	}
 }
+
+@media screen and (max-width: 328px) {
+	.range-filters {
+		margin-top: -10em;
+	}
+}
