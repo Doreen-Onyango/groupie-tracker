@@ -138,3 +138,21 @@ header {
 		margin-top: -10em;
 	}
 }
+
+@media screen and (max-width: 320px) {
+	.search-container {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	#resetButton {
+		margin-top: -9em;
+		margin-right: -10em;
+		background-color: #194374;
+	}
+
+	.range-filters {
+		margin-top: 0;
+		border: none;
+	}
+}

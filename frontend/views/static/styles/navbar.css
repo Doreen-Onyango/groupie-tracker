@@ -175,3 +175,13 @@
 		left: -41%;
 	}
 }
+
+@media screen and (max-width: 320px) {
+	.nav-logo #nav-groupie {
+		left: -8.5%;
+	}
+
+	.nav-logo #nav-tracker {
+		left: -61%;
+	}
+}
