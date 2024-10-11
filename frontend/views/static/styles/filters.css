@@ -476,3 +476,22 @@ input[type="range"] {
 		margin-top: 80px;
 	}
 }
+
+@media screen and (max-width: 280px) {
+	.search-input-container {
+		width: 110%;
+	}
+
+	.range_concertDate {
+		margin-top: 10%;
+		min-width: 110%;
+	}
+
+	.range_firstAlbum {
+		min-width: 110%;
+	}
+
+	.membersFilter {
+		margin-top: 80px;
+	}
+}

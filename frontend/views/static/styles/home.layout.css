@@ -156,3 +156,27 @@ header {
 		border: none;
 	}
 }
+
+@media screen and (max-width: 280px) {
+	#pagination {
+		margin-top: -2em;
+	}
+
+	#pagination #prevPage {
+		position: absolute;
+		left: 3em;
+	}
+
+	#pagination #nextPage {
+		position: absolute;
+		right: 3em;
+	}
+
+	#artistsContainer {
+		padding-top: 3em;
+	}
+
+	.range-filters {
+		min-width: 240px;
+	}
+}
