@@ -55,8 +55,6 @@
 	transform: rotate(90deg);
 }
 
-
-
 /* Add hover effect for the entire .membersFilter container */
 .membersFilter {
 	display: flex;
@@ -143,8 +141,7 @@
 
 .range_firstAlbum,
 .range_concertDate {
-	width: 80%;
-	max-width: 550px;
+	width: 45%;
 	margin: 70px auto;
 	border: 2px solid var(--_marker-border-clr);
 	border-radius: 8px;
@@ -388,14 +385,6 @@ input[type="range"] {
 }
 
 /* Adjust for mobile responsiveness */
-@media screen and (max-width: 1153px) {
-	.range_firstAlbum,
-	.range_concertDate {
-		max-width: 45%;
-	}
-}
-
-/* Adjust for mobile responsiveness */
 @media screen and (max-width: 868px) {
 	.search-container .home-page {
 		left: 3%;
@@ -408,6 +397,10 @@ input[type="range"] {
 
 /* Adjust for mobile responsiveness */
 @media screen and (max-width: 768px) {
+	.search-input-container {
+		width: 100%;
+	}
+
 	.membersFilter {
 		gap: 3px;
 		font-size: 0.8em;
@@ -426,8 +419,19 @@ input[type="range"] {
 /* Adjust for mobile responsiveness */
 @media screen and (max-width: 712px) {
 	.search-container .home-page {
-		margin-left: 10%
+		margin-left: 10%;
 	}
 }
 
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 580px) {
+	.range_concertDate {
+		width: 80%;
+		margin: 70px auto 0 auto;
+	}
 
+	.range_firstAlbum {
+		width: 80%;
+		margin: 25px auto 0 auto;
+	}
+}
