@@ -401,6 +401,10 @@ input[type="range"] {
 		width: 100%;
 	}
 
+	.search-container img {
+		display: none;
+	}
+
 	.membersFilter {
 		gap: 3px;
 		font-size: 0.8em;
