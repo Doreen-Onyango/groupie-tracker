@@ -166,4 +166,12 @@
 	.nav-logo {
 		display: block;
 	}
+
+	.nav-logo #nav-groupie {
+		left: 12%;
+	}
+
+	.nav-logo #nav-tracker {
+		left: -41%;
+	}
 }

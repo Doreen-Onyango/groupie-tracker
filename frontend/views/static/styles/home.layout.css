@@ -112,7 +112,6 @@ header {
 	}
 }
 
-/* Adjust for mobile responsiveness */
 @media screen and (max-width: 580px) {
 	.range-filters {
 		max-height: 290px;
@@ -124,5 +123,12 @@ header {
 
 	.pagination-button {
 		max-width: 60px;
+	}
+}
+
+@media screen and (max-width: 454px) {
+	.range-filters {
+		margin-top: -8em;
+		max-height: 15%;
 	}
 }

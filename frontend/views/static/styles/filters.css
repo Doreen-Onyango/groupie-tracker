@@ -423,7 +423,6 @@ input[type="range"] {
 	}
 }
 
-/* Adjust for mobile responsiveness */
 @media screen and (max-width: 580px) {
 	.range_concertDate {
 		width: 80%;
@@ -433,5 +432,16 @@ input[type="range"] {
 	.range_firstAlbum {
 		width: 80%;
 		margin: 25px auto 0 auto;
+	}
+}
+
+@media screen and (max-width: 454px) {
+	.range_concertDate {
+		width: 90%;
+		margin-top: 30%;
+	}
+
+	.range_firstAlbum {
+		width: 90%;
 	}
 }
