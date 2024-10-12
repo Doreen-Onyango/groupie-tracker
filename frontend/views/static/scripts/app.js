@@ -1,4 +1,15 @@
-import {
+let helpers;
+let renders;
+
+if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
+	helpers = await import("./helpers.js");
+	renders = await import("./renders.js");
+} else {
+	helpers = await import("/static/scripts/helpers.js");
+	renders = await import("/static/scripts/renders.js");
+}
+
+const {
 	getAllArtists,
 	getArtistById,
 	setTooltip,
@@ -8,8 +19,9 @@ import {
 	controlFromSlider,
 	sortById,
 	getCoordinates,
-} from "/static/scripts/helpers.js";
-import { renderAllArtists, showModal } from "/static/scripts/renders.js";
+} = helpers;
+
+const { renderAllArtists, showModal } = renders;
 
 /**
  * ArtistApp class to handle artist-related functionalities
