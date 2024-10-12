@@ -21,6 +21,7 @@ class ArtistApp {
 		this.currentPage = 1;
 		this.itemsPerPage = 10;
 		this.totalPages = 0;
+		this.summaryCounter = 0;
 
 		this.initialize();
 		this.setupEventListeners();
@@ -636,7 +637,6 @@ ArtistApp.prototype.addSuggestionClick = function (
 // Function to add an item to the search summary and handle removal with filtering
 ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	if (this.activeQueries.length > 3) return;
-	console.log(this.activeQueries.length);
 	// TODO: add a toast
 	const summaryContainer = document.getElementById("searchSummary");
 	const item = document.createElement("div");
@@ -648,9 +648,11 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 
 	itemText.textContent = `${type}: ${value}`;
 	if (this.activeQueries.length > 0) {
-		const items = 3 - this.activeQueries.length;
+		this.summaryCounter++;
 		this.domElements.searchUnified.placeholder =
-			items < 2 ? `add ${items} item` : `add ${items} items`;
+			this.summaryCounter < 2
+				? `added ${this.summaryCounter} item`
+				: `added ${this.summaryCounter} items`;
 	}
 
 	// Create the close icon
@@ -671,6 +673,17 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 			.filter((query) => query.value.length > 0);
 
 		item.remove();
+
+		if (this.activeQueries.length > 0) {
+			this.summaryCounter--;
+			this.domElements.searchUnified.placeholder =
+				this.summaryCounter < 2
+					? `added ${this.summaryCounter} item`
+					: `added ${this.summaryCounter} items`;
+		} else {
+			this.domElements.searchUnified.placeholder =
+				"Search for artists, concerts, performed locations and album release....";
+		}
 
 		if (this.activeQueries.length < 1) {
 			const searchIcon =
