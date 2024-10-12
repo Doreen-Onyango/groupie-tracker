@@ -3,3 +3,6 @@
 # .env
 
 # Todo: ignore build files
+
+# ignore node_modules
+node_modules/
