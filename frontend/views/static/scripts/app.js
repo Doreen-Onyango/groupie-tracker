@@ -1,33 +1,60 @@
-let helpers;
-let renders;
+// Declare these at the top so they can be assigned values later
+let helpersModule;
+let rendersModule;
 
-if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
-	helpers = await import("./helpers.js");
-	renders = await import("./renders.js");
-} else {
-	helpers = await import("/static/scripts/helpers.js");
-	renders = await import("/static/scripts/renders.js");
+async function loadModules() {
+	if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
+		helpersModule = await import("./helpers.js");
+		rendersModule = await import("./renders.js");
+	} else {
+		helpersModule = await import("/static/scripts/helpers.js");
+		rendersModule = await import("/static/scripts/renders.js");
+	}
 }
 
-const {
-	getAllArtists,
-	getArtistById,
-	setTooltip,
-	setToggleAccessible,
-	fillSlider,
-	controlToSlider,
-	controlFromSlider,
-	sortById,
-	getCoordinates,
-} = helpers;
+async function initializeApp() {
+	try {
+		// Ensure modules are loaded first
+		await loadModules();
 
-const { renderAllArtists, showModal } = renders;
+		// Extract the necessary functions from the loaded modules
+		const {
+			getAllArtists,
+			getArtistById,
+			setTooltip,
+			setToggleAccessible,
+			fillSlider,
+			controlToSlider,
+			controlFromSlider,
+			sortById,
+			getCoordinates,
+		} = helpersModule;
+		const { renderAllArtists, showModal } = rendersModule;
+
+		// Now, create an instance of ArtistApp with these services
+		const app = new ArtistApp({
+			getAllArtists,
+			getArtistById,
+			getCoordinates,
+			renderAllArtists,
+			showModal,
+			setTooltip,
+			setToggleAccessible,
+			fillSlider,
+			controlToSlider,
+			controlFromSlider,
+			sortById,
+		});
+	} catch (error) {
+		console.error("Error loading modules:", error);
+	}
+}
 
 /**
  * ArtistApp class to handle artist-related functionalities
  */
 class ArtistApp {
-	constructor() {
+	constructor(services) {
 		this.domElements = {};
 		this.activeQueries = [];
 		this.currentPage = 1;
@@ -35,6 +62,20 @@ class ArtistApp {
 		this.totalPages = 0;
 		this.summaryCounter = 0;
 
+		// Bind external services to the app
+		this.getAllArtists = services.getAllArtists;
+		this.getArtistById = services.getArtistById;
+		this.getCoordinates = services.getCoordinates;
+		this.renderAllArtists = services.renderAllArtists;
+		this.showModal = services.showModal;
+		this.setTooltip = services.setTooltip;
+		this.setToggleAccessible = services.setToggleAccessible;
+		this.fillSlider = services.fillSlider;
+		this.controlToSlider = services.controlToSlider;
+		this.controlFromSlider = services.controlFromSlider;
+		this.sortById = services.sortById;
+
+		// Initialize and set up event listeners
 		this.initialize();
 		this.setupEventListeners();
 	}
@@ -73,7 +114,8 @@ ArtistApp.prototype.initialize = async function () {
 		prevPageButton: document.getElementById("prevPage"),
 	};
 
-	this.artistsData = await getAllArtists();
+	// Correctly use 'this.getAllArtists' as it is a method in the instance
+	this.artistsData = await this.getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
 
@@ -102,8 +144,8 @@ ArtistApp.prototype.initialize = async function () {
 ArtistApp.prototype.fetchAllArtistDetails = async function () {
 	const artistDetails = await Promise.all(
 		this.artistsData.data.map(async (artist) => {
-			const artistData = await getArtistById(artist.id);
-			const geoLocations = await getCoordinates(artist.id);
+			const artistData = await this.getArtistById(artist.id);
+			const geoLocations = await this.getCoordinates(artist.id);
 			return { artistData, geoLocations };
 		})
 	);
@@ -261,7 +303,7 @@ ArtistApp.prototype.renderPaginatedArtists = function () {
 	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 	const endIndex = startIndex + this.itemsPerPage;
 
-	this.filteredData = sortById(this.filteredData);
+	this.filteredData = this.sortById(this.filteredData);
 
 	const paginatedData = this.filteredData.slice(startIndex, endIndex);
 	if (this.currentPage > this.totalPages) {
@@ -791,7 +833,7 @@ ArtistApp.prototype.renderFilteredData = function (filteredData) {
 	};
 
 	// Render the unique artist data
-	renderAllArtists(data);
+	this.renderAllArtists(data);
 };
 
 /**
@@ -966,10 +1008,10 @@ ArtistApp.prototype.initializeSliderVisuals = function (
 	fromTooltip,
 	toTooltip
 ) {
-	fillSlider(fromSlider, toSlider, trackColor, rangeColor, toSlider);
-	setToggleAccessible(toSlider);
-	setTooltip(fromSlider, fromTooltip);
-	setTooltip(toSlider, toTooltip);
+	this.fillSlider(fromSlider, toSlider, trackColor, rangeColor, toSlider);
+	this.setToggleAccessible(toSlider);
+	this.setTooltip(fromSlider, fromTooltip);
+	this.setTooltip(toSlider, toTooltip);
 };
 
 /**
@@ -1117,6 +1159,4 @@ ArtistApp.prototype.resetFilters = function () {
 /**
  * Creates a new instance of ArtistApp and starts the application
  */
-document.addEventListener("DOMContentLoaded", () => {
-	const app = new ArtistApp();
-});
+document.addEventListener("DOMContentLoaded", initializeApp);
