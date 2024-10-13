@@ -65,3 +65,6 @@ In Vs Code setting
 "json.schemaDownload.enable": false
 
 ```
+
+install the jsdom
+`npm install --save-dev jsdom`
