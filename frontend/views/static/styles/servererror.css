@@ -1,6 +1,6 @@
 .servererror {
 	display: flex;
-	flex-flow: column wrap;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: 90vh;
