@@ -11,3 +11,7 @@ func (h *Repo) HomeHandler(w http.ResponseWriter, r *http.Request) {
 func (h *Repo) AboutHandler(w http.ResponseWriter, r *http.Request) {
 	h.res.RenderTemplate("about.page.html", http.StatusOK, w)
 }
+
+func (h *Repo) NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	h.res.RenderTemplate("404.page.html", http.StatusNotFound, w)
+}
