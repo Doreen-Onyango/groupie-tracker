@@ -359,6 +359,12 @@ ArtistApp.prototype.changePage = function (page) {
  * Applies range filters (creation date and first album) and returns the filtered data
  */
 ArtistApp.prototype.applyRangeFilters = function (data) {
+	// Check if data is valid and iterable
+	if (!Array.isArray(data)) {
+		console.error("Invalid data passed to applyRangeFilters:", data);
+		return [];
+	}
+
 	let creationDateFilteredData = this.applyCreationDateFilter([...data]);
 	let albumReleaseFilteredData = this.applyFirstAlbumFilter([...data]);
 	let finalFilteredData = creationDateFilteredData.filter((artist) =>
