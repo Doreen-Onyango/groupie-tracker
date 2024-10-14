@@ -26,6 +26,7 @@ func (r *Routes) RegisterRoutes(mux *http.ServeMux) *http.ServeMux {
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 
 	mux.HandleFunc("/", r.repo.HomeHandler)
+	mux.HandleFunc("/about", r.repo.AboutHandler)
 
 	return mux
 }
