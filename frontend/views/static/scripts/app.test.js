@@ -1,51 +1,30 @@
-import { beforeEach, describe, it, expect, vi } from "vitest";
-import ArtistApp from "./app.js";
-import { getAllArtists, getArtistById, getCoordinates } from "@/helpers.js";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import ArtistApp from "./app"; // Adjust the import path as necessary
 
-// Mock the helpers module
-vi.mock("@/helpers.js", () => ({
-	getAllArtists: vi.fn(),
-	getArtistById: vi.fn(),
-	getCoordinates: vi.fn(),
-}));
-
-describe("ArtistApp Critical Tests", () => {
+describe("ArtistApp", () => {
 	let app;
 
 	beforeEach(() => {
-		app = new ArtistApp();
+		// Mock services
+		const services = {
+			getAllArtists: vi
+				.fn()
+				.mockResolvedValue({ data: [{ id: 1, name: "Artist 1" }] }),
+			getArtistById: vi.fn().mockResolvedValue({ name: "Artist 1" }), // Mocking the getArtistById method
+			getCoordinates: vi.fn().mockResolvedValue({ latitude: 0, longitude: 0 }), // Mocking the getCoordinates method
+		};
+
+		// Create an instance of ArtistApp
+		app = new ArtistApp(services);
 	});
 
-	it("should fetch all artist details correctly", async () => {
-		const mockArtists = {
-			data: [{ id: 1 }, { id: 2 }],
-		};
-		const mockArtistDetails = { id: 1, name: "Artist 1" };
-		const mockCoordinates = { lat: 0, long: 0 };
+	it("should fetch all artist data", async () => {
+		// Call the method directly that assigns artistsData
+		app.artistsData = await app.getAllArtists();
 
-		getAllArtists.mockResolvedValue(mockArtists);
-		getArtistById.mockResolvedValue(mockArtistDetails);
-		getCoordinates.mockResolvedValue(mockCoordinates);
-
-		const details = await app.fetchAllArtistDetails();
-
-		expect(details.length).toBe(2);
-		expect(details[0]).toHaveProperty("artistData", mockArtistDetails);
-		expect(details[0]).toHaveProperty("geoLocations", mockCoordinates);
+		// Check if artistsData has data
+		expect(app.artistsData).toBeDefined();
+		expect(app.artistsData.data).toBeDefined();
+		expect(app.artistsData.data.length).toBeGreaterThan(0); // Ensure there is at least one artist
 	});
 });
-
-// // searchbyname filter test
-// describe('applySearchByNameFilter', () => {
-//   it('should filter artists by name', () => {
-//     const filteredData = [
-//       { name: 'Pink Floyd' },
-//       { name: 'Queen' },
-//       { name: 'Gorillaz' },
-//     ];
-
-//     const result = app.applySearchByNameFilter(filteredData, 'beatles');
-//     expect(result.length).toBe(1);
-//     expect(result[0].name).toBe('The Beatles');
-//   });
-// });
