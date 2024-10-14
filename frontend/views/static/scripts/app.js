@@ -136,7 +136,7 @@ ArtistApp.prototype.initialize = async function () {
 
 	// Apply filters and display initial data
 	this.applyAllFilters(this.activeQueries);
-	if (this.currentPage === 1)
+	if (this.currentPage === 1 && this.domElements.prevPageButton)
 		this.domElements.prevPageButton.classList.add("disabled");
 };
 
