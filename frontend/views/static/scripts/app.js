@@ -59,6 +59,7 @@ async function initializeApp() {
  */
 export default class ArtistApp {
 	constructor(services) {
+		this.services = services;
 		this.domElements = {};
 		this.activeQueries = [];
 		this.currentPage = 1;
@@ -807,6 +808,10 @@ ArtistApp.prototype.applyFirstAlbumFilter = function (filteredData) {
  * @returns {Array} filteredData - the data filtered by the number of members
  */
 ArtistApp.prototype.applyMembersFilter = function (filteredData) {
+	if (!this.domElements.membersFilter) {
+		console.error("membersFilter element not found");
+		return;
+	}
 	const selectedSizes = Array.from(
 		this.domElements.membersFilter.querySelectorAll("input:checked")
 	).map((input) => parseInt(input.value, 10));
