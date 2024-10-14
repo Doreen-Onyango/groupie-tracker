@@ -1159,4 +1159,6 @@ ArtistApp.prototype.resetFilters = function () {
 /**
  * Creates a new instance of ArtistApp and starts the application
  */
-document.addEventListener("DOMContentLoaded", initializeApp);
+if (typeof document !== "undefined") {
+	document.addEventListener("DOMContentLoaded", initializeApp);
+}
