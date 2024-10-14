@@ -11,10 +11,14 @@ type Apis struct {
 	repo *handlers.Repo
 }
 
+// initialize and return a new Apis instance
 func NewApis(repo *handlers.Repo) *Apis {
 	return &Apis{repo}
 }
 
+//	sets up the HTTP routes for the API.
+//
+// creates and registers routes for the API endpoints if a repo is initialized
 func (m *Apis) ApiRoutes() http.Handler {
 	if m.repo == nil {
 		return http.HandlerFunc(defaultHandler)
@@ -29,6 +33,7 @@ func (m *Apis) ApiRoutes() http.Handler {
 
 	return middlewares.CORSMiddleware(routes)
 }
+
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Default handler response"))

@@ -56,6 +56,7 @@ type Relation struct {
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
+// handle various types for the ID and process relations, allowing for flexible and robust data handling
 func (r *Relation) UnmarshalJSON(data []byte) error {
 	var aux struct {
 		ID             interface{}         `json:"id"`
@@ -86,6 +87,7 @@ type Locations struct {
 	Dates     string   `json:"dates"`
 }
 
+// handle various types for the ID and process locations allowing for flexible and robust data handling
 func (l *Locations) UnmarshalJSON(data []byte) error {
 	var aux struct {
 		ID        interface{} `json:"id"`
@@ -124,6 +126,7 @@ type Artist struct {
 	Relations    string   `json:"relations"`
 }
 
+// It allows flexible handling of the "ID" field, which can be either a string or a number.
 func (a *Artist) UnmarshalJSON(data []byte) error {
 	var aux struct {
 		ID           interface{} `json:"id"`
