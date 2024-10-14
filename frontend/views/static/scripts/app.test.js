@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { beforeEach, describe, it, expect, vi } from "vitest";
 import ArtistApp from "./app.js";
 import { getAllArtists, getArtistById, getCoordinates } from "@/helpers.js";
 
@@ -9,7 +9,6 @@ vi.mock("@/helpers.js", () => ({
 	getCoordinates: vi.fn(),
 }));
 
-// fetchAllArtistDetails test
 describe("ArtistApp Critical Tests", () => {
 	let app;
 
@@ -24,15 +23,12 @@ describe("ArtistApp Critical Tests", () => {
 		const mockArtistDetails = { id: 1, name: "Artist 1" };
 		const mockCoordinates = { lat: 0, long: 0 };
 
-		// Mock return values for the helper functions
 		getAllArtists.mockResolvedValue(mockArtists);
 		getArtistById.mockResolvedValue(mockArtistDetails);
 		getCoordinates.mockResolvedValue(mockCoordinates);
 
-		// Execute the function
 		const details = await app.fetchAllArtistDetails();
 
-		// Assertions
 		expect(details.length).toBe(2);
 		expect(details[0]).toHaveProperty("artistData", mockArtistDetails);
 		expect(details[0]).toHaveProperty("geoLocations", mockCoordinates);
