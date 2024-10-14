@@ -1150,19 +1150,19 @@ ArtistApp.prototype.resetFilters = function () {
 	this.filteredData = [...this.artistsData.data];
 
 	// Reset tooltips and slider visuals
-	setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
-	setTooltip(this.domElements.toSlider1, this.domElements.toTooltip1);
-	setTooltip(this.domElements.fromSlider2, this.domElements.fromTooltip2);
-	setTooltip(this.domElements.toSlider2, this.domElements.toTooltip2);
+	this.setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
+	this.setTooltip(this.domElements.toSlider1, this.domElements.toTooltip1);
+	this.setTooltip(this.domElements.fromSlider2, this.domElements.fromTooltip2);
+	this.setTooltip(this.domElements.toSlider2, this.domElements.toTooltip2);
 
-	fillSlider(
+	this.fillSlider(
 		this.domElements.fromSlider1,
 		this.domElements.toSlider1,
 		"#FF6347",
 		"#194374",
 		this.domElements.toSlider1
 	);
-	fillSlider(
+	this.fillSlider(
 		this.domElements.fromSlider2,
 		this.domElements.toSlider2,
 		"#FF6347",
