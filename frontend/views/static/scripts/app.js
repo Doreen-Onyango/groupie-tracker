@@ -31,7 +31,6 @@ async function initializeApp() {
 			fillSlider,
 			controlToSlider,
 			controlFromSlider,
-			sortById,
 		} = helpersModule;
 		const { renderAllArtists, showModal } = rendersModule;
 
@@ -48,7 +47,6 @@ async function initializeApp() {
 				fillSlider,
 				controlToSlider,
 				controlFromSlider,
-				sortById,
 			});
 		});
 	} catch (error) {
@@ -80,7 +78,6 @@ export default class ArtistApp {
 		this.fillSlider = services.fillSlider;
 		this.controlToSlider = services.controlToSlider;
 		this.controlFromSlider = services.controlFromSlider;
-		this.sortById = services.sortById;
 
 		// Initialize and set up event listeners
 		this.initialize();
@@ -308,6 +305,15 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 
 	// Render the paginated data
 	this.renderPaginatedArtists();
+};
+
+/**
+ * Sorts an array of objects by the 'id' property.
+ * @param {Array<Object>} items - The array of objects to be sorted.
+ * @returns {Array<Object>} - The sorted array.
+ */
+ArtistApp.prototype.sortById = function (items) {
+	return items.sort((a, b) => Number(a.id) - Number(b.id));
 };
 
 /**
