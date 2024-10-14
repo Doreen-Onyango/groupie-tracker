@@ -1,37 +1,41 @@
-// Declare these at the top so they can be assigned values later
+// Declare variables to store module references
 let helpersModule;
 let rendersModule;
 
+// Load modules dynamically based on the environment
 async function loadModules() {
 	if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
+		// For testing environment
 		helpersModule = await import("./helpers.js");
 		rendersModule = await import("./renders.js");
 	} else {
+		// For production or client-side environment
 		helpersModule = await import("/static/scripts/helpers.js");
 		rendersModule = await import("/static/scripts/renders.js");
 	}
 }
 
+// Initialize the app with services after loading modules
 async function initializeApp() {
 	try {
-		// Ensure modules are loaded first
+		// Load required modules
 		await loadModules();
 
-		// Extract the necessary functions from the loaded modules
+		// Destructure required services from helpers and renders modules
 		const {
 			getAllArtists,
 			getArtistById,
+			getCoordinates,
 			setTooltip,
 			setToggleAccessible,
 			fillSlider,
 			controlToSlider,
 			controlFromSlider,
 			sortById,
-			getCoordinates,
 		} = helpersModule;
 		const { renderAllArtists, showModal } = rendersModule;
 
-		// Now, create an instance of ArtistApp with these services
+		// Initialize the ArtistApp with the services
 		const app = new ArtistApp({
 			getAllArtists,
 			getArtistById,
@@ -114,7 +118,6 @@ ArtistApp.prototype.initialize = async function () {
 		prevPageButton: document.getElementById("prevPage"),
 	};
 
-	// Correctly use 'this.getAllArtists' as it is a method in the instance
 	this.artistsData = await this.getAllArtists();
 	this.filteredData = [...this.artistsData.data];
 	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
