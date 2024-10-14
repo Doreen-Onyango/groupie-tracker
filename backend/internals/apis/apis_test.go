@@ -8,35 +8,6 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/handlers"
 )
 
-// func TestApis_ApiRoutes(t *testing.T) {
-// 	type fields struct {
-// 		repo *handlers.Repo
-// 	}
-// 	tests := []struct {
-// 		name   string
-// 		fields fields
-// 		want   http.Handler
-// 	}{
-// 		{
-// 			name: "Nil repo should return default handler",
-// 			fields: fields{
-// 				repo: nil,
-// 			},
-// 			want: defaultHandler(),
-// 		}, // TODO: Add test cases.
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			m := &Apis{
-// 				repo: tt.fields.repo,
-// 			}
-// 			if got := m.ApiRoutes(); !reflect.DeepEqual(got, tt.want) {
-// 				t.Errorf("Apis.ApiRoutes() = %v, want %v", got, tt.want)
-// 			}
-// 		})
-// 	}
-// }
-
 func TestApis_ApiRoutes(t *testing.T) {
 	type fields struct {
 		repo *handlers.Repo
@@ -44,14 +15,14 @@ func TestApis_ApiRoutes(t *testing.T) {
 	tests := []struct {
 		name   string
 		fields fields
-		want   string // Expect a specific response body, not the handler itself
+		want   string
 	}{
 		{
 			name: "Nil repo should return default handler",
 			fields: fields{
-				repo: nil, // Simulate repo being nil
+				repo: nil,
 			},
-			want: "Default handler response", // Expect the response from defaultHandler
+			want: "Default handler response",
 		},
 	}
 
@@ -61,7 +32,6 @@ func TestApis_ApiRoutes(t *testing.T) {
 				repo: tt.fields.repo,
 			}
 
-			// Get the handler from ApiRoutes
 			handler := m.ApiRoutes()
 
 			// Simulate a request
