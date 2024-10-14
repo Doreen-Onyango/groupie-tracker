@@ -207,7 +207,15 @@ ArtistApp.prototype.setupEventListeners = function () {
  */
 ArtistApp.prototype.addEventListeners = function (listeners) {
 	listeners.forEach(({ element, event, handler }) => {
-		element.addEventListener(event, handler.bind(this));
+		if (element) {
+			// Check if element is not null
+			element.addEventListener(event, handler.bind(this));
+		} else {
+			console.warn("Element not found for event listener:", {
+				event,
+				handler,
+			});
+		}
 	});
 };
 
