@@ -19,11 +19,6 @@ func NewRepo(app *models.App) *Repo {
 
 // handles HTTP requests to fetch all artists.
 func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, `{"error":"Method not allowed"}`, http.StatusMethodNotAllowed)
-		return
-	}
-
 	var requestData struct {
 		Request string `json:"request"`
 	}
@@ -52,13 +47,8 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// andles requests to fetch an artist by their ID
+// handles requests to fetch an artist by their ID
 func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, `{"error":"Artist not found"}`, http.StatusNotFound)
-		return
-	}
-
 	var requestData struct {
 		Request string `json:"artist_id"`
 	}
