@@ -845,6 +845,11 @@ ArtistApp.prototype.applyMembersFilter = function (filteredData) {
  * @param {Array} filteredData - The current filtered artist data.
  */
 ArtistApp.prototype.renderFilteredData = function (filteredData) {
+	if (typeof this.renderAllArtists !== "function") {
+		console.error("renderAllArtists is not a function:", this.renderAllArtists);
+		return; // Prevent further execution
+	}
+
 	const uniqueArtists = [];
 	const seenIds = new Set();
 
