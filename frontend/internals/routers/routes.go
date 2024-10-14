@@ -2,6 +2,7 @@ package routers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/handlers"
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
@@ -29,4 +30,27 @@ func (r *Routes) RegisterRoutes(mux *http.ServeMux) *http.ServeMux {
 	mux.HandleFunc("/about", r.repo.AboutHandler)
 
 	return mux
+}
+
+// Allowed routes
+var allowedRoutes = map[string]bool{
+	"/":      true,
+	"/about": true,
+}
+
+// RouteChecker is a middleware that checks allowed routes
+func (r *Routes) RouteChecker(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if strings.HasPrefix(req.URL.Path, "/static/") || strings.HasPrefix(req.URL.Path, "/api/download-ascii") {
+			next.ServeHTTP(w, req)
+			return
+		}
+
+		if _, ok := allowedRoutes[req.URL.Path]; !ok {
+			r.repo.NotFoundHandler(w, req)
+			return
+		}
+
+		next.ServeHTTP(w, req)
+	})
 }
