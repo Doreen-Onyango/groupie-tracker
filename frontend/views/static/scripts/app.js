@@ -993,7 +993,7 @@ ArtistApp.prototype.attachSliderEvents = function (
 	rangeColor
 ) {
 	fromSlider.oninput = () =>
-		controlFromSlider(
+		this.controlFromSlider(
 			fromSlider,
 			toSlider,
 			fromTooltip,
@@ -1003,7 +1003,7 @@ ArtistApp.prototype.attachSliderEvents = function (
 		);
 
 	toSlider.oninput = () =>
-		controlToSlider(
+		this.controlToSlider(
 			fromSlider,
 			toSlider,
 			fromTooltip,
