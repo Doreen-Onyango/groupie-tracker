@@ -25,7 +25,9 @@ func (m *Apis) ApiRoutes() http.Handler {
 	mux.HandleFunc("/api/getartistbyid", m.repo.GetArtistById)
 	mux.HandleFunc("/api/getcoordinates", m.repo.GetConcertLocation)
 
-	return middlewares.CORSMiddleware(mux)
+	routes := middlewares.RouteChecker(mux)
+
+	return middlewares.CORSMiddleware(routes)
 }
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
