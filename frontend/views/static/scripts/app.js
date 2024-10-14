@@ -35,19 +35,21 @@ async function initializeApp() {
 		} = helpersModule;
 		const { renderAllArtists, showModal } = rendersModule;
 
-		// Initialize the ArtistApp with the services
-		const app = new ArtistApp({
-			getAllArtists,
-			getArtistById,
-			getCoordinates,
-			renderAllArtists,
-			showModal,
-			setTooltip,
-			setToggleAccessible,
-			fillSlider,
-			controlToSlider,
-			controlFromSlider,
-			sortById,
+		loadModules().then(() => {
+			// Initialize the ArtistApp with the services
+			const app = new ArtistApp({
+				getAllArtists,
+				getArtistById,
+				getCoordinates,
+				renderAllArtists,
+				showModal,
+				setTooltip,
+				setToggleAccessible,
+				fillSlider,
+				controlToSlider,
+				controlFromSlider,
+				sortById,
+			});
 		});
 	} catch (error) {
 		console.error("Error loading modules:", error);
