@@ -16,6 +16,9 @@ func NewApis(repo *handlers.Repo) *Apis {
 }
 
 func (m *Apis) ApiRoutes() http.Handler {
+	if m.repo == nil {
+		return http.HandlerFunc(defaultHandler)
+	}
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/api/getallartists", m.repo.GetAllArtists)
@@ -23,4 +26,8 @@ func (m *Apis) ApiRoutes() http.Handler {
 	mux.HandleFunc("/api/getcoordinates", m.repo.GetConcertLocation)
 
 	return middlewares.CORSMiddleware(mux)
+}
+func defaultHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Default handler response"))
 }
