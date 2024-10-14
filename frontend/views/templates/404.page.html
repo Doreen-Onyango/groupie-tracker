@@ -1,0 +1,14 @@
+{{template "base" .}} {{define "notfoundcss"}}{{end}} {{define "content"}}
+<!-- notfound page content -->
+<div class="servererror">
+	<h1>404 Oops! We couldn't find what you are looking for 🙁</h1>
+	<h2>Try looking for something else.</h2>
+	<a
+		href="/"
+		class="btn"
+		>Head back home</a
+	>
+	<h3>{{.Error}}</h3>
+</div>
+<!-- content end -->
+{{end}}
