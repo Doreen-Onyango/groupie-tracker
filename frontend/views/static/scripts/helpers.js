@@ -130,15 +130,6 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
           ${sliderColor} 100%)`;
 }
 
-/**
- * Sorts an array of objects by the 'id' property.
- * @param {Array<Object>} items - The array of objects to be sorted.
- * @returns {Array<Object>} - The sorted array.
- */
-export function sortById(items) {
-	return items.sort((a, b) => Number(a.id) - Number(b.id));
-}
-
 // TODO: set data change listeners
 
 // // Getter and Setter for filteredData
