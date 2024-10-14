@@ -34,7 +34,7 @@ func TestRepo_GetAllArtists(t *testing.T) {
 			},
 			args: args{
 				w: httptest.NewRecorder(),
-				r: httptest.NewRequest("POST", "/artists", nil),
+				r: httptest.NewRequest("GET", "/artists", nil),
 			},
 			wantStatus: http.StatusMethodNotAllowed,
 			wantBody:   `{"error":"Method not allowed"}`,
@@ -91,10 +91,10 @@ func TestRepo_GetArtistById(t *testing.T) {
 			},
 			args: args{
 				w: httptest.NewRecorder(),
-				r: httptest.NewRequest("POST", "/artist?id=1", nil),
+				r: httptest.NewRequest("GET", "/artist?id=1", nil),
 			},
-			wantStatus: http.StatusNotFound,
-			wantBody:   `{"error":"Artist not found"}`,
+			wantStatus: http.StatusMethodNotAllowed,
+			wantBody:   `{"error":"Method not allowed"}`,
 		},
 	}
 
