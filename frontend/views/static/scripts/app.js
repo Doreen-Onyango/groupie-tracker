@@ -53,7 +53,7 @@ async function initializeApp() {
 /**
  * ArtistApp class to handle artist-related functionalities
  */
-class ArtistApp {
+export default class ArtistApp {
 	constructor(services) {
 		this.domElements = {};
 		this.activeQueries = [];
