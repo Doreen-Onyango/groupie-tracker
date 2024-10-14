@@ -17,10 +17,63 @@
 		/>
 		<div class="author-name">Adioz Eshitemi</div>
 	</div>
-	<p>
-		Stay updated with the latest news, features, and fun stuff. Connect with us
-		on:
-	</p>
+	<section>
+		<h2>Project Overview</h2>
+		<p>
+			We created this web application to provide a seamless and user-friendly experience for managing and
+			rendering dynamic content. Using Go for server-side handling, We ensured that the frontend remains
+			responsive and robust. The goal was to make the process of serving templates, managing routes, and
+			handling state as efficient as possible. This project showcases our approach to modern web development,
+			with a strong focus on modularity, performance, and scalability.
+		</p>
+	</section>
+
+	<section>
+		<h2>Key Features</h2>
+		<ul>
+			<li>Dynamic Template Rendering with caching mechanism for efficient HTML template delivery.</li>
+			<li>Routing and Request Handling through Go’s multiplexer for smooth navigation.</li>
+			<li>State Management using a singleton pattern, ensuring consistent application state across requests.</li>
+			<li>Frontend Asset Management with well-organized HTML templates, CSS, JavaScript, and images.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Technologies Used</h2>
+		<p>In developing this project, I utilized a modern tech stack:</p>
+		<ul>
+			<li><strong>Go (Golang):</strong> The backbone of the project, handling server-side operations, routing, and state management.</li>
+			<li><strong>HTML/CSS/JavaScript:</strong> For creating the structure and enhancing the user interface with interactive elements.</li>
+			<li><strong>Multiplexer (mux):</strong> Efficiently routes and links URL patterns to their corresponding handlers.</li>
+			<li><strong>Template Caching:</strong> Speeds up the rendering of static HTML templates.</li>
+			<li><strong>Singleton Pattern:</strong> Ensures a single instance of the application state, reducing complexity and improving performance.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Architecture Overview</h2>
+		<p>
+			We structured the application in a modular way, separating concerns for clarity and maintainability:
+		</p>
+		<ul>
+			<li><strong>Server:</strong> Initializes and manages the web server.</li>
+			<li><strong>Handlers:</strong> Uses the <code>Repo</code> struct to centralize application state and rendering logic.</li>
+			<li><strong>Models:</strong> Contains the <code>App</code> struct for consistent template data management.</li>
+			<li><strong>Renders:</strong> Handles HTML template rendering and HTTP responses.</li>
+			<li><strong>Routers:</strong> Manages URL routing and links URL patterns to the appropriate handlers.</li>
+			<li><strong>Views:</strong> Contains all the assets like HTML templates, CSS, JavaScript, and images.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Challenges Faced</h2>
+		<p>
+			One of the biggest challenges We faced was optimizing template rendering while maintaining clean and modular code. 
+			Implementing a template caching mechanism greatly improved response times. 
+			Managing state across various routes was another challenge, which we tackled using a singleton pattern for the <code>App</code> struct. 
+			These solutions ensure the application runs smoothly and efficiently.
+		</p>
+	</section>
 </div>
 <!-- Authors-End -->
 {{ end }}
