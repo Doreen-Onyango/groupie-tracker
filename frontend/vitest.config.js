@@ -1,4 +1,3 @@
-// vitest.config.js
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -9,11 +8,11 @@ export default defineConfig({
 			"**/.{idea,git,cache,output,temp}/**",
 			"**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
 		],
+		setupFiles: ["./setupTests.js"],
 	},
 	resolve: {
 		alias: {
 			"@": "/views/static/scripts",
 		},
 	},
-	setupFiles: ["./setupTests.js"], // Changed to use ESM syntax
 });
