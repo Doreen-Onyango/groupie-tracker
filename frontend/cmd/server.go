@@ -13,12 +13,14 @@ import (
 
 const webPort = ":8080"
 
+// holds the application state, repository, and routes.
 type Config struct {
 	appState *models.App
 	repo     *handlers.Repo
 	routes   *routers.Routes
 }
 
+// It sets up the application state, renderers, repository, and routes.
 func NewConfig() *Config {
 	appState := models.GetApp()
 	renders := renders.NewRenders(appState)
@@ -31,6 +33,7 @@ func NewConfig() *Config {
 	}
 }
 
+// It initializes the application configuration, registers routes, and applies route middleware.
 func runServer() (*http.Server, error) {
 	cfg := NewConfig()
 	mux := http.NewServeMux()
@@ -45,6 +48,7 @@ func runServer() (*http.Server, error) {
 	return server, nil
 }
 
+// It starts the server and listens for incoming requests.
 func main() {
 	server, err := runServer()
 	if err != nil {
