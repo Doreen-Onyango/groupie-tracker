@@ -34,12 +34,12 @@ func NewConfig() *Config {
 func runServer() (*http.Server, error) {
 	cfg := NewConfig()
 	mux := http.NewServeMux()
+	mux = cfg.routes.RegisterRoutes(mux)
 
-	cfg.routes.RegisterRoutes(mux)
-
+	routeChecker := cfg.routes.RouteChecker(mux)
 	server := &http.Server{
 		Addr:    webPort,
-		Handler: mux,
+		Handler: routeChecker,
 	}
 
 	return server, nil
