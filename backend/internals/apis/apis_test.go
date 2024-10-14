@@ -35,7 +35,7 @@ func TestApis_ApiRoutes(t *testing.T) {
 			handler := m.ApiRoutes()
 
 			// Simulate a request
-			req := httptest.NewRequest("GET", "/", nil)
+			req := httptest.NewRequest("POST", "/", nil)
 			rr := httptest.NewRecorder()
 
 			// Serve the request using the handler
