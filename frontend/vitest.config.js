@@ -1,3 +1,4 @@
+// vitest.config.js
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -14,4 +15,5 @@ export default defineConfig({
 			"@": "/views/static/scripts",
 		},
 	},
+	setupFiles: ["./setupTests.js"], // Changed to use ESM syntax
 });
