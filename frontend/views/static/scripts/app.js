@@ -860,7 +860,7 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 	);
 
 	if (artistData) {
-		showModal(artistData);
+		this.showModal(artistData);
 	} else {
 		console.error("Artist data not found.");
 	}
