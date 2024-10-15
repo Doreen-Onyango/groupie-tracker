@@ -18,6 +18,7 @@ func NewRepo(app *models.App) *Repo {
 }
 
 // handles HTTP requests to fetch all artists.
+// handles HTTP requests to fetch all artists.
 func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
 		Request string `json:"request"`
@@ -29,7 +30,13 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	artistData, err := m.app.Res.GetAllArtist()
+	var artistData []models.Artist
+	if m.app.ResTest != nil { // Check if using mock
+		artistData, err = m.app.ResTest.GetAllArtist()
+	} else {
+		artistData, err = m.app.Res.GetAllArtist()
+	}
+
 	if err != nil || len(artistData) == 0 {
 		m.res.Err = true
 		m.res.Message = "oops something went wrong, network error"
