@@ -10,7 +10,6 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/handlers"
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/models"
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/responses"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestGetAllArtists_Success(t *testing.T) {
@@ -18,25 +17,27 @@ func TestGetAllArtists_Success(t *testing.T) {
 		Artists: []models.Artist{
 			{ID: "1", Name: "Artist 1"},
 		},
-		Error: false, // Ensure no error is set
+		Error: false,
 	}
 
 	app := &models.App{
-		ResTest: mockResponse, // Set the mock response for tests
+		ResTest: mockResponse,
 	}
 
 	repo := handlers.NewRepo(app)
 
 	reqBody := `{"request": "all"}`
 	req := httptest.NewRequest("POST", "/artists", bytes.NewBuffer([]byte(reqBody)))
-	req.Header.Set("Content-Type", "application/json") // Set the content type
+	req.Header.Set("Content-Type", "application/json")
 
 	w := httptest.NewRecorder()
 
 	repo.GetAllArtists(w, req)
 
 	res := w.Result()
-	assert.Equal(t, http.StatusOK, res.StatusCode)
+	if res.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status code %d, got %d", http.StatusOK, res.StatusCode)
+	}
 
 	var jsonResponse responses.JSONRes
 	err := json.NewDecoder(res.Body).Decode(&jsonResponse)
@@ -44,7 +45,13 @@ func TestGetAllArtists_Success(t *testing.T) {
 		t.Fatalf("Failed to decode response: %v", err)
 	}
 
-	assert.False(t, jsonResponse.Err)
-	assert.Equal(t, "success", jsonResponse.Message)
-	assert.NotNil(t, jsonResponse.Data)
+	if jsonResponse.Err {
+		t.Fatal("Expected no error in response, got one")
+	}
+	if jsonResponse.Message != "success" {
+		t.Fatalf("Expected message 'success', got '%s'", jsonResponse.Message)
+	}
+	if jsonResponse.Data == nil {
+		t.Fatal("Expected data to be non-nil")
+	}
 }
