@@ -1,9 +1,11 @@
 /* base.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap');
+
 body {
-	font-family: Arial, sans-serif;
+	font-family: 'Poppins', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: #bebebe;
+    background: linear-gradient(135deg, var(--background-color) 0%, #bebebe 100%);
 }
 
 h1,

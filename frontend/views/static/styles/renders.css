@@ -1,4 +1,5 @@
 #artistsContainer {
+	line-height: 1.4;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -9,6 +10,8 @@
 
 .artist-card {
 	display: flex;
+	justify-content: space-around;
+	overflow: scroll;
 	flex-direction: column;
 	background-color: #908e8e70;
 	border: 1px solid #ddd;
@@ -120,6 +123,7 @@
 }
 
 .artist-name {
+	line-height: 1.1;
 	font-size: 1.2em;
 	margin-bottom: 5px;
 }
@@ -142,7 +146,7 @@
 .artist-creationDate,
 .artist-locations,
 .artist-concertDates,
-.artist-relations .artist-name {
+.artist-relations {
 	margin: 5px 0;
 	font-size: 12px;
 }
