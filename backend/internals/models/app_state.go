@@ -2,6 +2,7 @@ package models
 
 import (
 	"bufio"
+	"errors"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,9 +11,10 @@ import (
 )
 
 type App struct {
-	Api *MainApi
-	Res *ResponseData
-	Err error
+	Api     *MainApi
+	Res     *ResponseData
+	ResTest *MockResponseData //  for tests
+	Err     error
 }
 
 var (
@@ -89,4 +91,25 @@ func GetProjectRoute(paths ...string) string {
 	}
 	allPaths := append([]string{baseDir}, paths...)
 	return filepath.Join(allPaths...)
+}
+
+type MockResponseData struct {
+	Artists []Artist
+	Error   bool
+}
+
+func (m *MockResponseData) GetAllArtist() ([]Artist, error) {
+	if m.Error {
+		return nil, errors.New("mock network error")
+	}
+	return m.Artists, nil
+}
+
+func (m *MockResponseData) GetArtistById(id string) (Artist, error) {
+	for _, artist := range m.Artists {
+		if artist.ID == id {
+			return artist, nil
+		}
+	}
+	return Artist{}, errors.New("artist not found")
 }
