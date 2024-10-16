@@ -1,0 +1,5 @@
+{
+	"watch": ["."],
+	"ext": "js, html, go, css",
+	"exec": "node server.mjs"
+}
