@@ -1,5 +1,5 @@
 .wrapper {
-	color: #c3daf5;
+	color: #fcc602;
 	margin-top: -160px;
 }
 
@@ -8,7 +8,7 @@ svg {
 }
 
 .footer {
-	background-color: rgb(14, 37, 40);
+	background-color: #4c257e;
 	color: #fff;
 	text-align: center;
 	padding: 20px;
@@ -40,11 +40,11 @@ svg {
 	align-items: center;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #194374;
+	background-color: #4c257e;
 }
 
 .my-footer svg {
-	fill: rgb(167, 96, 3);
+	fill: #fcc602;
 	margin: 0 10px;
 }
 

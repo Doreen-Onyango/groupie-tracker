@@ -2,10 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap');
 
 :root {
-    --primary-color: #194374;
-    --secondary-color: #021425;
-    --background-color: #bebebe;
-    --text-color: #092642;
+    --primary-color: #ffdd55;
+    --secondary-color: #fcc602;
+    --background-color: #8d5dbd;
+    --text-color: #ffdd55;
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -13,7 +13,7 @@ body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.8;
     color: var(--text-color);
-    background: linear-gradient(135deg, var(--background-color) 0%, #bebebe 100%);
+    background: linear-gradient(135deg, var(--background-color) 0%, #8d5dbd 100%);
     padding: 0;
     margin: 0;
 }
@@ -23,7 +23,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
-    background-color: #bebebe;
+    background-color: #663399;
     border-radius: 15px;
     box-shadow: 0 10px 30px var(--shadow-color);
 }
@@ -47,7 +47,7 @@ h2, h3 {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     padding: 20px;
     border-radius: 10px;
-    background-color: #908e8e70;
+    background-color: #4c257e;
     box-shadow: 0 5px 15px var(--shadow-color);
 }
 
@@ -79,7 +79,7 @@ h2, h3 {
 section {
     margin-bottom: 40px;
     padding: 30px;
-    background-color: #908e8e70;
+    background-color: #4c257e;
     border-radius: 10px;
     box-shadow: 0 5px 15px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -115,7 +115,7 @@ strong {
 
 code {
     font-family: 'Roboto Mono', monospace;
-    background-color: #908e8e70;
+    background-color: #4c257e;
     padding: 2px 5px;
     border-radius: 4px;
     font-size: 0.9em;

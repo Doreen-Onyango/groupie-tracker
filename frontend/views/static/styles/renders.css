@@ -13,8 +13,8 @@
 	justify-content: space-around;
 	overflow: scroll;
 	flex-direction: column;
-	background-color: #908e8e70;
-	border: 1px solid #ddd;
+	background-color: #4c257e;
+	border: 1px solid #fcc602;
 	border-radius: 8px;
 	padding: 10px;
 	max-width: 200px;
@@ -29,7 +29,7 @@
 
 .artist-image-container {
 	display: flex;
-	color: #194374;
+	color: #fcc602;
 }
 
 .creation-date {
@@ -51,7 +51,7 @@
 	margin-right: 3px;
 	width: 100%;
 	font-size: 1.1em;
-	color: #fff;
+	color: #fcc602;
 }
 
 .modal-artist-data {
