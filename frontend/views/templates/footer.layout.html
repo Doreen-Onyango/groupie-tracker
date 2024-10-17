@@ -5,7 +5,7 @@
 	type="text/css"
 />
 {{end}} {{define "footer"}}
-<div class="wrapper">
+
 	<!-- Footer-Start -->
 	<svg xmlns="http://www.w3.org/2000/svg">
 		<symbol
@@ -33,6 +33,7 @@
 			/>
 		</symbol>
 	</svg>
+<div class="wrapper">
 
 	<footer class="my-footer">
 		<div>
@@ -83,31 +84,4 @@
 	</footer>
 	<!-- Footer-End -->
 </div>
-
-<script>
-	function adjustFooter() {
-  var body = document.body;
-  var html = document.documentElement;
-  var footer = document.querySelector("footer");
-  var height = Math.max(
-    body.scrollHeight,
-    body.offsetHeight,
-    html.clientHeight,
-    html.scrollHeight,
-    html.offsetHeight
-  );
-
-  if (height <= window.innerHeight) {
-    footer.style.position = "fixed";
-    footer.style.bottom = "0";
-    footer.style.width = "100%";
-  } else {
-    footer.style.position = "static";
-  }
-}
-
-// Call adjustFooter on load and resize
-window.addEventListener("load", adjustFooter);
-window.addEventListener("resize", adjustFooter);
-</script>
 {{end}}

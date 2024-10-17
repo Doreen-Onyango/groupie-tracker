@@ -17,6 +17,14 @@ body {
     margin: 0;
 }
 
+.base-wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: #fcc602;
+	justify-content: space-between;
+}
+
 h1,
 h2 {
 	color: #194374;
@@ -50,3 +58,4 @@ h1 {
 	text-decoration: none;
 	box-shadow: 0 2px 15px rgb(1, 2, 19);
 }
+
