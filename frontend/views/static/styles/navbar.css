@@ -65,6 +65,13 @@
 	margin: 0 10px;
 }
 
+.navbar ul li::before {
+	content: none;
+	display: none;
+	margin: 0;
+	padding: 0;
+}
+
 .navbar ul li a {
 	display: block;
 	color: #fcc602;
