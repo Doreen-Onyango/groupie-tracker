@@ -2,17 +2,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap");
 
 :root {
+	--pale-color: #c799f4a4;
+	--text-color: #ffdd55;
 	--primary-color: #ffdd55;
 	--secondary-color: #fcc602;
-	--background-color: #8d5dbd;
-	--text-color: #ffdd55;
-	--shadow-color: rgba(0, 0, 0, 0.1);
+	--tertiary-color: #ddd;
+	--card-color: #4c257e;
+	--background-color: #422461;
+	--code-color: #e74c3c;
+	--shadow-color: rgba(0, 0, 0, 0.89);
+	--border-color: #fcc602;
 }
 
 body {
 	font-family: "Poppins", sans-serif;
 	color: var(--text-color);
-	background: linear-gradient(135deg, var(--background-color) 0%, #8d5dbd 100%);
 	padding: 0;
 	margin: 0;
 }
@@ -24,16 +28,17 @@ body {
 	justify-content: center;
 	overflow: hidden;
 	height: 100%;
-	background-color: #fcc602;
+	background: linear-gradient(
+		180deg,
+		var(--pale-color) 5%,
+		var(--background-color) 100%
+	);
 }
 
 h1,
-h2 {
-	color: #194374;
-}
-
-h1 {
-	font-size: 1.5em;
+h2,
+h3 {
+	color: var(--background-color);
 }
 
 .btn {
@@ -41,22 +46,22 @@ h1 {
 	height: fit-content;
 	position: relative;
 	text-decoration: none;
-	color: rgb(82, 47, 1);
+	color: var(--secondary-color);
 	letter-spacing: 0.2em;
 	cursor: pointer;
-	background-color: #4a7f86;
+	background-color: var(--background-color);
 	margin: 2% auto;
 	padding: 2% 5%;
 	width: auto;
 	border: none;
 	border-radius: 4px;
-	box-shadow: 0 3px 10px rgb(1, 2, 19);
+	box-shadow: 0 3px 10px var(--shadow-color);
 	text-align: center;
 }
 
 .btn:hover {
-	background-color: #5b7e5c;
-	color: rgb(1, 2, 19);
+	background-color: var(--pale-color);
+	color: var(--primary-color);
 	text-decoration: none;
-	box-shadow: 0 2px 15px rgb(1, 2, 19);
+	box-shadow: 0 2px 15px var(--shadow-color);
 }

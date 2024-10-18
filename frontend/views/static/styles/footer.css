@@ -6,27 +6,6 @@ svg {
 	padding: 10px;
 }
 
-.footer {
-	background-color: #4c257e;
-	color: #fff;
-	text-align: center;
-	width: 100%;
-}
-
-.footer p {
-	margin: 0;
-	font-size: 0.9em;
-}
-
-.footer a {
-	color: rgb(167, 96, 3);
-	text-decoration: none;
-}
-
-.footer a:hover {
-	color: #fff;
-}
-
 .my-footer {
 	width: 100%;
 	margin: auto;
@@ -36,11 +15,11 @@ svg {
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-evenly;
-	background-color: #4c257e;
+	background-color: var(--background-color);
 }
 
 .my-footer svg {
-	fill: #fcc602;
+	fill: var(--text-color);
 	padding: 0;
 }
 

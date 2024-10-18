@@ -23,16 +23,18 @@
 	padding: 10px 50px 10px 20px;
 	font-size: 1.1rem;
 	border-radius: 25px;
-	border: 2px solid #194374;
+	border: 2px solid var(--background-color);
 	outline: none;
 	background-color: #ddd;
-	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.504);
-	transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+	box-shadow: 0px 2px 8px var(--shadow-color);
+	transition:
+		box-shadow 0.3s ease-in-out,
+		border-color 0.3s ease-in-out;
 }
 
 .searchUnified:focus {
-	border-color: #194374;
-	box-shadow: 0px 4px 12px rgba(14, 165, 233, 0.4);
+	border-color: var(--background-color);
+	box-shadow: 0px 4px 12px var(--shadow-color);
 }
 
 /* Style the search icon */
@@ -62,12 +64,14 @@
 	gap: 5px;
 	font-size: 0.8em;
 	padding: 3px 10px;
-	color: #194374;
+	color: var(--background-color);
 	margin: 10px;
-	background-color: #ddd;
+	background-color: var(--tertiary-color);
 	border-radius: 10px;
-	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.333);
-	transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+	box-shadow: 0px 2px 8px var(--shadow-color);
+	transition:
+		box-shadow 0.3s ease-in-out,
+		border-color 0.3s ease-in-out;
 }
 
 /* Styling the individual checkbox items */
@@ -77,16 +81,18 @@
 	padding: 3px 5px;
 	border-radius: 5px;
 	cursor: pointer;
-	transition: background-color 0.3s ease-in-out, border-color 0.9s ease-in-out;
+	transition:
+		background-color 0.3s ease-in-out,
+		border-color 0.9s ease-in-out;
 }
 
 /* Checkbox hover effect */
 .membersFilter label:hover {
 	padding: 2px 3px;
-	background-color: #eaeaea;
-	border: 1px solid #ccc;
-	border-color: #0073e6;
-	box-shadow: 0 4px 12px rgba(0, 115, 230, 0.2);
+	background-color: var(--tertiary-color);
+	border: 1px solid var(--background-color);
+	border-color: var(--border-color);
+	box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 /* Hide the default checkbox */
@@ -97,17 +103,19 @@
 	width: 20px;
 	height: 20px;
 	margin: 0 3px;
-	border: 2px solid #0073e6; /* Blueish border */
+	border: 2px solid var(--background-color); /* Blueish border */
 	border-radius: 4px;
-	background-color: #fff;
+	background-color: var(--tertiary-color);
 	cursor: pointer;
 	position: relative;
-	transition: background-color 0.3s ease, border-color 0.3s ease;
+	transition:
+		background-color 0.3s ease,
+		border-color 0.3s ease;
 }
 
 /* Add blue background when the checkbox is checked */
 .membersFilter input[type="checkbox"]:checked {
-	background-color: #0073e6;
+	background-color: var(--background-color);
 }
 
 /* Add a checkmark when the checkbox is checked */
@@ -118,32 +126,32 @@
 	left: 5px;
 	width: 4px;
 	height: 8px;
-	border: solid white;
+	border: solid var(--tertiary-color);
 	border-width: 0 1px 1px 0;
 	transform: rotate(45deg);
 }
 
 /* Styling for hover and focus states */
 .membersFilter input[type="checkbox"]:hover {
-	border-color: #005bb5;
+	border-color: var(--background-color);
 }
 
 .membersFilter input[type="checkbox"]:focus {
 	outline: none;
-	box-shadow: 0 0 3px #194374;
+	box-shadow: 0 0 3px var(--shadow-color);
 }
 
 /* Adding hover effect for the entire container */
 .membersFilter:hover {
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	border-color: #194374;
+	box-shadow: 0 4px 12px var(--shadow-color);
+	border-color: var(--background-color);
 }
 
 .range_firstAlbum,
 .range_concertDate {
 	width: 45%;
 	margin: 70px auto;
-	border: 2px solid var(--_marker-border-clr);
+	border: 1px solid var(--_marker-border-clr);
 	border-radius: 8px;
 	padding: 60px 25px 15px 25px;
 	position: relative;
@@ -153,7 +161,7 @@
 .range_concertDate::before {
 	content: "From";
 	position: absolute;
-	top: -20px;
+	top: -22px;
 	left: 0;
 	font-size: 0.8em;
 	color: var(--_marker-border-clr);
@@ -199,29 +207,29 @@
 	top: -20px;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: #68aaf5;
+	background-color: var(--background-color);
 	padding: 10px;
 	font-size: 1rem;
-	color: var(--_marker-border-clr);
+	color: var(--text-color);
 	font-weight: bold;
 	border-radius: 10px;
 }
 
 .range_firstAlbum {
-	--_marker-border-clr: #194374;
+	--_marker-border-clr: var(--background-color);
 	--_marker-size: 15px;
 	--_track-heigt: 3px;
 
-	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
+	--_tooltip-bg-clr: var(--shadow-color);
 	--_tooltip-txt-clr: var(--_marker-border-clr);
 }
 
 .range_concertDate {
-	--_marker-border-clr: #194374;
+	--_marker-border-clr: var(--background-color);
 	--_marker-size: 15px;
 	--_track-heigt: 3px;
 
-	--_tooltip-bg-clr: rgba(0, 0, 0, 0.4);
+	--_tooltip-bg-clr: var(--shadow-color);
 	--_tooltip-txt-clr: var(--_marker-border-clr);
 }
 
@@ -236,8 +244,8 @@
 	top: -3rem;
 	left: 0;
 	width: fit-content;
-	background-color: #194374;
-	color: white;
+	background-color: var(--background-color);
+	color: var(--text-color);
 	font-size: 0.8rem;
 	border-radius: 4px;
 	padding: 0.5rem 1rem;
@@ -292,11 +300,11 @@ input[type="range"] {
 	display: flex;
 	width: 100%;
 	flex-direction: column;
-	border: 1px solid #ddd;
 	border-radius: 4px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	background-color: #8d8e8f;
+	box-shadow: 0 4px 8px var(--shadow-color);
 	top: 20em;
+	padding: 3px 30px;
+	z-index: 200;
 }
 
 .suggestion-category {
@@ -310,19 +318,21 @@ input[type="range"] {
 
 .suggestion-item {
 	padding: 10px;
+	border-radius: 20px;
 	cursor: pointer;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--tertiary-color);
+	color: var(--background-color);
 }
 
 .suggestion-item[data-label]::after {
 	content: " - " attr(data-label);
-	color: #666;
+	color: var(--code-color);
 	font-size: 0.9em;
 	margin-left: 5px;
 }
 
 .suggestion-item:hover {
-	background-color: #eaeaea;
+	background-color: var(--pale-color);
 }
 
 .unified-suggestions::-webkit-scrollbar {
@@ -330,14 +340,14 @@ input[type="range"] {
 }
 
 .unified-suggestions::-webkit-scrollbar-thumb {
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: var(--shadow-color);
 	border-radius: 4px;
 }
 
 .suggestions-dropdown {
 	position: relative;
-	background-color: #ddd;
-	border: 1px solid #ccc;
+	background-color: var(--tertiary-color);
+	border: 1px solid var(--pale-color);
 	max-height: 150px;
 	overflow-y: auto;
 	display: none; /* Initially hidden */
@@ -362,12 +372,14 @@ input[type="range"] {
 
 .searchSummaryItem {
 	display: flex;
-	background-color: #ddd;
+	background-color: var(--pale-color);
+	color: var(--background-color);
+	line-height: 1.2em;
 	padding: 5px 8px;
 	border-radius: 5px;
 	max-width: 80px;
 	max-height: 35px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 2px 4px var(--shadow-color);
 	overflow: hidden;
 }
 
@@ -382,7 +394,7 @@ input[type="range"] {
 
 .closeIcon {
 	cursor: pointer;
-	color: red;
+	color: var(--code-color);
 	font-weight: bold;
 	font-size: 1.4em;
 	margin-left: 5px;

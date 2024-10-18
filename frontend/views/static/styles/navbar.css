@@ -1,10 +1,10 @@
 /* navbar.css */
 .navbar {
-	background-color: #4c257e;
+	background-color: var(--background-color);
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	box-shadow: 0 4px 6px rgba(6, 6, 6, 0.946);
+	box-shadow: 0 4px 6px var(--shadow-color);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -25,7 +25,7 @@
 .hamburger .bar {
 	width: 30px;
 	height: 3px;
-	background-color: #fcc602;
+	background-color: var(--secondary-color);
 	margin: 5px 0;
 	transition: 0.3s;
 }
@@ -44,11 +44,6 @@
 	cursor: pointer;
 	border-radius: 50%;
 	transition: transform 0.3s ease;
-}
-
-.username {
-	font-weight: bold;
-	color: #68aaf5;
 }
 
 .navbar ul {
@@ -74,7 +69,7 @@
 
 .navbar ul li a {
 	display: block;
-	color: #fcc602;
+	color: var(--text-color);
 	text-align: center;
 	padding: 10px;
 	text-decoration: none;
@@ -82,27 +77,13 @@
 }
 
 .navbar ul li a:hover {
-	color: #fcc602;
-	box-shadow: 0 2px 10px rgba(14, 36, 70, 0.84);
-}
-
-.navbar #logout {
-	letter-spacing: 0.2em;
-	font-size: 0.7em;
-	color: rgb(82, 47, 1);
-	background-color: rgb(139, 3, 166);
-	border-radius: 0.6em;
-	padding: 0.2em 0.9em;
-	transition: background-color 0.3s ease;
-}
-
-.navbar #logout:hover {
-	background-color: rgb(76, 2, 91);
+	color: var(--primary-color);
+	box-shadow: 0 2px 10px var(--shadow-color);
 }
 
 .nav-logo {
 	display: none;
-	color: #fcc602;
+	color: var(--text-color);
 	font-weight: bolder;
 	font-size: 1.4em;
 	position: absolute;
@@ -135,7 +116,7 @@
 		right: 0;
 		width: 100%;
 		background-color: #222;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 2px 10px var(--shadow-color);
 	}
 
 	.menu-toggle:checked + .hamburger #bar1 {
@@ -161,13 +142,13 @@
 	.navbar ul li {
 		padding: 15px;
 		width: 100%;
-		background-color: rgb(19, 9, 1);
+		background-color: var(--shadow-color);
 		border-radius: 5%;
 	}
 
 	.navbar ul li a {
 		padding: 15px;
-		color: #68aaf5;
+		color: var(--text-color);
 	}
 
 	.nav-logo {
