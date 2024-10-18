@@ -19,7 +19,7 @@
 	display: none;
 	flex-direction: column;
 	cursor: pointer;
-	padding: 10px;
+	padding-right: 30px;
 }
 
 .hamburger .bar {
@@ -76,47 +76,62 @@
 	transition: color 0.3s;
 }
 
-.navbar ul li a:hover {
-	color: var(--primary-color);
-	box-shadow: 0 2px 10px var(--shadow-color);
-}
-
 .nav-logo {
 	display: none;
+	align-items: center;
+	justify-content: space-between;
 	color: var(--text-color);
 	font-weight: bolder;
 	font-size: 1.4em;
+	margin-left: 60px;
+}
+
+#nav-groupie {
+	margin: 10px 30px;
+}
+
+#nav-tracker img {
+	cursor: pointer;
+}
+
+#nav-menu {
+	display: none;
 	position: absolute;
-	left: 40%;
+	padding: 0;
+	margin: 0;
+	top: 100%;
+	left: 0;
+	background-color: var(--background-color);
+	padding: 10px;
+	width: 100%;
+	box-shadow: 0 2px 10px var(--shadow-color);
+	opacity: 0;
+	transition: opacity 0.4s ease;
+	z-index: 300;
 }
 
-.nav-logo #nav-groupie {
-	position: relative;
-	left: 20%;
-	top: -10px;
+#nav-menu ul li a {
+	color: var(--primary-color);
+	background-color: var(--shadow-color);
+	border-radius: 30px;
+	transition: all 0.3s ease-in-out;
 }
 
-.nav-logo #nav-tracker {
-	position: relative;
-	left: -31%;
-	top: 8px;
+#nav-menu ul li a:hover,
+#nav-menu ul li.active a {
+	color: var(--code-color);
+	background-color: var(--pale-color);
 }
 
 /* Show hamburger icon on small screens */
 @media (max-width: 768px) {
-	.hamburger {
-		display: flex;
+	.navbar {
+		height: 80px;
 	}
 
-	.navbar ul {
-		display: none;
-		flex-direction: column;
-		position: absolute;
-		top: 60px;
-		right: 0;
+	.hamburger {
 		width: 100%;
-		background-color: #222;
-		box-shadow: 0 2px 10px var(--shadow-color);
+		display: flex;
 	}
 
 	.menu-toggle:checked + .hamburger #bar1 {
@@ -139,6 +154,17 @@
 		transition: opacity 0.4s ease;
 	}
 
+	.navbar ul {
+		display: none;
+		flex-direction: column;
+		position: relative;
+		top: 60px;
+		right: 0;
+		width: 100%;
+		background-color: #222;
+		box-shadow: 0 2px 10px var(--shadow-color);
+	}
+
 	.navbar ul li {
 		padding: 15px;
 		width: 100%;
@@ -152,15 +178,7 @@
 	}
 
 	.nav-logo {
-		display: block;
-	}
-
-	.nav-logo #nav-groupie {
-		left: 12%;
-	}
-
-	.nav-logo #nav-tracker {
-		left: -41%;
+		display: flex;
 	}
 }
 
@@ -177,14 +195,5 @@
 @media screen and (max-width: 280px) {
 	.nav-logo {
 		left: 40%;
-	}
-
-	.nav-logo #nav-groupie {
-		top: 0;
-	}
-
-	.nav-logo #nav-tracker {
-		left: -8%;
-		top: -5px;
 	}
 }

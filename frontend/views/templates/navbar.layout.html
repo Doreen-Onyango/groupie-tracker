@@ -6,42 +6,50 @@
 />
 {{end}} {{define "navbar"}}
 <div class="navbar">
-	<!-- Hamburger Icon -->
-	<input
-		type="checkbox"
-		id="menu-toggle"
-		class="menu-toggle"
-	/>
-	<label
-		for="menu-toggle"
-		class="hamburger"
-	>
-		<div
-			id="bar1"
-			class="bar"
-		></div>
-		<div
-			id="bar2"
-			class="bar"
-		></div>
-		<div
-			id="bar3"
-			class="bar"
-		></div>
-	</label>
 	<div class="nav-logo">
-		<span id="nav-groupie">Groupie</span>
-		<span id="nav-tracker">Tracker</span>
+		<div id="nav-groupie">Groupie Tracker</div>
 	</div>
-
-	<!-- Navigation Menu -->
-	<ul id="nav-menu">
-		<li id="home">
-			<a href="/">Home</a>
-		</li>
-		<li id="about">
-			<a href="/about">About</a>
-		</li>
-	</ul>
+	<!-- Hamburger Icon -->
+	<div id="hamburger">
+		<input
+			type="checkbox"
+			id="menu-toggle"
+			class="menu-toggle"
+		/>
+		<label
+			for="menu-toggle"
+			class="hamburger"
+		>
+			<div
+				id="bar1"
+				class="bar"
+			></div>
+			<div
+				id="bar2"
+				class="bar"
+			></div>
+			<div
+				id="bar3"
+				class="bar"
+			></div>
+		</label>
+		<!-- Navigation Menu -->
+		<ul id="nav-menu">
+			<li id="home">
+				<a
+					class="navItem"
+					href="/"
+					>Home</a
+				>
+			</li>
+			<li id="about">
+				<a
+					class="navItem"
+					href="/about"
+					>About</a
+				>
+			</li>
+		</ul>
+	</div>
 </div>
 {{end}}
