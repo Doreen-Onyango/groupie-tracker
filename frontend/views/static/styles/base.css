@@ -1,28 +1,30 @@
 /* base.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap");
 
 :root {
-    --primary-color: #ffdd55;
-    --secondary-color: #fcc602;
-    --background-color: #8d5dbd;
-    --text-color: #ffdd55;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+	--primary-color: #ffdd55;
+	--secondary-color: #fcc602;
+	--background-color: #8d5dbd;
+	--text-color: #ffdd55;
+	--shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-color);
-    background: linear-gradient(135deg, var(--background-color) 0%, #8d5dbd 100%);
-    padding: 0;
-    margin: 0;
+	font-family: "Poppins", sans-serif;
+	color: var(--text-color);
+	background: linear-gradient(135deg, var(--background-color) 0%, #8d5dbd 100%);
+	padding: 0;
+	margin: 0;
 }
 
 .base-wrapper {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
 	height: 100%;
 	background-color: #fcc602;
-	justify-content: space-between;
 }
 
 h1,
@@ -58,4 +60,3 @@ h1 {
 	text-decoration: none;
 	box-shadow: 0 2px 15px rgb(1, 2, 19);
 }
-
