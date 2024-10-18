@@ -1091,16 +1091,16 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		toSlider1,
 		fromTooltip1,
 		toTooltip1,
-		"#FF6347",
-		"#194374"
+		"var(--code-color)",
+		"var(--background-color)"
 	);
 	this.attachSliderEvents(
 		fromSlider2,
 		toSlider2,
 		fromTooltip2,
 		toTooltip2,
-		"#FF6347",
-		"#194374"
+		"var(--code-color)",
+		"var(--background-color)"
 	);
 
 	// Initialize slider visuals for Creation Date slider if tooltips exist
@@ -1108,8 +1108,8 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		this.initializeSliderVisuals(
 			fromSlider1,
 			toSlider1,
-			"#FF6347",
-			"#194374",
+			"var(--code-color)",
+			"var(--background-color)",
 			fromTooltip1,
 			toTooltip1
 		);
@@ -1122,8 +1122,8 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		this.initializeSliderVisuals(
 			fromSlider2,
 			toSlider2,
-			"#FF6347",
-			"#194374",
+			"var(--code-color)",
+			"var(--background-color)",
 			fromTooltip2,
 			toTooltip2
 		);
@@ -1171,15 +1171,15 @@ ArtistApp.prototype.resetFilters = function () {
 	this.fillSlider(
 		this.domElements.fromSlider1,
 		this.domElements.toSlider1,
-		"#FF6347",
-		"#194374",
+		"var(--code-color)",
+		"var(--background-color)",
 		this.domElements.toSlider1
 	);
 	this.fillSlider(
 		this.domElements.fromSlider2,
 		this.domElements.toSlider2,
-		"#FF6347",
-		"#194374",
+		"var(--code-color)",
+		"var(--background-color)",
 		this.domElements.toSlider2
 	);
 
