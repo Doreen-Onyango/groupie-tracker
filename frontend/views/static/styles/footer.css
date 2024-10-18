@@ -10,7 +10,6 @@ svg {
 	background-color: #4c257e;
 	color: #fff;
 	text-align: center;
-	padding: 20px;
 	width: 100%;
 }
 
@@ -30,12 +29,13 @@ svg {
 
 .my-footer {
 	width: 100%;
-	padding: 20px 40px;
+	margin: auto;
+	padding: 1em;
 	text-align: center;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	background-color: #4c257e;
 }
 
