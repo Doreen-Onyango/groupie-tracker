@@ -15,7 +15,7 @@
 	display: none;
 }
 
-.hamburger {
+#hamburger {
 	display: none;
 	flex-direction: column;
 	cursor: pointer;
@@ -93,6 +93,15 @@
 #nav-tracker img {
 	cursor: pointer;
 }
+
+.nav-menu {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+}
+
+
 
 #nav-menu {
 	display: none;
