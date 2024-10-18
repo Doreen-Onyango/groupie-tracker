@@ -1,0 +1,285 @@
+#artistsContainer {
+	line-height: 1.4;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 10px auto;
+	width: 100%;
+}
+
+.artist-card {
+	display: flex;
+	justify-content: space-around;
+	overflow: scroll;
+	flex-direction: column;
+	background-color: var(--background-color);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	padding: 10px;
+	max-width: 200px;
+	min-width: 200px;
+	max-height: 200px;
+	min-height: 200px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0px 4px 8px var(--shadow-color);
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+}
+
+.artist-image-container {
+	display: flex;
+	color: var(--background-color);
+}
+
+.creation-date {
+	font-weight: 300;
+}
+
+.artist-details {
+	display: flex;
+	gap: 3px;
+	justify-content: center;
+	align-items: center;
+	margin-right: 3px;
+}
+
+.modal-artist-details {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	margin-right: 3px;
+	width: 100%;
+	font-size: 1.1em;
+	color: var(--secondary-color);
+}
+
+.modal-artist-data {
+	display: flex;
+	margin-right: 3px;
+}
+
+.modal-artist-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-right: 3px;
+	min-width: 40%;
+	padding: 10px;
+	gap: 10px;
+}
+
+.modal-artist-info h2 {
+	color: var(--tertiary-color);
+}
+
+.modal-artist-members p {
+	font-size: 1.2em;
+}
+
+.modal-artist-image {
+	border-radius: 50%;
+	margin-bottom: 10px;
+}
+.modal-artist-members {
+	display: flex;
+	flex-direction: column;
+	margin-right: 3px;
+	padding: 10px;
+	gap: 10px;
+}
+
+.modal-artist-members-data,
+.modal-artist-concerts-data {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin: 20px 0;
+}
+
+.modal-artist-concerts-data ul {
+	padding-left: 20px;
+}
+
+.artist-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0px 4px 20px var(--shadow-color);
+}
+
+.artist-image {
+	border-radius: 50%;
+	margin-bottom: 10px;
+	max-width: 60px;
+	max-height: 60px;
+	min-width: 60px;
+	min-height: 60px;
+}
+
+.artist-info {
+	display: flex;
+	gap: 5px;
+	margin-left: 10px;
+}
+
+.artist-name {
+	line-height: 1.1;
+	font-size: 1.2em;
+	margin-bottom: 5px;
+	color: var(--tertiary-color);
+}
+
+.artist-creationDate-value {
+	color: var(--secondary-color);
+}
+
+.artist-members {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+#artistDetails {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.artist-firstAlbum {
+	font-size: 14px;
+}
+
+.artist-creationDate,
+.artist-locations,
+.artist-concertDates,
+.artist-relations {
+	margin: 5px 0;
+	font-size: 12px;
+}
+
+/* Modal styles */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: var(--shadow-color);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.modal-content {
+	background-color: var(--background-color);
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid var(--border-color);
+	width: 80%;
+	border-radius: 8px;
+	transform: translateY(-50px);
+	transition:
+		transform 0.3s ease,
+		opacity 0.3s ease;
+	opacity: 0;
+}
+
+/* When the modal is displayed */
+.modal.show {
+	display: block;
+	opacity: 1;
+	z-index: 20;
+}
+
+.modal-content.show {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+.close-button {
+	color: var(--tertiary-color);
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	transition: color 0.2s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+	color: var(--tertiary-color);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.loader-container {
+	display: grid;
+	place-items: center;
+	height: 100%;
+	padding: 10%;
+}
+
+.loader {
+	width: 90px;
+	aspect-ratio: 1 / 1;
+	position: relative;
+}
+
+.dot {
+	margin: auto;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	position: absolute;
+	inset: 0;
+	box-shadow: 2px 4px 10px 6px rgba(0, 0, 0, 0.194);
+	animation: 2s ease infinite alternate;
+}
+
+.dot-lower {
+	width: 90px;
+	animation-name: lower;
+	background: #875252;
+}
+
+.dot-middle {
+	width: 60px;
+	animation-name: middle;
+	background: #988282;
+}
+
+.dot-upper {
+	width: 30px;
+	animation-name: upper;
+	background: #fbd9d9;
+}
+
+@keyframes lower {
+	0%,
+	30% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(2);
+	}
+}
+
+@keyframes middle {
+	0%,
+	50% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(2);
+	}
+}
+
+@keyframes upper {
+	0%,
+	70% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(2);
+	}
+}

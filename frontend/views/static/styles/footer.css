@@ -1,0 +1,27 @@
+.wrapper {
+	display: none;
+}
+
+svg {
+	padding: 10px;
+}
+
+.my-footer {
+	width: 100%;
+	padding: 1em;
+	text-align: center;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-evenly;
+	background-color: var(--background-color);
+}
+
+.my-footer svg {
+	fill: var(--text-color);
+	padding: 0;
+}
+
+.my-footer span {
+	font-size: 0.8em;
+}

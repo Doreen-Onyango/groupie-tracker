@@ -1,0 +1,67 @@
+{{template "base" . }} {{ define "homecss"}}
+<link
+	rel="stylesheet"
+	href="/static/styles/home.layout.css"
+	type="text/css"
+/>
+<link
+	rel="stylesheet"
+	href="/static/styles/renders.css"
+	type="text/css"
+/>
+<link
+	rel="stylesheet"
+	href="/static/styles/filters.css"
+	type="text/css"
+/>
+{{end}} {{define "title"}} Home {{end}} {{define "content"}}
+<div class="home-container">
+<header>
+	<div class="search-container">
+		<div class="home-page">
+			<h1 id="home-groupie">Groupie</h1>
+			<h1 id="home-tracker">Tracker</h1>
+		</div>
+		<!-- Search Bar -->
+		{{block "searchBar" .}}{{end}}
+		<!-- end of Search Bar -->
+
+		<!-- Reset Button -->
+		<img
+		  src="/static/images/reset.svg"
+      alt="Reset Button"
+      class="reset-icon"
+      title="Reset your search"
+			id="resetButton"
+		>
+		</img>
+	</div>
+				<!-- members filter -->
+	{{ block "membersFilter" .}}{{end}}
+	<!-- end -->
+
+	<div class="range-filters">
+	<!-- range filters -->
+	{{ block "range_concertDate" .}} {{end}}
+	{{ block "range_firstAlbum" .}} {{end}}
+	<!-- end of range filters -->
+	</div>
+</header>
+
+<div class="artists">
+	 <!-- Pagination controls -->
+		<img id="prevPage" class="pagination-button" disabled src="/static/images/prevPage.svg" alt="Previous">
+	<!-- artist cards -->
+	{{block "artistCard" .}}{{end}}
+
+	<!-- end -->
+	 <!-- nextPage controls -->
+		<img id="nextPage" class="pagination-button" src="/static/images/nextPage.svg" alt="Next">
+
+	<!-- modal -->
+	{{ block "modalTemplate" .}}{{end}}
+	<!-- end -->
+</div>
+</div>
+	{{end}}
+

@@ -1,0 +1,267 @@
+<!-- search bar -->
+{{define "searchBar"}}
+<!-- data placeholders -->
+
+<!-- searchByName -->
+<input
+	name="searchByName"
+	type="text"
+	id="searchByName"
+	placeholder="Search for artists..."
+	class="hidden"
+/>
+<!-- end of searchByName -->
+
+<!-- searchByMembers -->
+<input
+	name="searchByMembers"
+	type="text"
+	id="searchByMembers"
+	placeholder="Search for members..."
+	class="hidden"
+/>
+<!-- end of searchByMembers -->
+
+<!-- searchByConcert -->
+<input
+	name="searchByConcert"
+	type="text"
+	id="searchByConcert"
+	placeholder="Search for concerts..."
+	class="hidden"
+/>
+<!-- end of searchByConcert -->
+
+<!-- searchByCreation date -->
+<input
+	name="searchByCreationDate"
+	type="text"
+	id="searchByCreationDate"
+	placeholder="Search by creation date..."
+	class="hidden"
+/>
+<!-- end of searchByCreationDate -->
+
+<!-- searchByAlbumRelease -->
+<input
+	name="searchByAlbumRelease"
+	type="text"
+	id="searchByAlbumRelease"
+	placeholder="Search by album release..."
+	class="hidden"
+/>
+<!-- end of searchByAlbumRelease -->
+<!-- end of data placeholders -->
+
+<!-- UnifiedSearchBar -->
+<div class="search-input-container">
+	<input
+		class="searchUnified"
+		id="searchUnified"
+		type="text"
+		placeholder="Search for artists, concerts, performed locations and album release...."
+	/>
+
+	<!-- Suggestions dropdowns for Unified search -->
+	<div
+		class="unified-suggestions hidden"
+		id="unifiedSuggestions"
+	>
+		<!-- artist nameSuggestions -->
+		<div class="suggestion-category">
+			<div
+				class="suggestion-items"
+				id="nameSuggestions"
+			></div>
+		</div>
+
+		<!-- artist membersSuggestions -->
+		<div class="suggestion-category">
+			<div
+				class="suggestion-items"
+				id="membersSuggestions"
+			></div>
+		</div>
+
+		<!-- concertSuggestions -->
+		<div class="suggestion-category">
+			<div
+				class="suggestion-items"
+				id="concertSuggestions"
+			></div>
+		</div>
+
+		<!-- creationDateSuggestions -->
+		<div class="suggestion-category">
+			<div
+				class="suggestion-items"
+				id="creationDateSuggestions"
+			></div>
+		</div>
+
+		<!-- albumReleaseSuggestions -->
+		<div class="suggestion-category">
+			<div
+				class="suggestion-items"
+				id="albumReleaseSuggestions"
+			></div>
+		</div>
+	</div>
+
+	<!-- searchSummary -->
+	<div class="searchSummaryContainer">
+		<div
+			class="searchSummary"
+			id="searchSummary"
+		>
+			<span class="search-icon">
+				<img
+					src="/static/images/icon-search.png"
+					alt="Search-Icon"
+				/>
+			</span>
+		</div>
+	</div>
+	<!-- end of searchSummary -->
+	<!-- end of suggestions dropdowns for Unified search -->
+</div>
+<!-- end of UnifiedSearch -->
+{{end}}
+<!-- end of search bar -->
+
+<!-- members filter -->
+{{define "membersFilter"}}
+<div
+	id="membersFilter"
+	class="membersFilter"
+>
+	<label>
+		<input
+			type="checkbox"
+			value="1"
+		/>
+		1 Member
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="2"
+		/>
+		2 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="3"
+		/>
+		3 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="4"
+		/>
+		4 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="5"
+		/>
+		5 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="6"
+		/>
+		6 Members
+	</label>
+	<label>
+		<input
+			type="checkbox"
+			value="7"
+		/>
+		7 Members
+	</label>
+</div>
+{{end}}
+<!-- end of members filter -->
+
+<!-- range filters -->
+{{define "range_concertDate"}}
+<div
+	class="range_concertDate"
+	data-label="Creation Date"
+>
+	<div class="range_labels"></div>
+	<div class="sliders_control">
+		<div
+			id="fromSliderTooltip1"
+			class="slider-tooltip"
+		>
+			{{ .minYear }}
+		</div>
+		<input
+			id="fromSlider1"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .minYear }}"
+		/>
+		<div
+			id="toSliderTooltip1"
+			class="slider-tooltip"
+		>
+			{{ .maxYear }}
+		</div>
+		<input
+			id="toSlider1"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
+		/>
+	</div>
+</div>
+{{end}} {{define "range_firstAlbum"}}
+<div
+	class="range_firstAlbum"
+	data-label="First Album"
+>
+	<div class="range_labels"></div>
+	<div class="sliders_control">
+		<div
+			id="fromSliderTooltip2"
+			class="slider-tooltip"
+		>
+			{{ .minYear }}
+		</div>
+		<input
+			id="fromSlider2"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .minYear }}"
+		/>
+		<div
+			id="toSliderTooltip2"
+			class="slider-tooltip"
+		>
+			{{ .maxYear }}
+		</div>
+		<input
+			id="toSlider2"
+			type="range"
+			min="{{ .minYear }}"
+			max="{{ .maxYear }}"
+			step="1"
+			value="{{ .maxYear }}"
+		/>
+	</div>
+</div>
+{{end}}
+<!-- end of range filter -->

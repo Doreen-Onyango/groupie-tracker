@@ -1,0 +1,25 @@
+# docker-compose.yml
+version: "3"
+
+services:
+  backend-services:
+    build:
+      context: ./backend
+      dockerfile: backend-services.dockerfile
+    restart: always
+    ports:
+      - "4000:4000"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  frontend-service:
+    build:
+      context: ./frontend
+      dockerfile: frontend-service.dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
