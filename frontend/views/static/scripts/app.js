@@ -1,3 +1,5 @@
+import { loader } from "./renders.js";
+
 // Declare variables to store module references
 let helpersModule;
 let rendersModule;
@@ -320,6 +322,8 @@ ArtistApp.prototype.sortById = function (items) {
  * Renders the artist cards for the current page based on the filtered data
  */
 ArtistApp.prototype.renderPaginatedArtists = function () {
+	// const container = document.querySelector(".artists");
+	// container.innerHTML = loader();
 	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 	const endIndex = startIndex + this.itemsPerPage;
 

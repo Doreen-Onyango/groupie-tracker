@@ -3,6 +3,8 @@
  * @param {Object} artistsData - The data object containing artists, message, and error status
  */
 export const renderAllArtists = ({ data, message, error }) => {
+	// const empty = document.querySelector(".artists");
+	// empty.innerHTML = "";
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate"); // Reference the template
 
@@ -125,7 +127,7 @@ function generateArtistDetailsHTML(data) {
 		artist.members.length > 1
 			? `${artist.members.slice(0, -1).join(", ")} and ${artist.members.slice(
 					-1
-			  )}`
+				)}`
 			: artist.members[0] || "No members";
 
 	return `
@@ -357,3 +359,20 @@ function formatDate(date) {
 		day: "numeric",
 	});
 }
+
+/**
+ * loader
+ * Returns the HTML markup for a loader animation.
+ * @returns {string} - HTML string for the loader.
+ */
+export const loader = () => {
+	return `
+    <div class="loader-container"> 
+      <div class="loader">
+        <div class="dot dot-lower"></div>
+        <div class="dot dot-middle"></div>
+        <div class="dot dot-upper"></div>
+      </div>
+    </div>
+  `;
+};
