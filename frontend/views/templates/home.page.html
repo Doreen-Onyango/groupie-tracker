@@ -28,7 +28,7 @@
 
 		<!-- Reset Button -->
 		<img
-		  src="/static/images/icon-reset.png"
+		  src="/static/images/reset.svg"
       alt="Reset Button"
       class="reset-icon"
       title="Reset your search"
@@ -50,17 +50,13 @@
 
 <div class="artists">
 	 <!-- Pagination controls -->
-	<div id="pagination">
-		<img id="prevPage" class="pagination-button" disabled src="/static/images/icon-back.png" alt="Previous">
-	</div>
+		<img id="prevPage" class="pagination-button" disabled src="/static/images/prevPage.svg" alt="Previous">
 	<!-- artist cards -->
 	{{block "artistCard" .}}{{end}}
 
 	<!-- end -->
-	 <!-- Pagination controls -->
-	<div id="pagination">
-		<img id="nextPage" class="pagination-button" src="/static/images/icon-foward.png" alt="Next">
-	</div>
+	 <!-- nextPage controls -->
+		<img id="nextPage" class="pagination-button" src="/static/images/nextPage.svg" alt="Next">
 
 	<!-- modal -->
 	{{ block "modalTemplate" .}}{{end}}

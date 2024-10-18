@@ -36,17 +36,19 @@ header {
 }
 
 #resetButton {
-	margin-left: 20px;
-	margin-top: -10px;
+	z-index: 250;
+	margin-bottom: -20px;
+	width: 60px;
 	cursor: pointer;
-	background-color: var(--tertiary-color);
 	z-index: 20;
-	border-radius: 50%;
+	display: inline-block;
+	transition:
+		transform 0.5s ease-in-out,
+		filter 0.5s ease-in-out;
 }
 
 #resetButton:hover {
-	box-shadow: 0px 2px 8px var(--shadow-color);
-	transition: box-shadow 0.5s ease-in-out;
+	filter: drop-shadow(0px 2px 8px var(--shadow-color));
 	transform: rotate(45deg);
 }
 
@@ -63,10 +65,16 @@ header {
 	max-height: 180px;
 }
 
-/* Pagination button styling */
-.pagination-button {
-	padding: 10px 5px;
-	margin: 0 10px;
+#pagination {
+	padding: 0;
+	width: 5%;
+}
+
+#nextPage {
+	display: inline-block;
+	width: 10%;
+	padding: 0;
+	margin-right: 30px;
 	cursor: pointer;
 	opacity: 1;
 	transition:
@@ -74,10 +82,37 @@ header {
 		opacity 0.5s ease;
 }
 
-/* Disabled state styling for image buttons */
-.pagination-button.disabled {
+#nextPage.disabled {
 	cursor: not-allowed;
-	opacity: 0.3; /* Reduce opacity to indicate the disabled state */
+	opacity: 0.3;
+}
+
+#prevPage {
+	display: inline-block;
+	width: 10%;
+	padding: 0;
+	margin-left: 30px;
+	cursor: pointer;
+	opacity: 1;
+	transition:
+		background-color 0.5s ease,
+		opacity 0.5s ease;
+}
+
+#prevPage.disabled {
+	cursor: not-allowed;
+	opacity: 0.3;
+}
+
+/* Pagination button styling */
+.pagination-button {
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	opacity: 1;
+	transition:
+		background-color 0.5s ease,
+		opacity 0.5s ease;
 }
 
 /* Hover state for enabled pagination buttons */
@@ -162,14 +197,12 @@ header {
 		margin-top: -2em;
 	}
 
-	#pagination #prevPage {
-		position: absolute;
+	#pagination {
 		left: 3em;
 	}
 
-	#pagination #nextPage {
-		position: absolute;
-		right: 3em;
+	#nextPage {
+		margin-left: -10em;
 	}
 
 	#artistsContainer {
