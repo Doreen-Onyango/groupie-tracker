@@ -25,7 +25,7 @@
 	border-radius: 25px;
 	border: 2px solid var(--background-color);
 	outline: none;
-	background-color: #ddd;
+	background-color: #9670af;
 	box-shadow: 0px 2px 8px var(--shadow-color);
 	transition:
 		box-shadow 0.3s ease-in-out,
@@ -66,7 +66,7 @@
 	padding: 3px 10px;
 	color: var(--background-color);
 	margin: 10px;
-	background-color: var(--tertiary-color);
+	background-color: #9670af;
 	border-radius: 10px;
 	box-shadow: 0px 2px 8px var(--shadow-color);
 	transition:
