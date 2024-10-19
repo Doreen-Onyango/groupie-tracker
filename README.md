@@ -43,62 +43,43 @@ This is where the data from the API is fetched.
 
 The backend of this project is purely written in Go. Ensure you have Go installed in your machine. To clone this repo:
 
-```
-git clone https://github.com/Doreen-Onyango/groupie-tracker
-```
+`git clone https://learn.zone01kisumu.ke/git/doonyango/groupie-tracker.git`
 
 ## Usage
 
-Navigate to the project directory and navigate to the backend directory then the cmd directory for you to run the backend.
+This project has been dockerized. You need docker installed before you can effectively run this project.
 
-```
-cd groupie-tracker/backend/cmd/
-go run .
+```Sh
+cd groupie-tracker
+docker-compose down
+docker-compose build
+docker-compose up -d
 ```
 
-The above command will start the backend server. Take a breath, we are not done yet. Open another terminal and navigate to the cmd directory to run the frontend.By doing this, ensure the backend is also running... boom!!! it dispays data.
-
-```
-cd groupie-tracker/frontend/cmd/
-go run .
-```
+- You can also manually fire up the backend with: `cd backend/cmd && go run api_server.go`. This is subject to change with frequent updates.
+- Then manually fire up the frontend with: `cd frontend/cmd && go run server.go`. This is subject to change with frequent updates.
 
 ## Test
 
 This project has test files that tests the functionality of the functions. To run the tests enter the following command in the backend and frontend directories one at time.
 
-```
-go test -v
-```
+Navigate into the package that tests are found and run: `go test`
 
 ## Implementation
 
-Below is a function that fetches data from the APIs provided. Data retrieval from URL is done here and unmarshaling of artist's data and the processing of the data for easy accesibility.
+This project is divided into two microservices.
 
-```go
-func (a *MainApi) fetchData(apitype string) ([]byte, error) {
-	baseUrl := a.baseUrl
-	if apitype != "artists" {
-		baseUrl = apitype
-	} else {
-		baseUrl = fmt.Sprintf("%s%s", baseUrl, apitype)
-	}
+**The Backend Microservice**
+This microservice is built using _Singleton Design Pattern_. It has a single state that depends on the fetched data.
+This fetches data from the main provided api. It breaks it down and further builds different data structures that can be easily retrieved.
+This microservice further fetches location coodinates from google api and ties them to the corresponding location.
 
-	res, err := http.Get(baseUrl)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	return body, nil
-}
-{...
-}
-```
+**The Frontend Microservice**
+This microservice is built using _Observe Design Pattern_. The microservice listens to different events and changes state accordingly.
+This fetches data from the _backend microservice_ using a restful API request - response structure.
+It further serves the response in home page as per user request.
+This microservice also fetches passed location coodinates maps from google for rendering purposes.
+The purpose of this frontend microservice is to serve the collected artists data in a more user-friendly way.
 
 ## Contribution
 
