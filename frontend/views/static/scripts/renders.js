@@ -6,7 +6,8 @@ export const renderAllArtists = ({ data, message, error }) => {
 	// const empty = document.querySelector(".artists");
 	// empty.innerHTML = "";
 	const container = document.querySelector("#artistsContainer");
-	const template = document.getElementById("artistCardTemplate"); // Reference the template
+	const template = document.getElementById("artistCardTemplate");
+	const loader = document.querySelector(".loader-container");
 
 	container.innerHTML = error
 		? `<div class="error-message">
@@ -14,7 +15,6 @@ export const renderAllArtists = ({ data, message, error }) => {
 				<p>${message}</p>
 			</div>`
 		: "";
-
 	if (error) return;
 
 	data.forEach((artist) => {
@@ -66,6 +66,7 @@ export const renderAllArtists = ({ data, message, error }) => {
 		// Append the filled card to the container
 		container.appendChild(card);
 	});
+	loader.style.display = "none";
 };
 
 /**

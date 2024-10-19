@@ -51,9 +51,19 @@
 <div class="artists">
 	 <!-- Pagination controls -->
 		<img id="prevPage" class="pagination-button" disabled src="/static/images/prevPage.svg" alt="Previous">
+
+		<!-- loader -->
+		  <div class="loader-container">
+		 <div class="loader">
+      <div class="dot dot-lower"></div>
+      <div class="dot dot-middle"></div>
+      <div class="dot dot-upper"></div>
+    </div>
+	 </div>
+	 <!-- end of the loader -->
+
 	<!-- artist cards -->
 	{{block "artistCard" .}}{{end}}
-
 	<!-- end -->
 	 <!-- nextPage controls -->
 		<img id="nextPage" class="pagination-button" src="/static/images/nextPage.svg" alt="Next">
