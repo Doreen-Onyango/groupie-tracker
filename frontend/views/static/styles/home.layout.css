@@ -145,7 +145,7 @@ header {
 	width: 100%;
 	display: grid;
 	place-items: center;
-	height: 100%;
+	margin: 25%;
 	padding: 10%;
 }
 
@@ -160,26 +160,26 @@ header {
 	border-radius: 50%;
 	position: absolute;
 	inset: 0;
-	box-shadow: 2px 4px 10px 6px rgba(0, 0, 0, 0.194);
+	box-shadow: 2px 4px 10px 6px var(--shadow-color);
 	animation: 2s ease infinite alternate;
 }
 
 .dot-lower {
 	width: 90px;
 	animation-name: lower;
-	background: #875252;
+	background: var(--background-color);
 }
 
 .dot-middle {
 	width: 60px;
 	animation-name: middle;
-	background: #988282;
+	background: var(--pale-color);
 }
 
 .dot-upper {
 	width: 30px;
 	animation-name: upper;
-	background: #fbd9d9;
+	background: var(--tertiary-color);
 }
 
 @keyframes lower {
@@ -210,6 +210,50 @@ header {
 	100% {
 		transform: scale(2);
 	}
+}
+
+/* load animations speed*/
+@keyframes lower {
+	0%,
+	30% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(2);
+	}
+}
+
+@keyframes middle {
+	0%,
+	50% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(2);
+	}
+}
+
+@keyframes upper {
+	0%,
+	70% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(2);
+	}
+}
+
+/* Faster animations with correct properties */
+.element-lower {
+	animation: lower 0.3s linear infinite;
+}
+
+.element-middle {
+	animation: middle 0.3s linear infinite;
+}
+
+.element-upper {
+	animation: upper 0.3s linear infinite;
 }
 
 /* Adjust for mobile responsiveness */
