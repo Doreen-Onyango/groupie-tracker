@@ -83,33 +83,3 @@ func (m *Repo) GetArtistById(w http.ResponseWriter, r *http.Request) {
 		m.res.ErrJSON(w, err, http.StatusInternalServerError)
 	}
 }
-
-// API handler to get artist concert locations with geocoding
-func (m *Repo) GetConcertLocation(w http.ResponseWriter, r *http.Request) {
-	var requestData struct {
-		Request string `json:"artist_id"`
-	}
-
-	err := m.res.ReadJSON(w, r, &requestData)
-	if err != nil {
-		m.res.ErrJSON(w, err, http.StatusBadRequest)
-		return
-	}
-
-	loc, err := m.app.Res.GetCoordinates(requestData.Request)
-	if err != nil {
-		m.res.Err = true
-		m.res.Message = err.Error()
-		m.res.ErrJSON(w, err, http.StatusNotFound)
-		return
-	}
-
-	locJSON, _ := json.Marshal(loc)
-	m.res.Err = false
-	m.res.Message = "success"
-	m.res.Data = json.RawMessage(locJSON)
-
-	if err := m.res.WriteJSON(w, *m.res, http.StatusOK); err != nil {
-		m.res.ErrJSON(w, err, http.StatusInternalServerError)
-	}
-}

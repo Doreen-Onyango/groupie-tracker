@@ -25,7 +25,6 @@ async function initializeApp() {
 		const {
 			getAllArtists,
 			getArtistById,
-			getCoordinates,
 			setTooltip,
 			setToggleAccessible,
 			fillSlider,
@@ -39,7 +38,6 @@ async function initializeApp() {
 			const app = new ArtistApp({
 				getAllArtists,
 				getArtistById,
-				getCoordinates,
 				renderAllArtists,
 				showModal,
 				setTooltip,
@@ -70,7 +68,6 @@ export default class ArtistApp {
 		// Bind external services to the app
 		this.getAllArtists = services.getAllArtists;
 		this.getArtistById = services.getArtistById;
-		this.getCoordinates = services.getCoordinates;
 		this.renderAllArtists = services.renderAllArtists;
 		this.showModal = services.showModal;
 		this.setTooltip = services.setTooltip;
@@ -122,14 +119,8 @@ ArtistApp.prototype.initialize = async function () {
 	this.filteredData = [...this.artistsData.data];
 	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
 
-	// Fetch artist details and geolocation data
-	const artistDetails = await this.fetchAllArtistDetails();
-
 	// Merge artist data and geolocation into a single object for each artist
-	this.allArtistDetails = artistDetails.map((detail) => ({
-		...detail.artistData,
-		geoLocations: detail.geoLocations,
-	}));
+	this.allArtistDetails = await this.fetchAllArtistDetails();
 
 	// Calculate and set year ranges
 	this.calculateMinMaxYears();
@@ -148,8 +139,7 @@ ArtistApp.prototype.fetchAllArtistDetails = async function () {
 	const artistDetails = await Promise.all(
 		this.artistsData.data.map(async (artist) => {
 			const artistData = await this.getArtistById(artist.id);
-			const geoLocations = await this.getCoordinates(artist.id);
-			return { artistData, geoLocations };
+			return artistData;
 		})
 	);
 	return artistDetails;

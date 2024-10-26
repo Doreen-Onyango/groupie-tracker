@@ -166,43 +166,19 @@ func (a *Artist) UnmarshalJSON(data []byte) error {
 }
 
 type ResponseData struct {
-	Artists      map[string]Artist
-	Locations    map[string]Locations     `json:"locations"`
-	Concerts     map[string]Concerts      `json:"concertDates"`
-	Relations    map[string]Relation      `json:"relations"`
-	GeoLocations map[string][]GeoLocation `json:"geoLocation"`
-	mu           sync.RWMutex
+	Artists   map[string]Artist
+	Locations map[string]Locations `json:"locations"`
+	Concerts  map[string]Concerts  `json:"concertDates"`
+	Relations map[string]Relation  `json:"relations"`
+	mu        sync.RWMutex
 }
 
 // efficient data storage and retrieval for an application that likely deals with artists
 func NewResponseData() *ResponseData {
 	return &ResponseData{
-		Artists:      make(map[string]Artist),
-		Locations:    make(map[string]Locations),
-		Concerts:     make(map[string]Concerts),
-		Relations:    make(map[string]Relation),
-		GeoLocations: make(map[string][]GeoLocation),
+		Artists:   make(map[string]Artist),
+		Locations: make(map[string]Locations),
+		Concerts:  make(map[string]Concerts),
+		Relations: make(map[string]Relation),
 	}
-}
-
-// Google api response structure
-type GeocodeResponse struct {
-	Results []struct {
-		Geometry struct {
-			Location struct {
-				Lat float64 `json:"lat"`
-				Lng float64 `json:"lng"`
-			} `json:"location"`
-		} `json:"geometry"`
-	} `json:"results"`
-	Status string `json:"status"`
-}
-
-// GeoLocation struct with geolocation data
-type GeoLocation struct {
-	ArtistID  string  `json:"id"`
-	Location  string  `json:"location"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-	Date      string  `json:"date"`
 }

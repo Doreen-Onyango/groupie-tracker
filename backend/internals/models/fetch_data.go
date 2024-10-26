@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 )
@@ -118,10 +117,6 @@ func (r *ResponseData) AddArtist(api *MainApi) error {
 		r.SetData(api)
 	}()
 
-	go func() {
-		wg.Wait()
-		r.AddCoordinates()
-	}()
 	allArtists <- struct{}{}
 
 	return nil
@@ -218,82 +213,4 @@ func (r *ResponseData) GetArtistById(id string) (map[string]interface{}, error) 
 		return nil, fmt.Errorf("404 data not found %s", id)
 	}
 	return res, nil
-}
-
-// Function to AddCoordinates using the Google Maps API
-func (r *ResponseData) AddCoordinates() error {
-	var wg sync.WaitGroup
-	apiKey := os.Getenv("GOOGLE_MAPS_API_KEY")
-	errCh := make(chan error, 1)
-
-	for key, artist := range r.Locations {
-		for _, location := range artist.Locations {
-			wg.Add(1)
-
-			go func(loc, artistID string) {
-				defer wg.Done()
-
-				url := fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", loc, apiKey)
-				resp, err := http.Get(url)
-				if err != nil {
-					errCh <- err
-					return
-				}
-				defer resp.Body.Close()
-
-				body, err := io.ReadAll(resp.Body)
-				if err != nil {
-					errCh <- err
-					return
-				}
-
-				var geocodeResponse GeocodeResponse
-				err = json.Unmarshal(body, &geocodeResponse)
-				if err != nil {
-					errCh <- err
-					return
-				}
-
-				if geocodeResponse.Status != "OK" {
-					errCh <- fmt.Errorf("geocoding failed: %s", geocodeResponse.Status)
-					return
-				}
-
-				geoLocation := GeoLocation{
-					ArtistID:  artistID,
-					Location:  loc,
-					Latitude:  geocodeResponse.Results[0].Geometry.Location.Lat,
-					Longitude: geocodeResponse.Results[0].Geometry.Location.Lng,
-					Date:      r.Relations[key].DatesLocations[loc][0],
-				}
-
-				r.mu.Lock()
-				r.GeoLocations[artistID] = append(r.GeoLocations[artistID], geoLocation)
-				r.mu.Unlock()
-
-			}(location, key)
-		}
-	}
-
-	wg.Wait()
-	close(errCh)
-
-	if len(errCh) > 0 {
-		return <-errCh
-	}
-
-	return nil
-}
-
-// Method to get the coordinates of a specific location
-func (r *ResponseData) GetCoordinates(location string) ([]GeoLocation, error) {
-	r.mu.RLock()
-	defer r.mu.RUnlock()
-
-	geoLocation, exists := r.GeoLocations[location]
-	if !exists {
-		return []GeoLocation{}, fmt.Errorf("location not found")
-	}
-
-	return geoLocation, nil
 }
