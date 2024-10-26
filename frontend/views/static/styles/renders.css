@@ -216,3 +216,14 @@
 .mapboxgl-marker svg {
 	min-width: 60px;
 }
+
+@media screen and (max-width: 768px) {
+	.modal-artist-data {
+		flex-direction: column;
+		margin-right: 0;
+	}
+
+	.modal-artist-image {
+		width: 70%;
+	}
+}
