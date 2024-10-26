@@ -1,5 +1,3 @@
-import { loader } from "./renders.js";
-
 // Declare variables to store module references
 let helpersModule;
 let rendersModule;
