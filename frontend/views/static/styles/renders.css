@@ -212,3 +212,7 @@
 	text-decoration: none;
 	cursor: pointer;
 }
+
+.mapboxgl-marker svg {
+	min-width: 60px;
+}
