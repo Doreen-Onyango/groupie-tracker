@@ -78,11 +78,16 @@ export function showModal(artistData) {
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
 
-	// Extract geoLocations directly from data (assuming it's inside the data object)
-	const geoLocations = artistData.geoLocations.data || [];
+	// // Extract geoLocations directly from data (assuming it's inside the data object)
+	// const geoLocations = artistData.geoLocations.data || [];
 
 	setTimeout(() => {
-		initMap(geoLocations);
+		if (typeof mapboxgl !== "undefined") {
+			mapboxgl.accessToken = token;
+			if (!mapInitialized) initializeMap(data);
+		} else {
+			console.error("Mapbox GL library is not loaded");
+		}
 	}, 300);
 
 	// Handle error state
@@ -174,10 +179,6 @@ function generateArtistDetailsHTML(data) {
 	</div>`;
 }
 
-/**
- * Initializes a Google Map and adds markers and a polyline to represent artist locations.
- * @param {Array} geoLocations - Array of objects containing latitude, longitude, date, and location name.
- */
 function initMap(geoLocations) {
 	const sortedLocations = sortByDate(geoLocations, "date");
 
@@ -376,4 +377,183 @@ export const loader = () => {
       </div>
     </div>
   `;
+};
+
+let mapInitialized = false;
+let geoMap;
+const planeIconUrl = "/static/images/airplane.png";
+const token =
+	"pk.eyJ1IjoiYWRpb3pkYW5pZWwiLCJhIjoiY20yb2Z6OHRzMGZ4djJqczM5Mm9ibWI2YyJ9.tssXEtMnVmkJT9NsswMzvA";
+
+async function fetchCoordinates(cityName) {
+	const response = await fetch(
+		`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+			cityName
+		)}.json?access_token=${mapboxgl.accessToken}`
+	);
+	const data = await response.json();
+	if (data.features.length > 0) {
+		const coordinates = data.features[0].center;
+		return { cityName, coordinates };
+	}
+	return null;
+}
+
+// Function to create Bezier curve points
+const bezierCurve = (p1, p2, p3, p4, nPoints) => {
+	const points = [];
+	for (let t = 0; t <= 1; t += 1 / nPoints) {
+		const x =
+			Math.pow(1 - t, 3) * p1[0] +
+			3 * Math.pow(1 - t, 2) * t * p2[0] +
+			3 * (1 - t) * Math.pow(t, 2) * p3[0] +
+			Math.pow(t, 3) * p4[0];
+		const y =
+			Math.pow(1 - t, 3) * p1[1] +
+			3 * Math.pow(1 - t, 2) * t * p2[1] +
+			3 * (1 - t) * Math.pow(t, 2) * p3[1] +
+			Math.pow(t, 3) * p4[1];
+		points.push([x, y]);
+	}
+	return points;
+};
+
+// Draw curved paths between consecutive locations
+const drawCurvedLine = (from, to) => {
+	const midPoint = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2 + 5];
+	return bezierCurve(from, midPoint, midPoint, to, 50);
+};
+
+const initializeMap = async (data) => {
+	// Initialize the Mapbox map if it hasn't been initialized
+	if (!mapInitialized) {
+		geoMap = new mapboxgl.Map({
+			container: "map",
+			style: "mapbox://styles/mapbox/streets-v11",
+			center: [-74.5, 40],
+			zoom: 2,
+		});
+		mapInitialized = true;
+	}
+
+	const cityEntries = Object.entries(data.relations.datesLocations);
+	const locationsWithCoordinates = await Promise.all(
+		cityEntries.map(async ([cityName, dates]) => {
+			const locationData = await fetchCoordinates(cityName);
+			return locationData
+				? dates.map((date) => ({
+						date,
+						coordinates: locationData.coordinates,
+						cityName: locationData.cityName,
+					}))
+				: [];
+		})
+	);
+
+	const sortedLocations = locationsWithCoordinates
+		.flat()
+		.sort(
+			(a, b) =>
+				new Date(a.date.split("-").reverse().join("-")) -
+				new Date(b.date.split("-").reverse().join("-"))
+		);
+
+	// Add markers for each location
+	sortedLocations.forEach((location) => {
+		const popupContent = `<strong>${location.cityName}</strong><br/>Date: ${location.date}`;
+		new mapboxgl.Marker({ color: "red" })
+			.setLngLat(location.coordinates)
+			.setPopup(new mapboxgl.Popup().setHTML(popupContent))
+			.addTo(geoMap);
+	});
+
+	const features = [];
+	for (let i = 0; i < sortedLocations.length - 1; i++) {
+		const curve = drawCurvedLine(
+			sortedLocations[i].coordinates,
+			sortedLocations[i + 1].coordinates
+		);
+		features.push({
+			type: "Feature",
+			geometry: {
+				type: "LineString",
+				coordinates: curve,
+			},
+			properties: {},
+		});
+	}
+
+	// Load the curved paths into the geoMap
+	geoMap.on("load", () => {
+		geoMap.addSource("route", {
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: features,
+			},
+		});
+
+		geoMap.addLayer({
+			id: "curved-route",
+			type: "line",
+			source: "route",
+			layout: {
+				"line-cap": "round",
+				"line-join": "round",
+			},
+			paint: {
+				"line-color": "#888",
+				"line-width": 4,
+				"line-opacity": 0.8,
+			},
+		});
+
+		animatePlane(sortedLocations.map((location) => location.coordinates));
+	});
+
+	geoMap.addControl(new mapboxgl.NavigationControl());
+};
+
+const animatePlane = (path) => {
+	let index = 0;
+	const planeMarker = new mapboxgl.Marker({
+		element: createPlaneIcon(planeIconUrl),
+	})
+		.setLngLat(path[0])
+		.addTo(geoMap);
+
+	const movePlane = () => {
+		if (index < path.length - 1) {
+			const [start, end] = [path[index], path[index + 1]];
+			const duration = 3000;
+			let startTime = performance.now();
+
+			const animate = (timestamp) => {
+				const progress = (timestamp - startTime) / duration;
+				if (progress < 1) {
+					const interpolated = [
+						start[0] + (end[0] - start[0]) * progress,
+						start[1] + (end[1] - start[1]) * progress,
+					];
+					planeMarker.setLngLat(interpolated);
+					requestAnimationFrame(animate);
+				} else {
+					index++;
+					movePlane(); // Move to the next line
+				}
+			};
+			requestAnimationFrame(animate);
+		} else {
+			planeMarker.remove(); // End of path
+		}
+	};
+	movePlane();
+};
+
+const createPlaneIcon = (url) => {
+	const img = document.createElement("img");
+	img.src = url;
+	img.style.width = "40px";
+	img.style.height = "auto";
+	return img;
 };
