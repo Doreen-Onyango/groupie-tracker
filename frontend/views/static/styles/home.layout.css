@@ -327,23 +327,19 @@ header {
 		margin-bottom: 20px;
 	}
 
-
 	.range-filters {
 		margin-top: 20px;
 		border: none;
 	}
 
 	#resetButton {
-		margin-left: -150%;
-		margin-top: -180px;
+		position: absolute;
+		left: 15px;
+		top: 190px;
 	}
 }
 
 @media screen and (max-width: 320px) {
-	.search-container {
-		flex-direction: column;
-		width: 100%;
-	}
 }
 
 @media screen and (max-width: 280px) {
