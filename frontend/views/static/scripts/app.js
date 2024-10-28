@@ -208,7 +208,7 @@ ArtistApp.prototype.handleShortcuts = function (event) {
 			break;
 
 		case "n":
-			// Home Page = Ctrl + Shift + n
+			// Home Page = Ctrl + Alt + n
 			if (isCtrl && isAlt) {
 				event.preventDefault();
 				this.changePage(this.currentPage + 1);
@@ -216,7 +216,7 @@ ArtistApp.prototype.handleShortcuts = function (event) {
 			break;
 
 		case "p":
-			// Home Page = Ctrl + Shift + n
+			// Home Page = Ctrl + Alt + p
 			if (isCtrl && isAlt) {
 				event.preventDefault();
 				this.changePage(this.currentPage - 1);
