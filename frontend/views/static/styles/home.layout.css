@@ -321,6 +321,7 @@ header {
 	.range-filters {
 		margin-top: -10em;
 	}
+
 	.search-container {
 		flex-direction: column;
 		width: 100%;
@@ -333,13 +334,15 @@ header {
 	}
 
 	#resetButton {
-		position: absolute;
-		left: 15px;
-		top: 190px;
+		position: relative;
+		left: -90px;
 	}
 }
 
 @media screen and (max-width: 320px) {
+	.search-container {
+		margin-bottom: 20px;
+	}
 }
 
 @media screen and (max-width: 280px) {
