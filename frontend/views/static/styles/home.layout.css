@@ -303,7 +303,10 @@ header {
 	}
 
 	.pagination-button {
+		position: sticky;
+		display: inline-block;
 		max-width: 60px;
+		top: 0;
 	}
 }
 
@@ -318,6 +321,17 @@ header {
 	.range-filters {
 		margin-top: -10em;
 	}
+	.search-container {
+		flex-direction: column;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+
+	.range-filters {
+		margin-top: 20px;
+		border: none;
+	}
 
 	#resetButton {
 		margin-left: -150%;
@@ -329,11 +343,6 @@ header {
 	.search-container {
 		flex-direction: column;
 		width: 100%;
-	}
-
-	.range-filters {
-		margin-top: 0;
-		border: none;
 	}
 }
 
