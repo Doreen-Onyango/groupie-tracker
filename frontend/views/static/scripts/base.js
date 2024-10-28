@@ -2,12 +2,6 @@ export default class Base {
 	constructor() {
 		this.setupEventListeners();
 	}
-
-	// About Page = Alt + A
-	// Home Page = Ctrl + Alt + H
-	// Reset = Escape
-	// Next Page = Ctrl + N
-	// Prev Page = Ctrl + P
 }
 
 /**
@@ -26,8 +20,8 @@ Base.prototype.handleShortcuts = function (event) {
 
 	switch (event.key.toLowerCase()) {
 		case "a":
-			// About Page = Alt + A
-			if (isAlt) {
+			// About Page = Ctrl + Alt + A
+			if (isCtrl && isAlt) {
 				event.preventDefault();
 				window.location.href = "/about";
 			}
