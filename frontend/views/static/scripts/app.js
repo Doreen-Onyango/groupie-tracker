@@ -190,6 +190,42 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
 	document.addEventListener("input", this.applyAllFilters.bind(this));
+	document.addEventListener("keydown", this.handleShortcuts.bind(this));
+};
+
+/**
+ * Handles keyboard shortcuts events
+ */
+ArtistApp.prototype.handleShortcuts = function (event) {
+	const isCtrl = event.ctrlKey;
+	const isAlt = event.altKey;
+
+	switch (event.key.toLowerCase()) {
+		case "escape":
+			// Reset = Escape
+			event.preventDefault();
+			this.resetFilters();
+			break;
+
+		case "n":
+			// Home Page = Ctrl + Shift + n
+			if (isCtrl && isAlt) {
+				event.preventDefault();
+				this.changePage(this.currentPage + 1);
+			}
+			break;
+
+		case "p":
+			// Home Page = Ctrl + Shift + n
+			if (isCtrl && isAlt) {
+				event.preventDefault();
+				this.changePage(this.currentPage - 1);
+			}
+			break;
+
+		default:
+			break;
+	}
 };
 
 /**
