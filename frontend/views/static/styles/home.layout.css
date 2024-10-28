@@ -274,11 +274,11 @@ header {
 @media screen and (max-width: 768px) {
 	#resetButton {
 		display: inline-block;
-		position: absolute;
+		position: inherit;
 		transform: rotate(90deg);
 		height: 60px;
-		right: 180px;
-		top: 10px;
+		margin-right: 80px;
+		margin-top: -180px;
 		background-color: var(--pale-color);
 		border-radius: 50%;
 		padding: 0;
@@ -317,6 +317,11 @@ header {
 @media screen and (max-width: 328px) {
 	.range-filters {
 		margin-top: -10em;
+	}
+
+	#resetButton {
+		margin-left: -150%;
+		margin-top: -180px;
 	}
 }
 
