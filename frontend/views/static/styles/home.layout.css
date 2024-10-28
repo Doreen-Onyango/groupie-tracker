@@ -306,7 +306,7 @@ header {
 		position: sticky;
 		display: inline-block;
 		max-width: 60px;
-		top: 0;
+		top: 40%;
 	}
 }
 
