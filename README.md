@@ -61,6 +61,14 @@ docker-compose up -d
 - You can also manually fire up the backend with: `cd backend/cmd && go run api_server.go`. This is subject to change with frequent updates.
 - Then manually fire up the frontend with: `cd frontend/cmd && go run server.go`. This is subject to change with frequent updates.
 
+**Note:** Once on the page you can navigate through the pages and different areas using the following keyboard shortcuts:
+1. About page = Ctrl + Alt + A
+2. Home page = Ctrl + Alt + H
+3. Reset = Esc
+4. Reload = Ctrl
+5. Next page = Ctrl + Alt + N
+6. Previous page = Ctrl + Alt + P
+
 ## Test
 
 This project has test files that tests the functionality of the functions. To run the tests enter the following command in the backend and frontend directories one at time.
