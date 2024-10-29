@@ -7,10 +7,12 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
 )
 
+// initialize renders struct
 type Renders struct {
 	app *models.App
 }
 
+// create a new renders that returns ponter to renders
 func NewRenders(app *models.App) *Renders {
 	return &Renders{app: app}
 }

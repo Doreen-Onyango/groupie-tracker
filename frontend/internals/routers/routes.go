@@ -8,6 +8,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
 )
 
+// initialize the rooutes struct
 type Routes struct {
 	app  *models.App
 	repo *handlers.Repo

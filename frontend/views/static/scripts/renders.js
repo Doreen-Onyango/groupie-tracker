@@ -1,10 +1,6 @@
-/**
- * Renders all artists or displays an error message if there's an issue
- * @param {Object} artistsData - The data object containing artists, message, and error status
- */
+ // Renders all artists or displays an error message if there's an issue
+ // @param {Object} artistsData - The data object containing artists, message, and error status
 export const renderAllArtists = ({ data, message, error }) => {
-	// const empty = document.querySelector(".artists");
-	// empty.innerHTML = "";
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
 	const loader = document.querySelector(".loader-container");
@@ -18,10 +14,8 @@ export const renderAllArtists = ({ data, message, error }) => {
 	if (error) return;
 
 	data.forEach((artist) => {
-		// Clone the template content
 		const card = template.content.cloneNode(true);
 
-		// Set artist-specific data
 		const artistCard = card.querySelector(".artist-card");
 		artistCard.setAttribute("data-artist-id", artist.id);
 
@@ -45,7 +39,6 @@ export const renderAllArtists = ({ data, message, error }) => {
 		}
 		membersList.appendChild(li);
 
-		// If there are members, append each one to the list
 		if (memberCount > 0) {
 			artist.members.forEach((member) => {
 				const memberItem = document.createElement("li");
@@ -63,23 +56,17 @@ export const renderAllArtists = ({ data, message, error }) => {
 		card.querySelector(".artist-firstAlbum-value").textContent =
 			formatDate(artist.firstAlbum) || "Unknown First Album";
 
-		// Append the filled card to the container
 		container.appendChild(card);
 	});
 	loader.style.display = "none";
 };
 
-/**
- * Displays a modal with detailed information about an artist
- * @param {Object} artistData - Contains details about the artist and associated data
- */
+ // Displays a modal with detailed information about an artist
+ // @param {Object} artistData - Contains details about the artist and associated data
 export function showModal(artistData) {
 	const { data, message, error } = artistData;
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
-
-	// // Extract geoLocations directly from data (assuming it's inside the data object)
-	// const geoLocations = artistData.geoLocations.data || [];
 
 	setTimeout(() => {
 		if (typeof mapboxgl !== "undefined") {
@@ -90,7 +77,6 @@ export function showModal(artistData) {
 		}
 	}, 300);
 
-	// Handle error state
 	artistDetailsSection.innerHTML = error
 		? `<div class="error-message">
 				<h2>Oops, there is a network issue!</h2>
@@ -111,12 +97,10 @@ export function showModal(artistData) {
 	};
 }
 
-/**
- * Generates the HTML content for artist details.
- * @param {Object} data - The artist data including artist, locations, concertDates, relations, geoLocations.
- * @param {Array} geoLocations - The geolocation data associated with the artist.
- * @returns {string} - The generated HTML string.
- */
+ // Generates the HTML content for artist details.
+ // @param {Object} data - The artist data including artist, locations, concertDates, relations, geoLocations.
+ // @param {Array} geoLocations - The geolocation data associated with the artist.
+ // @returns {string} - The generated HTML string.
 function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
 	const memberCount = artist.members.length;
@@ -179,22 +163,17 @@ function generateArtistDetailsHTML(data) {
 	</div>`;
 }
 
-/**
- * Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
- * @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
- * @returns {string} - The date string in 'YYYY-MM-DD' format.
- */
+ // Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
+ // @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
+ // @returns {string} - The date string in 'YYYY-MM-DD' format.
 function convertDateFormat(dateStr) {
 	const [day, month, year] = dateStr.split("-");
-	return `${year}-${month}-${day}`; // Return the date in 'YYYY-MM-DD' format
+	return `${year}-${month}-${day}`; 
 }
-
-/**
- * Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
- * @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
- * @param {string} dateProperty - The property name that holds the date value in each object.
- * @returns {Array} - The sorted array of objects.
- */
+ // Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
+ // @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
+ // @param {string} dateProperty - The property name that holds the date value in each object.
+ // @returns {Array} - The sorted array of objects.
 function sortByDate(data, dateProperty) {
 	return data.sort((a, b) => {
 		const dateA = Date.parse(convertDateFormat(a[dateProperty]));
@@ -203,11 +182,9 @@ function sortByDate(data, dateProperty) {
 	});
 }
 
-/**
- * Converts a given string to title case, where the first letter of each word is capitalized.
- * @param {string} str - The string to be converted to title case.
- * @returns {string} - The title-cased string.
- */
+ // Converts a given string to title case, where the first letter of each word is capitalized.
+ // @param {string} str - The string to be converted to title case.
+ // @returns {string} - The title-cased string.
 function toTitleCase(str) {
 	return str
 		.toLowerCase()
@@ -216,11 +193,8 @@ function toTitleCase(str) {
 		.join(" ");
 }
 
-/**
- *
- * @param {*} num
- * @returns
- */
+ // @param {*} num
+ // @returns
 function numberToWords(num) {
 	const words = [
 		"zero",
@@ -264,21 +238,17 @@ function numberToWords(num) {
 	return "too many members";
 }
 
-/**
- * Closes the modal and hides the modal content
- * @param {Element} modal - The modal element
- * @param {Element} modalContent - The modal content element
- */
+ // Closes the modal and hides the modal content
+ // @param {Element} modal - The modal element
+ // @param {Element} modalContent - The modal content element
 function closeModal(modal, modalContent) {
 	modal.classList.remove("show");
 	modalContent.classList.remove("show");
 }
 
-/**
- * Formats the location string.
- * @param {string} location - The location string to format.
- * @returns {string} - The formatted location string.
- */
+ // Formats the location string.
+ // @param {string} location - The location string to format.
+ // @returns {string} - The formatted location string.
 function formatLocation(location) {
 	return location
 		.split("-")
@@ -293,11 +263,9 @@ function formatLocation(location) {
 		.join(" in ");
 }
 
-/**
- * Formats the date string into a long date format.
- * @param {string} date - The date string to format.
- * @returns {string} - The formatted date string.
- */
+ // Formats the date string into a long date format.
+ // @param {string} date - The date string to format.
+ // @returns {string} - The formatted date string.
 function formatDate(date) {
 	const [day, month, year] = date.split("-");
 	return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
@@ -308,11 +276,9 @@ function formatDate(date) {
 	});
 }
 
-/**
- * loader
- * Returns the HTML markup for a loader animation.
- * @returns {string} - HTML string for the loader.
- */
+ // loader
+ // Returns the HTML markup for a loader animation.
+ // @returns {string} - HTML string for the loader.
 export const loader = () => {
 	return `
     <div class="loader-container"> 
@@ -325,12 +291,13 @@ export const loader = () => {
   `;
 };
 
-// let mapInitialized = false;
+// declare map variables
 let geoMap;
 const planeIconUrl = "/static/images/airplane.png";
 const token =
 	"pk.eyJ1IjoiYWRpb3pkYW5pZWwiLCJhIjoiY20yb2Z6OHRzMGZ4djJqczM5Mm9ibWI2YyJ9.tssXEtMnVmkJT9NsswMzvA";
 
+// fetch locations coordinates
 async function fetchCoordinates(cityName) {
 	const response = await fetch(
 		`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
@@ -350,15 +317,15 @@ const bezierCurve = (p1, p2, p3, p4, nPoints) => {
 	const points = [];
 	for (let t = 0; t <= 1; t += 1 / nPoints) {
 		const x =
-			Math.pow(1 - t, 3) * p1[0] +
-			3 * Math.pow(1 - t, 2) * t * p2[0] +
-			3 * (1 - t) * Math.pow(t, 2) * p3[0] +
-			Math.pow(t, 3) * p4[0];
+			Math.pow(1 - t, 3)
+			3 
+			3 
+			Math.pow(t, 3)
 		const y =
-			Math.pow(1 - t, 3) * p1[1] +
-			3 * Math.pow(1 - t, 2) * t * p2[1] +
-			3 * (1 - t) * Math.pow(t, 2) * p3[1] +
-			Math.pow(t, 3) * p4[1];
+			Math.pow(1 - t, 3) 
+			3 
+			3
+			Math.pow(t, 3)
 		points.push([x, y]);
 	}
 	return points;
@@ -371,7 +338,6 @@ const drawCurvedLine = (from, to) => {
 };
 
 const initializeMap = async (data) => {
-	// Initialize the Mapbox map if it hasn't been initialized
 	geoMap = new mapboxgl.Map({
 		container: "map",
 		style: "mapbox://styles/mapbox/streets-v11",
@@ -457,6 +423,7 @@ const initializeMap = async (data) => {
 	geoMap.addControl(new mapboxgl.NavigationControl());
 };
 
+// animate artist movement recursively
 const animatePlane = (path) => {
 	let index = 0;
 	const planeMarker = new mapboxgl.Marker({
@@ -475,24 +442,28 @@ const animatePlane = (path) => {
 				const progress = (timestamp - startTime) / duration;
 				if (progress < 1) {
 					const interpolated = [
-						start[0] + (end[0] - start[0]) * progress,
-						start[1] + (end[1] - start[1]) * progress,
+						start[0] + (end[0] - start[0]),
+						start[1] + (end[1] - start[1])
 					];
 					planeMarker.setLngLat(interpolated);
 					requestAnimationFrame(animate);
 				} else {
 					index++;
-					movePlane(); // Move to the next line
+					movePlane();
 				}
 			};
 			requestAnimationFrame(animate);
 		} else {
-			planeMarker.remove(); // End of path
+			planeMarker.remove();
+			setTimeout(()=> {
+				movePlane();
+			}, 3000);
 		}
 	};
 	movePlane();
 };
 
+// creates a plane icon element
 const createPlaneIcon = (url) => {
 	const img = document.createElement("img");
 	img.src = url;
