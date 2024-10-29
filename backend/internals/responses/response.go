@@ -6,12 +6,14 @@ import (
 	"net/http"
 )
 
+// initialize json respose struct
 type JSONRes struct {
 	Err     bool            `json:"error"`
 	Message string          `json:"message"`
 	Data    json.RawMessage `json:"data,omitempty"` // allows use of raw json data message directly and omit
 }
 
+// create a new json response
 func NewJSONRes() *JSONRes {
 	return &JSONRes{}
 }

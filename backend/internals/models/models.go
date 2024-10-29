@@ -6,14 +6,17 @@ import (
 	"sync"
 )
 
+// initialize mainApi struct
 type MainApi struct {
 	baseUrl string
 }
 
+// instantiate main api
 func NewMainApi() *MainApi {
 	return &MainApi{"https://groupietrackers.herokuapp.com/api/"}
 }
 
+// initialize concerts struct
 type Concerts struct {
 	ID           string   `json:"id"`
 	ConcertDates []string `json:"dates"`
@@ -51,6 +54,7 @@ func (c *Concerts) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize relation struct
 type Relation struct {
 	ID             int                 `json:"id"`
 	DatesLocations map[string][]string `json:"datesLocations"`
@@ -81,6 +85,7 @@ func (r *Relation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize location struct
 type Locations struct {
 	ID        string   `json:"id"`
 	Locations []string `json:"locations"`
@@ -114,6 +119,7 @@ func (l *Locations) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize artist struct
 type Artist struct {
 	ID           string   `json:"id"`
 	Image        string   `json:"image"`
@@ -165,6 +171,7 @@ func (a *Artist) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize response data struct
 type ResponseData struct {
 	Artists   map[string]Artist
 	Locations map[string]Locations `json:"locations"`

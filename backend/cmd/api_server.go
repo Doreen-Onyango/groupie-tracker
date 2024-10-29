@@ -9,6 +9,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/models"
 )
 
+// Initialize port
 const webPort = ":4000"
 
 // Declare global variables for the application state, repository, and API setup.
@@ -18,11 +19,12 @@ var (
 	api  = apis.NewApis(repo)
 )
 
+// initialize server configuration
 type Config struct {
 	apiRoutes http.Handler
 }
 
-// initializI the API routes
+// initialize the API routes
 func NewConfig() *Config {
 	return &Config{apiRoutes: api.ApiRoutes()}
 }

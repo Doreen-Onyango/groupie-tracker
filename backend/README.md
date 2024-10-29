@@ -2,6 +2,13 @@
 
 The backend of this project is responsible for fetching data from APIs, handling requests, and processing responses. It manages the server, routing, middleware, and data management with a thread-safe singleton pattern for state management.
 
+## Usage
+
+This backend runs independently as a microservice. It runs a dedicated api server. To run the backend and access the apis from anywhere, use the following command;
+
+`go run cmd/api_server.go`
+
+
 ## The packages in this directory include: 
 
 1. **Server**

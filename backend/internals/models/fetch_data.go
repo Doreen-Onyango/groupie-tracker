@@ -40,7 +40,6 @@ func handleError(err error, firstErr *error) {
 }
 
 // unmarshal  data and checks for errors during the process.
-
 func (r *ResponseData) processLocations(id string, data []byte, firstErr *error) error {
 	var temLocations Locations
 
@@ -56,6 +55,7 @@ func (r *ResponseData) processLocations(id string, data []byte, firstErr *error)
 	return nil
 }
 
+// unmarshal and process concerts dates
 func (r *ResponseData) processConcerts(id string, data []byte, firstErr *error) error {
 	var tempConcerts Concerts
 
@@ -71,6 +71,7 @@ func (r *ResponseData) processConcerts(id string, data []byte, firstErr *error) 
 	return nil
 }
 
+// unmarshal and process artists relations
 func (r *ResponseData) processRelations(id string, data []byte, firstErr *error) error {
 	var tempRelation Relation
 
@@ -139,6 +140,7 @@ func (r *ResponseData) SetData(api *MainApi) error {
 	return nil
 }
 
+// process artists using the url processor
 func (r *ResponseData) processArtist(id string, wg *sync.WaitGroup, api *MainApi, artist Artist, firstErr *error) {
 	r.processUrl(id, artist.Locations, wg, api, firstErr)
 	r.processUrl(id, artist.ConcertDates, wg, api, firstErr)
