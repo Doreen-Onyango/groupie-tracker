@@ -84,7 +84,7 @@ export function showModal(artistData) {
 	setTimeout(() => {
 		if (typeof mapboxgl !== "undefined") {
 			mapboxgl.accessToken = token;
-			if (!mapInitialized) initializeMap(data);
+			initializeMap(data);
 		} else {
 			console.error("Mapbox GL library is not loaded");
 		}
@@ -325,7 +325,7 @@ export const loader = () => {
   `;
 };
 
-let mapInitialized = false;
+// let mapInitialized = false;
 let geoMap;
 const planeIconUrl = "/static/images/airplane.png";
 const token =
@@ -372,15 +372,12 @@ const drawCurvedLine = (from, to) => {
 
 const initializeMap = async (data) => {
 	// Initialize the Mapbox map if it hasn't been initialized
-	if (!mapInitialized) {
-		geoMap = new mapboxgl.Map({
-			container: "map",
-			style: "mapbox://styles/mapbox/streets-v11",
-			center: [-74.5, 40],
-			zoom: 2,
-		});
-		mapInitialized = true;
-	}
+	geoMap = new mapboxgl.Map({
+		container: "map",
+		style: "mapbox://styles/mapbox/streets-v11",
+		center: [-74.5, 40],
+		zoom: 2,
+	});
 
 	const cityEntries = Object.entries(data.relations.datesLocations);
 	const locationsWithCoordinates = await Promise.all(
