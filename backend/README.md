@@ -8,6 +8,10 @@ This backend runs independently as a microservice. It runs a dedicated api serve
 
 `go run cmd/api_server.go`
 
+## Testing
+Navigate to the required directory and run the following command.
+
+`go test -v`
 
 ## The packages in this directory include: 
 
@@ -79,7 +83,7 @@ Key Functionality include:
 
 8. **Response**
 
-he Response package provides utilities for handling JSON-based HTTP responses. It manages error handling, response formatting, and content types using the JSONRes struct and related methods.
+The Response package provides utilities for handling JSON-based HTTP responses. It manages error handling, response formatting, and content types using the JSONRes struct and related methods.
 
 Key Functionality include:
 
