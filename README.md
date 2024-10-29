@@ -6,7 +6,7 @@ This project is a web application that fetches data from an API and transforms i
 
 ## Features
 
-This project consists of:
+Not all of the features have been implemented as at now. Most of the features are still experimental and under development. However, this project consists of:
 
 **1. Backend.**
 This is where the data from the API is fetched.
@@ -62,6 +62,7 @@ docker-compose up -d
 - Then manually fire up the frontend with: `cd frontend/cmd && go run server.go`. This is subject to change with frequent updates.
 
 **Note:** Once on the page you can navigate through the pages and different areas using the following keyboard shortcuts:
+
 1. About page = Ctrl + Alt + A
 2. Home page = Ctrl + Alt + H
 3. Reset = Esc
