@@ -2,7 +2,7 @@
 
 This project is a web application that fetches data from an API and transforms it into data that is easy to read. The data is decoded to a visually appealing information and easy for the client to interact with. The API consists of four parts namely: artists, locations, dates and relations. It clearly shows how data is fetched and decoded.
 
-[Deployed here](https://groupie-tracker-artists.up.railway.app)
+[Deployed here](https://groupie-tracker-artists.up.railway.app/)
 
 ## Features
 
