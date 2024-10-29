@@ -20,73 +20,63 @@
 />
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-container">
-<header>
-	<div class="search-container">
-		<div class="home-page">
-			<h1 id="home-groupie">Groupie</h1>
-			<h1 id="home-tracker">Tracker</h1>
+	<header>
+		<div class="search-container">
+			<div class="home-page">
+				<h1 id="home-groupie">Groupie</h1>
+				<h1 id="home-tracker">Tracker</h1>
+			</div>
+			<!-- Search Bar -->
+			{{block "searchBar" .}}{{end}}
+			<!-- end of Search Bar -->
+
+			<!-- Reset Button -->
+			<img
+				src="/static/images/reset.svg"
+				alt="Reset Button"
+				class="reset-icon"
+				title="Reset your search"
+				id="resetButton"
+			>
+			</img>
 		</div>
-		<!-- Search Bar -->
-		{{block "searchBar" .}}{{end}}
-		<!-- end of Search Bar -->
+					<!-- members filter -->
+		{{ block "membersFilter" .}}{{end}}
+		<!-- end -->
 
-		<!-- Reset Button -->
-		<img
-		  src="/static/images/reset.svg"
-      alt="Reset Button"
-      class="reset-icon"
-      title="Reset your search"
-			id="resetButton"
-		>
-		</img>
-	</div>
-				<!-- members filter -->
-	{{ block "membersFilter" .}}{{end}}
-	<!-- end -->
+		<div class="range-filters">
+		<!-- range filters -->
+		{{ block "range_concertDate" .}} {{end}}
+		{{ block "range_firstAlbum" .}} {{end}}
+		<!-- end of range filters -->
+		</div>
+	</header>
 
-	<div class="range-filters">
-	<!-- range filters -->
-	{{ block "range_concertDate" .}} {{end}}
-	{{ block "range_firstAlbum" .}} {{end}}
-	<!-- end of range filters -->
-	</div>
-</header>
-
-<div class="artists">
-	 <!-- Pagination controls -->
+	<div class="artists">
+		<!-- Pagination controls -->
 		<img id="prevPage" class="pagination-button" disabled src="/static/images/prevPage.svg" alt="Previous">
 
-		<!-- loader -->
-		  <div class="loader-container">
-		 <div class="loader">
-      <div class="dot dot-lower"></div>
-      <div class="dot dot-middle"></div>
-      <div class="dot dot-upper"></div>
-    </div>
-	 </div>
-	 <!-- end of the loader -->
+			<!-- loader -->
+		<div class="loader-container">
+			<div class="loader">
+				<div class="dot dot-lower"></div>
+				<div class="dot dot-middle"></div>
+				<div class="dot dot-upper"></div>
+			</div>
+		</div>
+		<!-- end of the loader -->
 
-	<!-- artist cards -->
-	{{block "artistCard" .}}{{end}}
-	<!-- end -->
-	 <!-- nextPage controls -->
+		<!-- artist cards -->
+		{{block "artistCard" .}}{{end}}
+		<!-- end -->
+		<!-- nextPage controls -->
 		<img id="nextPage" class="pagination-button" src="/static/images/nextPage.svg" alt="Next">
 
-	<!-- modal -->
-	{{ block "modalTemplate" .}}{{end}}
-	<!-- end -->
+		<!-- modal -->
+		{{ block "modalTemplate" .}}{{end}}
+		<!-- end -->
+	</div>
 </div>
-</div>
-		<script
-		type="module"
-		src="/static/scripts/app.js"
-	></script>
-	<!-- google map secured api -->
-	<!-- <script
-		async
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq5mzpJrW8v5fuummRIScHEv3pY62iQ2g&callback=console.debug&libraries=maps,marker&v=beta"
-		defer
-	></script> -->
-	<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
-	{{end}}
-
+<script type="module" src="/static/scripts/app.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+{{end}}

@@ -179,60 +179,6 @@ function generateArtistDetailsHTML(data) {
 	</div>`;
 }
 
-function initMap(geoLocations) {
-	const sortedLocations = sortByDate(geoLocations, "date");
-
-	// Set the center of the map to the first location or default to (0,0)
-	const mapCenter =
-		sortedLocations.length > 0
-			? { lat: sortedLocations[0].latitude, lng: sortedLocations[0].longitude }
-			: { lat: 0, lng: 0 };
-
-	// Initialize the map and attach it to the 'map' element
-	const map = new google.maps.Map(document.getElementById("map"), {
-		zoom: 4,
-		center: mapCenter,
-	});
-
-	// Add markers for each location
-	sortedLocations.forEach((location) => {
-		new google.maps.Marker({
-			position: { lat: location.latitude, lng: location.longitude },
-			map: map,
-			title: location.location,
-		});
-	});
-
-	// Create the path for the polyline based on locations
-	const pathCoordinates = sortedLocations.map((location) => ({
-		lat: location.latitude,
-		lng: location.longitude,
-	}));
-
-	// Check if the pathCoordinates array has enough data to draw the polyline
-	if (pathCoordinates.length > 1) {
-		// Create and set the polyline on the map with arrows
-		const artistPath = new google.maps.Polyline({
-			path: pathCoordinates,
-			geodesic: true,
-			strokeColor: "#FF6347",
-			strokeOpacity: 1.0,
-			strokeWeight: 2,
-			icons: [
-				{
-					icon: {
-						path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-					},
-					offset: "100%", // Position the arrow at the end of the path
-				},
-			],
-		});
-
-		// Display the polyline on the map
-		artistPath.setMap(map);
-	}
-}
-
 /**
  * Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
  * @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
