@@ -69,12 +69,12 @@ export function showModal(artistData) {
 	const artistDetailsSection = document.querySelector("#artistDetails");
 
 	setTimeout(() => {
-		if (typeof mapboxgl !== "undefined") {
+		// if (typeof mapboxgl !== "undefined") {
 			mapboxgl.accessToken = token;
 			initializeMap(data);
-		} else {
-			console.error("Mapbox GL library is not loaded");
-		}
+		// } else {
+		// 	console.error("Mapbox GL library is not loaded");
+		// }
 	}, 300);
 
 	artistDetailsSection.innerHTML = error
@@ -455,9 +455,6 @@ const animatePlane = (path) => {
 			requestAnimationFrame(animate);
 		} else {
 			planeMarker.remove();
-			setTimeout(()=> {
-				movePlane();
-			}, 3000);
 		}
 	};
 	movePlane();
