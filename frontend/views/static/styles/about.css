@@ -8,12 +8,20 @@
 	padding: 30px;
 }
 
+.authors {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 30px;
+	border-radius: 15px;
+
+}
+
 .author-container {
-	width: 100%;
+	width: 105%;
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	gap: 30px;
+	gap: 10px;
 	margin-bottom: 30px;
 	padding: 0;
 }
@@ -28,7 +36,6 @@
 	border-radius: 10px;
 	border: 1px solid var(--border-color);
 	background-color: var(--background-color);
-	box-shadow: 0 5px 15px var(--shadow-color);
 }
 
 .author:hover {
@@ -58,11 +65,11 @@
 
 section {
 	line-height: 1.8;
+	width: 100%;
 	margin-bottom: 40px;
 	padding: 30px;
 	background-color: var(--background-color);
 	border-radius: 10px;
-	box-shadow: 0 5px 15px var(--shadow-color);
 	transition:
 		transform 0.3s ease,
 		box-shadow 0.3s ease;
@@ -110,21 +117,25 @@ section code {
 }
 
 @media screen and (max-width: 768px) {
-	.authors {
-		padding: 20px;
+	.author-container {
+		width: 110%;
 	}
+	
+}
 
-	section {
-		padding: 20px;
+@media screen and (max-width: 653px) {
+	.author-container {
+		width: 70%;
+	}
+	
+	.author {
+		width: 100%;
 	}
 }
 
-@media screen and (max-width: 544px) {
-	body {
-		font-size: 14px;
-	}
 
-	h2 {
+@media screen and (max-width: 544px) {
+	/* h2 {
 		font-size: 1.6em;
 	}
 
@@ -135,7 +146,7 @@ section code {
 
 	.author-name {
 		font-size: 1em;
-	}
+	}  */
 }
 
 /* Animation for sections */
