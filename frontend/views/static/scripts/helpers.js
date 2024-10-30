@@ -3,7 +3,6 @@ const headers = new Headers({
 	"Content-Type": "application/json",
 });
 
-
 //   Utility function to fetch data from the server
 //   @param {string} endpoint - The API endpoint to send the request to
 //   @param {Object} [bodyData] - Optional body data to send with the request
@@ -15,8 +14,11 @@ const fetchData = async (endpoint, bodyData = {}) => {
 		body: JSON.stringify(bodyData),
 	};
 
+	// Add cache-busting parameter
+	const url = `${baseUrl}${endpoint}?cb=${Date.now()}`;
+
 	try {
-		const response = await fetch(`${baseUrl}${endpoint}`, options);
+		const response = await fetch(url, options);
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
@@ -97,7 +99,7 @@ export function setTooltip(slider, tooltip) {
 	tooltip.style.left = `calc(${percent}% - ${offset}px)`;
 }
 
-// sets the current slider 
+// sets the current slider
 export function setToggleAccessible(currentTarget) {
 	const fromSlider1 = document.querySelector("#fromSlider1");
 	const toSlider1 = document.querySelector("#toSlider1");
@@ -135,4 +137,3 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
           ${sliderColor} ${(toPosition / rangeDistance) * 100}%,
           ${sliderColor} 100%)`;
 }
-
