@@ -1,0 +1,22 @@
+{{template "base" .}} {{define "notfoundcss"}}
+<link
+	rel="stylesheet"
+	href="/static/styles/servererror.css"
+/>
+{{end}}{{define "title"}} 403 Forbidden {{end}} {{define "content"}}
+<!-- notfound page content -->
+<div class="servererror">
+	<div>
+		<h1>403 Oops! Sorry, we don't support naughtiness! 🤥</h1>
+		<h2>Try looking for something else.</h2>
+	</div>
+	<div>
+		<a
+			href="/"
+			class="btn"
+			>Head back home</a
+		>
+	</div>
+</div>
+<!-- content end -->
+{{end}}
