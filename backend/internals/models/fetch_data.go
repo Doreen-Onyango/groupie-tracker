@@ -99,6 +99,8 @@ func (r *ResponseData) AddArtist(api *MainApi) error {
 		return fmt.Errorf("no internet connection %v", err)
 	}
 
+	instance.Err = nil
+
 	var artists []Artist
 	if err := json.Unmarshal(data, &artists); err != nil {
 		return fmt.Errorf("oops! connection problem")
@@ -177,7 +179,7 @@ func (r *ResponseData) GetAllArtist() ([]Artist, error) {
 	if instance.Err != nil {
 		err := instance.Err
 		instance.Err = nil
-		r.AddArtist(instance.Api)
+		go r.AddArtist(instance.Api)
 		return nil, err
 	}
 
