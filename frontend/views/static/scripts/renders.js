@@ -1,5 +1,5 @@
- // Renders all artists or displays an error message if there's an issue
- // @param {Object} artistsData - The data object containing artists, message, and error status
+// Renders all artists or displays an error message if there's an issue
+// @param {Object} artistsData - The data object containing artists, message, and error status
 export const renderAllArtists = ({ data, message, error }) => {
 	const container = document.querySelector("#artistsContainer");
 	const template = document.getElementById("artistCardTemplate");
@@ -11,7 +11,10 @@ export const renderAllArtists = ({ data, message, error }) => {
 				<p>${message}</p>
 			</div>`
 		: "";
-	if (error) return;
+	if (error) {
+		loader.style.display = "none";
+		return;
+	}
 
 	data.forEach((artist) => {
 		const card = template.content.cloneNode(true);
@@ -61,8 +64,8 @@ export const renderAllArtists = ({ data, message, error }) => {
 	loader.style.display = "none";
 };
 
- // Displays a modal with detailed information about an artist
- // @param {Object} artistData - Contains details about the artist and associated data
+// Displays a modal with detailed information about an artist
+// @param {Object} artistData - Contains details about the artist and associated data
 export function showModal(artistData) {
 	const { data, message, error } = artistData;
 	const modal = document.getElementById("artistDetailsModal");
@@ -70,8 +73,8 @@ export function showModal(artistData) {
 
 	setTimeout(() => {
 		// if (typeof mapboxgl !== "undefined") {
-			mapboxgl.accessToken = token;
-			initializeMap(data);
+		mapboxgl.accessToken = token;
+		initializeMap(data);
 		// } else {
 		// 	console.error("Mapbox GL library is not loaded");
 		// }
@@ -97,10 +100,10 @@ export function showModal(artistData) {
 	};
 }
 
- // Generates the HTML content for artist details.
- // @param {Object} data - The artist data including artist, locations, concertDates, relations, geoLocations.
- // @param {Array} geoLocations - The geolocation data associated with the artist.
- // @returns {string} - The generated HTML string.
+// Generates the HTML content for artist details.
+// @param {Object} data - The artist data including artist, locations, concertDates, relations, geoLocations.
+// @param {Array} geoLocations - The geolocation data associated with the artist.
+// @returns {string} - The generated HTML string.
 function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
 	const memberCount = artist.members.length;
@@ -163,17 +166,17 @@ function generateArtistDetailsHTML(data) {
 	</div>`;
 }
 
- // Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
- // @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
- // @returns {string} - The date string in 'YYYY-MM-DD' format.
+// Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
+// @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
+// @returns {string} - The date string in 'YYYY-MM-DD' format.
 function convertDateFormat(dateStr) {
 	const [day, month, year] = dateStr.split("-");
-	return `${year}-${month}-${day}`; 
+	return `${year}-${month}-${day}`;
 }
- // Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
- // @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
- // @param {string} dateProperty - The property name that holds the date value in each object.
- // @returns {Array} - The sorted array of objects.
+// Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
+// @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
+// @param {string} dateProperty - The property name that holds the date value in each object.
+// @returns {Array} - The sorted array of objects.
 function sortByDate(data, dateProperty) {
 	return data.sort((a, b) => {
 		const dateA = Date.parse(convertDateFormat(a[dateProperty]));
@@ -182,9 +185,9 @@ function sortByDate(data, dateProperty) {
 	});
 }
 
- // Converts a given string to title case, where the first letter of each word is capitalized.
- // @param {string} str - The string to be converted to title case.
- // @returns {string} - The title-cased string.
+// Converts a given string to title case, where the first letter of each word is capitalized.
+// @param {string} str - The string to be converted to title case.
+// @returns {string} - The title-cased string.
 function toTitleCase(str) {
 	return str
 		.toLowerCase()
@@ -193,8 +196,8 @@ function toTitleCase(str) {
 		.join(" ");
 }
 
- // @param {*} num
- // @returns
+// @param {*} num
+// @returns
 function numberToWords(num) {
 	const words = [
 		"zero",
@@ -238,17 +241,17 @@ function numberToWords(num) {
 	return "too many members";
 }
 
- // Closes the modal and hides the modal content
- // @param {Element} modal - The modal element
- // @param {Element} modalContent - The modal content element
+// Closes the modal and hides the modal content
+// @param {Element} modal - The modal element
+// @param {Element} modalContent - The modal content element
 function closeModal(modal, modalContent) {
 	modal.classList.remove("show");
 	modalContent.classList.remove("show");
 }
 
- // Formats the location string.
- // @param {string} location - The location string to format.
- // @returns {string} - The formatted location string.
+// Formats the location string.
+// @param {string} location - The location string to format.
+// @returns {string} - The formatted location string.
 function formatLocation(location) {
 	return location
 		.split("-")
@@ -263,9 +266,9 @@ function formatLocation(location) {
 		.join(" in ");
 }
 
- // Formats the date string into a long date format.
- // @param {string} date - The date string to format.
- // @returns {string} - The formatted date string.
+// Formats the date string into a long date format.
+// @param {string} date - The date string to format.
+// @returns {string} - The formatted date string.
 function formatDate(date) {
 	const [day, month, year] = date.split("-");
 	return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
@@ -276,9 +279,9 @@ function formatDate(date) {
 	});
 }
 
- // loader
- // Returns the HTML markup for a loader animation.
- // @returns {string} - HTML string for the loader.
+// loader
+// Returns the HTML markup for a loader animation.
+// @returns {string} - HTML string for the loader.
 export const loader = () => {
 	return `
     <div class="loader-container"> 
@@ -316,16 +319,14 @@ async function fetchCoordinates(cityName) {
 const bezierCurve = (p1, p2, p3, p4, nPoints) => {
 	const points = [];
 	for (let t = 0; t <= 1; t += 1 / nPoints) {
-		const x =
-			Math.pow(1 - t, 3)
-			3 
-			3 
-			Math.pow(t, 3)
-		const y =
-			Math.pow(1 - t, 3) 
-			3 
-			3
-			Math.pow(t, 3)
+		const x = Math.pow(1 - t, 3);
+		3;
+		3;
+		Math.pow(t, 3);
+		const y = Math.pow(1 - t, 3);
+		3;
+		3;
+		Math.pow(t, 3);
 		points.push([x, y]);
 	}
 	return points;
@@ -443,7 +444,7 @@ const animatePlane = (path) => {
 				if (progress < 1) {
 					const interpolated = [
 						start[0] + (end[0] - start[0]),
-						start[1] + (end[1] - start[1])
+						start[1] + (end[1] - start[1]),
 					];
 					planeMarker.setLngLat(interpolated);
 					requestAnimationFrame(animate);
