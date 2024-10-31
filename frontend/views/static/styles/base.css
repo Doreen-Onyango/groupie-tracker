@@ -1,5 +1,5 @@
 /* base.css */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap"); */
 
 :root {
 	--pale-color: #c799f4a4;
@@ -34,7 +34,6 @@ body {
 		var(--pale-color) 5%,
 		var(--background-color) 100%
 	);
-
 }
 
 h1,
