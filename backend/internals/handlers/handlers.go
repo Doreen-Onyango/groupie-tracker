@@ -30,7 +30,7 @@ func (m *Repo) GetAllArtists(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var artistData []models.Artist
-	if m.app.ResTest != nil { // Check if using mock
+	if m.app.ResTest != nil { 
 		artistData, err = m.app.ResTest.GetAllArtist()
 	} else {
 		artistData, err = m.app.Res.GetAllArtist()
