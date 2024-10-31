@@ -113,6 +113,7 @@ ArtistApp.prototype.initialize = async function () {
 	this.applyAllFilters(this.activeQueries);
 	if (this.currentPage === 1 && this.domElements.prevPageButton)
 		this.domElements.prevPageButton.classList.add("disabled");
+	this.changePage(this.currentPage);
 };
 
 //Fetches detailed data for all artists
@@ -328,13 +329,17 @@ ArtistApp.prototype.renderPaginatedArtists = function () {
 
 //Handles page changes and ensures filtered data is paginated correctly
 ArtistApp.prototype.changePage = function (page) {
+	const prevPageButton = document.getElementById("prevPage");
+	const nextPageButton = document.getElementById("nextPage");
+
+	if (this.artistsData.error) {
+		nextPageButton.classList.add("disabled");
+	}
+
 	if (page < 1 || page > this.totalPages) return;
 
 	this.currentPage = page;
 	this.renderPaginatedArtists();
-
-	const prevPageButton = document.getElementById("prevPage");
-	const nextPageButton = document.getElementById("nextPage");
 
 	if (this.currentPage === 1) {
 		prevPageButton.classList.add("disabled");
@@ -1045,6 +1050,7 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 
 //Resets all filters to their default values
 ArtistApp.prototype.resetFilters = function () {
+	if (this.artistsData.error) return;
 	this.domElements.searchUnified.value = "";
 	this.domElements.searchByName.value = "";
 	this.domElements.searchByConcert.value = "";
