@@ -66,7 +66,7 @@ docker-compose up -d
 1. About page = Ctrl + Alt + A
 2. Home page = Ctrl + Alt + H
 3. Reset = Esc
-4. Reload = Ctrl
+4. Reload = Ctrl + R
 5. Next page = Ctrl + Alt + N
 6. Previous page = Ctrl + Alt + P
 
