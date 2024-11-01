@@ -35,9 +35,9 @@ header {
 	display: flex;
 	font-size: 12px;
 	padding-right: 2%;
-	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
+	width: 100%;
 }
 
 .searchSummaryItem {
@@ -47,7 +47,7 @@ header {
 	line-height: 1.2em;
 	padding: 5px 8px;
 	border-radius: 5px;
-	max-width: 80px;
+	max-width: 120px;
 	max-height: 35px;
 	box-shadow: 0 2px 4px var(--shadow-color);
 	overflow: hidden;
