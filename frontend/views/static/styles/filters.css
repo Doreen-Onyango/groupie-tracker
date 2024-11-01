@@ -99,7 +99,7 @@
 .range_firstAlbum,
 .range_concertDate {
 	width: 45%;
-	margin: 70px auto;
+	margin: auto;
 	border: 1px solid var(--_marker-border-clr);
 	border-radius: 8px;
 	padding: 60px 25px 15px 25px;
@@ -121,7 +121,7 @@
 .range_concertDate::after {
 	content: "To";
 	position: absolute;
-	top: -20%;
+	top: -25%;
 	right: 10%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
@@ -140,7 +140,7 @@
 .range_labels::before {
 	content: "From";
 	position: absolute;
-	top: -20%;
+	top: -25%;
 	left: 10%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
@@ -153,10 +153,9 @@
 .range_concertDate[data-label]::before {
 	content: attr(data-label);
 	position: absolute;
-	top: -20px;
+	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--background-color);
 	padding: 10px;
 	font-size: 1rem;
 	color: var(--text-color);
