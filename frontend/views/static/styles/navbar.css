@@ -3,6 +3,7 @@
 	background-color: var(--background-color);
 	width: 100%;
 	padding: 10px;
+	max-height: 80px;
 	margin: 0;
 	box-shadow: 0 4px 6px var(--shadow-color);
 	display: flex;
@@ -127,11 +128,29 @@
 }
 
 /* Container for search input and icon */
+/* Initial hidden position before the element flies in */
 .search-input-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	opacity: 0;
+	transform: translateX(-100%); /* Start from off-screen left */
+	animation: flyIn 1s ease-out forwards; /* Adjust duration and easing as needed */
+}
+
+/* Keyframes for the fly-in effect */
+@keyframes flyIn {
+	0% {
+		opacity: 0;
+		transform: translateX(
+			-100%
+		); /* Adjust to -100% for left, 100% for right, or -50% for top */
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .search-box {
