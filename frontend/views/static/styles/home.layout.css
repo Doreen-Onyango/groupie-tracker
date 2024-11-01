@@ -72,15 +72,9 @@ header {
 
 .range-filters {
 	display: flex;
-	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	padding: 25px 10px;
-	margin-top: -4.8em;
-	border: 1px solid var(--background-color);
-	border-radius: 20px;
-	max-height: 180px;
 }
 
 #pagination {
@@ -279,10 +273,6 @@ header {
 }
 
 @media screen and (max-width: 580px) {
-	.range-filters {
-		max-height: 290px;
-	}
-
 	.artists {
 		align-items: flex-start;
 	}
@@ -296,21 +286,11 @@ header {
 }
 
 @media screen and (max-width: 454px) {
-	.range-filters {
-		margin-top: -8em;
-		max-height: 15%;
-	}
+	/*  */
 }
 
 @media screen and (max-width: 328px) {
-	.range-filters {
-		margin-top: -10em;
-	}
-
-	.range-filters {
-		margin-top: 20px;
-		border: none;
-	}
+	/*  */
 }
 
 @media screen and (max-width: 320px) {
@@ -334,9 +314,5 @@ header {
 
 	#artistsContainer {
 		padding-top: 3em;
-	}
-
-	.range-filters {
-		min-width: 240px;
 	}
 }
