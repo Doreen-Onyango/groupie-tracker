@@ -21,7 +21,6 @@
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-container">
 	<header>
-		<div class="search-container">
 			<!-- Search Bar -->
 			{{block "searchBar" .}}{{end}}
 			<!-- end of Search Bar -->
@@ -35,7 +34,6 @@
 				id="resetButton"
 			>
 			</img>
-		</div>
 					<!-- members filter -->
 		{{ block "membersFilter" .}}{{end}}
 		<!-- end -->
