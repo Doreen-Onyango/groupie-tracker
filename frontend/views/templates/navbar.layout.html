@@ -9,6 +9,101 @@
 	<div class="nav-logo">
 		<div id="nav-groupie">Groupie Tracker</div>
 	</div>
+
+	<!-- UnifiedSearchBar -->
+	<div class="search-input-container">
+		<input
+			class="searchUnified"
+			id="searchUnified"
+			type="text"
+			placeholder="Search for artists, concerts, performed locations and album release...."
+		/>
+
+		<!-- Suggestions dropdowns for Unified search -->
+		<div
+			class="unified-suggestions hidden"
+			id="unifiedSuggestions"
+		>
+			<!-- artist nameSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="nameSuggestions"
+				></div>
+			</div>
+
+			<!-- artist membersSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="membersSuggestions"
+				></div>
+			</div>
+
+			<!-- concertSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="concertSuggestions"
+				></div>
+			</div>
+
+			<!-- creationDateSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="creationDateSuggestions"
+				></div>
+			</div>
+
+			<!-- albumReleaseSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="albumReleaseSuggestions"
+				></div>
+			</div>
+		</div>
+
+		<!-- searchSummary -->
+		<div class="searchSummaryContainer">
+			<div
+				class="searchSummary"
+				id="searchSummary"
+			>
+				<span class="search-icon">
+					<img
+						src="/static/images/icon-search.png"
+						alt="Search-Icon"
+					/>
+				</span>
+			</div>
+		</div>
+		<!-- end of searchSummary -->
+		<!-- end of suggestions dropdowns for Unified search -->
+	</div>
+	<!-- end of UnifiedSearch -->
+
+	<!-- nav-menu -->
+	<div class="nav-menu">
+		<ul>
+			<li id="home">
+				<a
+					class="navItem"
+					href="/"
+					>Home</a
+				>
+			</li>
+			<li id="about">
+				<a
+					class="navItem"
+					href="/about"
+					>About</a
+				>
+			</li>
+		</ul>
+	</div>
+
 	<!-- Hamburger Icon -->
 	<div id="hamburger">
 		<input
@@ -35,25 +130,6 @@
 		</label>
 		<!-- Navigation Menu -->
 		<ul id="nav-menu">
-			<li id="home">
-				<a
-					class="navItem"
-					href="/"
-					>Home</a
-				>
-			</li>
-			<li id="about">
-				<a
-					class="navItem"
-					href="/about"
-					>About</a
-				>
-			</li>
-		</ul>
-	</div>
-	<!-- nav-menu -->
-	<div class="nav-menu">
-		<ul>
 			<li id="home">
 				<a
 					class="navItem"

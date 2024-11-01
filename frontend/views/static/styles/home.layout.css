@@ -2,23 +2,6 @@
 .home-container {
 	min-width: 100%;
 }
-.home-page {
-	position: relative;
-	margin-right: 8%;
-	margin-bottom: 0px;
-}
-
-.home-page #home-groupie {
-	position: absolute;
-	left: -220px;
-	top: -40px;
-}
-
-.home-page #home-tracker {
-	position: absolute;
-	right: 90px;
-	top: -8px;
-}
 
 header {
 	display: flex;
@@ -257,17 +240,6 @@ header {
 
 .element-upper {
 	animation: upper 0.3s linear infinite;
-}
-
-/* Adjust for mobile responsiveness */
-@media screen and (max-width: 1015px) {
-	.home-page #home-groupie {
-		left: -180px;
-	}
-
-	.home-page #home-tracker {
-		right: 50px;
-	}
 }
 
 /* Adjust for mobile responsiveness */
