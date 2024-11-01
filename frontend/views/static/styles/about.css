@@ -13,7 +13,6 @@
 	margin: 0 auto;
 	padding: 30px;
 	border-radius: 15px;
-
 }
 
 .author-container {
@@ -61,6 +60,11 @@
 	font-weight: 600;
 	color: var(--secondary-color);
 	font-size: 1.2em;
+}
+
+.search-input-container {
+	margin-top: -50%;
+	transition: all 2s;
 }
 
 section {
@@ -120,19 +124,17 @@ section code {
 	.author-container {
 		width: 110%;
 	}
-	
 }
 
 @media screen and (max-width: 653px) {
 	.author-container {
 		width: 70%;
 	}
-	
+
 	.author {
 		width: 100%;
 	}
 }
-
 
 @media screen and (max-width: 544px) {
 	/* h2 {

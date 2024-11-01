@@ -11,6 +11,13 @@ header {
 	width: 100%;
 }
 
+.search-input-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 2s ease;
+}
+
 .searchSummaryContainer {
 	display: flex;
 	margin: auto;
