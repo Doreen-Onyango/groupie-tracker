@@ -314,17 +314,42 @@ ArtistApp.prototype.sortById = function (items) {
 
 //Renders the artist cards for the current page based on the filtered data
 ArtistApp.prototype.renderPaginatedArtists = function () {
-	const startIndex = this.currentPage - 1;
-	const endIndex = startIndex + this.itemsPerPage;
+	if (typeof this.renderAllArtists !== "function") {
+		console.error("renderAllArtists is not a function:", this.renderAllArtists);
+		return;
+	}
 
+	const uniqueArtists = [];
+	const seenIds = new Set();
+
+	// Pagination logic
+	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+	const endIndex = startIndex + this.itemsPerPage;
 	this.filteredData = this.sortById(this.filteredData);
 
-	const paginatedData = this.filteredData.slice(startIndex, endIndex);
-	if (this.currentPage > this.totalPages) {
-		this.renderFilteredData(this.filteredData);
-	} else {
-		this.renderFilteredData(paginatedData);
+	let count = 0;
+	for (
+		let i = 0;
+		i < this.filteredData.length && count < this.itemsPerPage;
+		i++
+	) {
+		const artist = this.filteredData[i];
+		if (!seenIds.has(artist.id)) {
+			if (i >= startIndex && i < endIndex) {
+				uniqueArtists.push(artist);
+				count++;
+			}
+			seenIds.add(artist.id);
+		}
 	}
+
+	const data = {
+		data: uniqueArtists,
+		message: this.artistsData.message,
+		error: this.artistsData.error,
+	};
+
+	this.renderAllArtists(data);
 };
 
 //Handles page changes and ensures filtered data is paginated correctly
@@ -782,33 +807,6 @@ ArtistApp.prototype.applyMembersFilter = function (filteredData) {
 			: artist.members;
 		return selectedSizes.includes(memberCount);
 	});
-};
-
-//Removes duplicate artist data and renders the filtered data.
-// @param {Array} filteredData - The current filtered artist data.
-ArtistApp.prototype.renderFilteredData = function (filteredData) {
-	if (typeof this.renderAllArtists !== "function") {
-		console.error("renderAllArtists is not a function:", this.renderAllArtists);
-		return;
-	}
-
-	const uniqueArtists = [];
-	const seenIds = new Set();
-
-	filteredData.forEach((artist) => {
-		if (!seenIds.has(artist.id)) {
-			uniqueArtists.push(artist);
-			seenIds.add(artist.id);
-		}
-	});
-
-	const data = {
-		data: uniqueArtists,
-		message: this.artistsData.message,
-		error: this.artistsData.error,
-	};
-
-	this.renderAllArtists(data);
 };
 
 //Handles click events on artist cards
