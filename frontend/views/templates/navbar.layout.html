@@ -12,12 +12,30 @@
 
 	<!-- UnifiedSearchBar -->
 	<div class="search-input-container">
-		<input
+		<!-- <input
 			class="searchUnified"
 			id="searchUnified"
 			type="text"
 			placeholder="Search for artists, concerts, performed locations and album release...."
-		/>
+		/> -->
+
+		<div class="search-box">
+			<input
+				id="searchUnified"
+				type="text"
+				class="input-search"
+				placeholder="Search for artists, concerts, performed locations, and album releases..."
+			/>
+			<span
+				class="search-icon"
+				onclick="toggleSearch()"
+			>
+				<img
+					src="/static/images/icon-search.png"
+					alt="Search Icon"
+				/>
+			</span>
+		</div>
 
 		<!-- Suggestions dropdowns for Unified search -->
 		<div
@@ -70,14 +88,7 @@
 			<div
 				class="searchSummary"
 				id="searchSummary"
-			>
-				<span class="search-icon">
-					<img
-						src="/static/images/icon-search.png"
-						alt="Search-Icon"
-					/>
-				</span>
-			</div>
+			></div>
 		</div>
 		<!-- end of searchSummary -->
 		<!-- end of suggestions dropdowns for Unified search -->
