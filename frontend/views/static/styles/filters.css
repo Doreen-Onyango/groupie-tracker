@@ -15,7 +15,7 @@
 	padding: 3px 10px;
 	color: var(--background-color);
 	margin: 10px;
-	background-color: #9670af;
+	background-color: var(--pale-color);
 	border-radius: 10px;
 	box-shadow: 0px 2px 8px var(--shadow-color);
 	transition:
