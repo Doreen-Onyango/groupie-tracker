@@ -1,5 +1,8 @@
 /* base.css */
 /* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap"); */
+* {
+	box-sizing: border-box;
+}
 
 :root {
 	--pale-color: #c799f4a4;

@@ -2,8 +2,24 @@
 export default class Base {
 	constructor() {
 		this.setupEventListeners();
+		this.toggleSearch();
 	}
 }
+
+Base.prototype.toggleSearch = function () {
+	const searchIcon = document.querySelector(".search-icon");
+	searchIcon.onclick = function toggleSearch() {
+		const searchInput = document.getElementById("searchUnified");
+		searchInput.classList.toggle("expanded");
+		searchInput.focus();
+
+		if (searchInput.classList.contains("expanded")) {
+			searchIcon.style.marginTop = "-15%";
+		} else {
+			searchIcon.style.marginTop = "-50%";
+		}
+	};
+};
 
 // Sets up event listeners for the application
 Base.prototype.setupEventListeners = function () {
