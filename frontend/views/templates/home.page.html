@@ -21,19 +21,28 @@
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-container">
 	<header>
-			<!-- Search Bar -->
-			{{block "searchBar" .}}{{end}}
-			<!-- end of Search Bar -->
+		<!-- Search Bar -->
+		{{block "searchBar" .}}{{end}}
+		<!-- end of Search Bar -->
 
-			<!-- Reset Button -->
-			<img
-				src="/static/images/reset.svg"
-				alt="Reset Button"
-				class="reset-icon"
-				title="Reset your search"
-				id="resetButton"
-			>
-			</img>
+		<!-- searchSummary -->
+		<div class="searchSummaryContainer">
+			<div
+				class="searchSummary"
+				id="searchSummary"
+			></div>
+
+		<!-- Reset Button -->
+		<img
+			src="/static/images/reset.svg"
+			alt="Reset Button"
+			class="reset-icon"
+			title="Reset your search"
+			id="resetButton"
+		>
+		</img>
+		</div>
+		<!-- end of searchSummary -->
 					<!-- members filter -->
 		{{ block "membersFilter" .}}{{end}}
 		<!-- end -->

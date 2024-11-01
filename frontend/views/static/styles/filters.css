@@ -245,53 +245,6 @@ input[type="range"] {
 	pointer-events: none;
 }
 
-.searchSummaryContainer {
-	display: flex;
-	flex-direction: row-reverse;
-	position: absolute;
-	right: 60px;
-	margin: 5px;
-}
-
-.searchSummary {
-	display: flex;
-	font-size: 12px;
-	padding-right: 2%;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 10px;
-}
-
-.searchSummaryItem {
-	display: flex;
-	background-color: var(--pale-color);
-	color: var(--background-color);
-	line-height: 1.2em;
-	padding: 5px 8px;
-	border-radius: 5px;
-	max-width: 80px;
-	max-height: 35px;
-	box-shadow: 0 2px 4px var(--shadow-color);
-	overflow: hidden;
-}
-
-.searchSummaryItem p {
-	margin: 0;
-	padding: 0;
-}
-
-.closeIcon {
-	cursor: pointer;
-	color: var(--code-color);
-	font-weight: bold;
-	font-size: 1.4em;
-	margin-left: 5px;
-}
-
-.hidden {
-	display: none;
-}
-
 /* Adjust for mobile responsiveness */
 @media screen and (max-width: 868px) {
 	/*  */
