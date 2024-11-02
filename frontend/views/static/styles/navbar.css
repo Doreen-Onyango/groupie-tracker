@@ -2,12 +2,12 @@
 .navbar {
 	background-color: var(--background-color);
 	width: 100%;
-	padding: 10px;
+	padding: 20px;
 	max-height: 80px;
 	margin: 0;
 	box-shadow: 0 4px 6px var(--shadow-color);
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	position: sticky;
 	top: 0;
@@ -19,6 +19,7 @@
 }
 
 #hamburger {
+	max-width: 5%;
 	display: none;
 	cursor: pointer;
 }
@@ -135,8 +136,8 @@
 	justify-content: center;
 	align-items: center;
 	opacity: 0;
-	transform: translateX(-100%); /* Start from off-screen left */
-	animation: flyIn 1s ease-out forwards; /* Adjust duration and easing as needed */
+	transform: translateX(-100%);
+	animation: flyIn 0.2s ease-out forwards;
 }
 
 /* Keyframes for the fly-in effect */
@@ -167,6 +168,7 @@
 	max-width: 40px;
 	max-height: 40px;
 	cursor: pointer;
+	transition: margin-top 0.5s ease-in-out;
 }
 
 .search-icon img {

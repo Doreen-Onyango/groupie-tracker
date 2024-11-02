@@ -14,8 +14,10 @@ Base.prototype.toggleSearch = function () {
 		searchInput.focus();
 
 		if (searchInput.classList.contains("expanded")) {
+			searchIcon.style.transition = "margin-top 0.7s ease-in-out"; // Adjust easing for moving up
 			searchIcon.style.marginTop = "-15%";
 		} else {
+			searchIcon.style.transition = "margin-top 0.5s ease-out"; // Adjust easing for returning
 			searchIcon.style.marginTop = "-50%";
 		}
 	};
