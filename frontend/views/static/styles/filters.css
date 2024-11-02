@@ -8,9 +8,12 @@
 
 /* Add hover effect for the entire .membersFilter container */
 .membersFilter {
+	width: 95%;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 5px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 2%;
 	font-size: 0.8em;
 	padding: 3px 10px;
 	color: var(--background-color);
@@ -102,7 +105,7 @@
 	justify-content: center;
 	align-items: center;
 	margin: 20px;
-	width: 100%;
+	width: 95%;
 }
 
 .range_firstAlbum,
