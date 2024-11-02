@@ -79,13 +79,16 @@
 	transition: color 0.3s;
 }
 
+.nav-logo {
+	width: 15%;
+}
+
 .nav-logo #nav-groupie h1 {
 	align-items: center;
 	justify-content: space-between;
 	color: var(--text-color);
 	font-weight: bolder;
 	font-size: 1.4em;
-	width: 15%;
 	margin-left: 20px;
 }
 
@@ -96,9 +99,8 @@
 .nav-menu {
 	display: flex;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: space-between;
 	width: 15%;
-	margin-left: 10%;
 }
 
 #nav-menu {
@@ -135,6 +137,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 70%;
 	animation: flyIn 2s ease-in-out;
 }
 
@@ -154,7 +157,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: fit-content;
+	width: 70%;
 	height: fit-content;
 }
 
