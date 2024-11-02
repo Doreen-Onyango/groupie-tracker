@@ -291,12 +291,11 @@ header {
 	}
 }
 
-@media screen and (max-width: 454px) {
-	/*  */
-}
-
-@media screen and (max-width: 328px) {
-	/*  */
+@media screen and (max-width: 380px) {
+	.artists {
+		flex-direction: column;
+		align-items: center;
+	}
 }
 
 @media screen and (max-width: 320px) {
