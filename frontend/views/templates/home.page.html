@@ -56,8 +56,17 @@
 	</header>
 
 	<div class="artists">
+		<!-- Pagination Controls -->
+		 <div class="paginationControls">
+			<!-- Page Number -->
+		 <div class="prevPageNumber">
+      <span id="prevPageNumber">0 pages more</span>
+     </div>
+     <!-- end of Page Number -->
+
 		<!-- Pagination controls -->
 		<img id="prevPage" class="pagination-button" disabled src="/static/images/prevPage.svg" alt="Previous">
+		 </div>
 
 			<!-- loader -->
 		<div class="loader-container">
@@ -72,9 +81,18 @@
 		<!-- artist cards -->
 		{{block "artistCard" .}}{{end}}
 		<!-- end -->
+		 <!-- Pagination controls -->
+		 <div class="paginationControls">
+			  <!-- Page Number -->
+		 <div class="nextPageNumber">
+      <span id="nextPageNumber">13 pages more</span>
+     </div>
+     <!-- end of Page Number -->
 		<!-- nextPage controls -->
 		<img id="nextPage" class="pagination-button" src="/static/images/nextPage.svg" alt="Next">
 
+		 </div>
+		
 		<!-- modal -->
 		{{ block "modalTemplate" .}}{{end}}
 		<!-- end -->

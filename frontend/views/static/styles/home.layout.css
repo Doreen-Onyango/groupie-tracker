@@ -1,6 +1,7 @@
 /* Home page styles */
 .home-container {
 	min-width: 100%;
+	padding: 20px;
 }
 
 header {
@@ -85,14 +86,35 @@ header {
 	width: 100%;
 }
 
+.paginationControls {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	max-width: 80px;
+	margin: 0;
+	text-align: center;
+}
+
+.prevPageNumber,
+.nextPageNumber {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-right: 10px;
+}
+
 #pagination {
 	padding: 0;
 	width: 5%;
 }
 
-#nextPage {
-	display: inline-block;
-	width: 10%;
+#nextPage,
+#prevPage {
+	display: block;
+	max-width: 80px;
+	min-height: 80px;
 	padding: 0;
 	margin-right: 30px;
 	cursor: pointer;
@@ -102,23 +124,7 @@ header {
 		opacity 0.5s ease;
 }
 
-#nextPage.disabled {
-	cursor: not-allowed;
-	opacity: 0.3;
-}
-
-#prevPage {
-	display: inline-block;
-	width: 10%;
-	padding: 0;
-	margin-left: 30px;
-	cursor: pointer;
-	opacity: 1;
-	transition:
-		background-color 0.5s ease,
-		opacity 0.5s ease;
-}
-
+#nextPage.disabled,
 #prevPage.disabled {
 	cursor: not-allowed;
 	opacity: 0.3;

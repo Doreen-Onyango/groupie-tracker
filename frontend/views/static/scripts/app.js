@@ -53,7 +53,7 @@ export default class ArtistApp {
 		this.domElements = {};
 		this.activeQueries = [];
 		this.currentPage = 1;
-		this.itemsPerPage = 10;
+		this.itemsPerPage = 4;
 		this.totalPages = 0;
 		this.summaryCounter = 0;
 
