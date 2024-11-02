@@ -19,7 +19,7 @@ export const renderAllArtists = ({ data, message, error }) => {
 	data.forEach((artist) => {
 		const card = template.content.cloneNode(true);
 
-		const artistCard = card.querySelector(".artist-card");
+		const artistCard = card.querySelector(".artist-card-link");
 		artistCard.setAttribute("data-artist-id", artist.id);
 
 		card.querySelector(".artist-name").textContent = artist.name;
@@ -30,17 +30,17 @@ export const renderAllArtists = ({ data, message, error }) => {
 
 		const membersList = card.querySelector(".artist-members");
 		const memberCount = artist.members.length;
-		const li = document.createElement("li");
+		const p = document.createElement("p");
 
 		if (memberCount > 0) {
 			const membersInWords = numberToWords(memberCount);
-			li.textContent = `Has ${membersInWords} member${
+			p.textContent = `Has ${membersInWords} member${
 				memberCount > 1 ? "s" : ""
 			}`;
 		} else {
-			li.textContent = `Has no members`;
+			p.textContent = `Has no members`;
 		}
-		membersList.appendChild(li);
+		membersList.appendChild(p);
 
 		if (memberCount > 0) {
 			artist.members.forEach((member) => {
