@@ -163,15 +163,14 @@
 
 .search-icon {
 	display: block;
-	margin-top: 20px;
-	max-width: 100px;
-	max-height: 100px;
 	cursor: pointer;
 }
 
 .search-icon img {
 	margin: 0;
 	padding: 0;
+	max-width: 90px;
+	max-height: 90px;
 	transform: rotate(270deg);
 	transition:
 		transform 0.5s ease,
