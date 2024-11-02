@@ -337,10 +337,6 @@
 		padding: 15px;
 		color: var(--text-color);
 	}
-
-	/* .nav-logo {
-		display: flex;
-	} */
 }
 
 @media screen and (max-width: 380px) {
@@ -353,5 +349,9 @@
 @media screen and (max-width: 280px) {
 	.nav-logo #nav-groupie h1 {
 		display: none;
+	}
+
+	#hamburger {
+		margin-right: 20px;
 	}
 }
