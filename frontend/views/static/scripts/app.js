@@ -828,9 +828,7 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 	if (!artistLink) return;
 	event.preventDefault();
 
-	const artistId = artistLink
-		.querySelector(".artist-card")
-		.getAttribute("data-artist-id");
+	const artistId = artistLink.getAttribute("data-artist-id");
 	if (!artistId) return;
 
 	const artistData = this.allArtistDetails.find(
