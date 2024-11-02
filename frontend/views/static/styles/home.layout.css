@@ -78,14 +78,6 @@ header {
 	display: none;
 }
 
-.range-filters {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 20px;
-	width: 100%;
-}
-
 .paginationControls {
 	display: flex;
 	flex-direction: column;

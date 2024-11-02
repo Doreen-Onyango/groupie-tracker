@@ -96,13 +96,21 @@
 	border-color: var(--background-color);
 }
 
+.range-filters {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px;
+	width: 100%;
+}
+
 .range_firstAlbum,
 .range_concertDate {
 	width: 45%;
 	margin: auto;
 	border: 1px solid var(--_marker-border-clr);
 	border-radius: 8px;
-	padding: 60px 25px 15px 25px;
+	padding-top: 20px;
 	position: relative;
 }
 
@@ -245,16 +253,51 @@ input[type="range"] {
 }
 
 /* Adjust for mobile responsiveness */
-@media screen and (max-width: 868px) {
-	/*  */
-}
-
-/* Adjust for mobile responsiveness */
 @media screen and (max-width: 768px) {
 	.membersFilter {
 		gap: 3px;
 		font-size: 0.8em;
 		padding: 0.2% 0%;
+	}
+
+	.range-filters {
+		flex-direction: column;
+		gap: 20px;
+		margin: 20px;
+	}
+
+	.range_firstAlbum,
+	.range_concertDate {
+		width: 85%;
+		margin-top: 10px;
+		border: 1px solid var(--pale-color);
+		border-radius: 2px;
+	}
+
+	.range_firstAlbum {
+		margin-top: 30px;
+	}
+
+	.range_labels::before,
+	.range_labels::before {
+		content: "From";
+		position: absolute;
+		top: -90%;
+		left: 15%;
+	}
+
+	.range_concertDate::after,
+	.range_firstAlbum::after {
+		content: "To";
+		position: absolute;
+		top: -95%;
+		right: 15%;
+	}
+
+	.range_firstAlbum[data-label]::before,
+	.range_concertDate[data-label]::before {
+		left: 50%;
+		top: -170%;
 	}
 }
 
@@ -264,66 +307,53 @@ input[type="range"] {
 }
 
 @media screen and (max-width: 580px) {
-	.range_concertDate {
-		width: 80%;
-		margin: 70px auto 0 auto;
-	}
-
-	.range_firstAlbum {
-		width: 80%;
-		margin: 25px auto 0 auto;
+	.nav-logo {
+		font-size: 10px;
 	}
 }
 
 @media screen and (max-width: 454px) {
-	.range_concertDate {
-		width: 90%;
-		margin-top: 30%;
-	}
-
-	.range_firstAlbum {
-		width: 90%;
-	}
 }
 
 @media screen and (max-width: 412px) {
-	.range_concertDate {
-		margin-top: 40%;
-	}
 }
 
-@media screen and (max-width: 328px) {
-	.range_concertDate {
-		margin-top: 60%;
-	}
-}
-
-@media screen and (max-width: 320px) {
-	.range_concertDate {
-		margin-top: 10%;
-		width: 100%;
-	}
-
-	.range_firstAlbum {
-		width: 100%;
-	}
-
+@media screen and (max-width: 348px) {
 	.membersFilter {
-		margin-top: 80px;
+		margin: 20px;
+	}
+
+	.range_firstAlbum,
+	.range_concertDate {
+		width: 75%;
+	}
+}
+
+@media screen and (max-width: 312px) {
+	.membersFilter {
+		max-width: 80%;
+	}
+
+	.range_firstAlbum,
+	.range_concertDate {
+		width: 65%;
+	}
+
+	.range_labels::before,
+	.range_labels::before {
+		left: 30%;
+	}
+
+	.range_concertDate::after,
+	.range_firstAlbum::after {
+		right: 30%;
+	}
+
+	.range_firstAlbum[data-label]::before,
+	.range_concertDate[data-label]::before {
+		top: -50%;
 	}
 }
 
 @media screen and (max-width: 280px) {
-	.range_concertDate {
-		margin-top: 10%;
-		min-width: 110%;
-	}
-
-	.range_firstAlbum {
-		min-width: 110%;
-	}
-
-	.membersFilter {
-		margin-top: 80px;
-	}
 }
