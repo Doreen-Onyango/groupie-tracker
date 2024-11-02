@@ -356,6 +356,8 @@ ArtistApp.prototype.renderPaginatedArtists = function () {
 ArtistApp.prototype.changePage = function (page) {
 	const prevPageButton = document.getElementById("prevPage");
 	const nextPageButton = document.getElementById("nextPage");
+	const prevPageNumber = document.getElementById("prevPageNumber");
+	const nextPageNumber = document.getElementById("nextPageNumber");
 
 	if (this.artistsData.error) {
 		nextPageButton.classList.add("disabled");
@@ -364,6 +366,15 @@ ArtistApp.prototype.changePage = function (page) {
 	if (page < 1 || page > this.totalPages) return;
 
 	this.currentPage = page;
+	const prevPagesLeft = this.currentPage - 1;
+	const nextPagesLeft = this.totalPages - this.currentPage;
+	const prevPagesText =
+		prevPagesLeft > 1 || prevPagesLeft === 0 ? "pages left" : "page left";
+	const nextPagesText =
+		nextPagesLeft > 1 || nextPagesLeft === 0 ? "pages left" : "page left";
+
+	prevPageNumber.textContent = `${prevPagesLeft} ${prevPagesText}`;
+	nextPageNumber.textContent = `${nextPagesLeft} ${nextPagesText}`;
 	this.renderPaginatedArtists();
 
 	if (this.currentPage === 1) {
