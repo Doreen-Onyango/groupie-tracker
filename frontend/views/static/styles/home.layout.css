@@ -283,7 +283,7 @@ header {
 		align-items: flex-start;
 	}
 
-	.pagination-button {
+	.paginationControls {
 		position: sticky;
 		display: inline-block;
 		max-width: 60px;
