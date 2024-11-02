@@ -15,6 +15,7 @@
 	padding: 3px 10px;
 	color: var(--background-color);
 	margin: 10px;
+	margin-bottom: 20px;
 	background-color: var(--pale-color);
 	border-radius: 10px;
 	box-shadow: 0px 2px 8px var(--shadow-color);
@@ -114,23 +115,12 @@
 	position: relative;
 }
 
-.range_firstAlbum::before,
-.range_concertDate::before {
-	content: "From";
-	position: absolute;
-	top: -22px;
-	left: 0;
-	font-size: 0.8em;
-	color: var(--_marker-border-clr);
-	background: none;
-}
-
 .range_firstAlbum::after,
 .range_concertDate::after {
 	content: "To";
 	position: absolute;
-	top: -25%;
-	right: 10%;
+	top: -90%;
+	right: 20%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
 	font-weight: normal;
@@ -148,8 +138,8 @@
 .range_labels::before {
 	content: "From";
 	position: absolute;
-	top: -25%;
-	left: 10%;
+	top: -90%;
+	left: 20%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
 	font-weight: normal;
@@ -161,7 +151,7 @@
 .range_concertDate[data-label]::before {
 	content: attr(data-label);
 	position: absolute;
-	top: 0;
+	top: -150%;
 	left: 50%;
 	transform: translateX(-50%);
 	padding: 10px;
