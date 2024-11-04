@@ -33,7 +33,7 @@
 	max-height: 150px;
 	border-radius: 8px;
 	margin: -5px -5px -5px -35px;
-	object-fit: fill;
+	object-fit:fill;
 }
 
 .artist-details {
