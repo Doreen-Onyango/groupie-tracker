@@ -120,6 +120,10 @@ section code {
 	color: var(--code-color);
 }
 
+.unified-suggestions {
+	display: none;
+}
+
 @media screen and (max-width: 768px) {
 	.author-container {
 		width: 110%;
@@ -182,4 +186,10 @@ section:nth-child(4) {
 }
 section:nth-child(5) {
 	animation-delay: 0.5s;
+}
+
+
+/* disable about button */
+.nav-menu #about {
+	display: none;
 }
