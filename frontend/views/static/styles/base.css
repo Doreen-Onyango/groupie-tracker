@@ -23,7 +23,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-	height: 100vh;
+	/* height: 100vh; */
 	background: linear-gradient(
 		180deg,
 		var(--pale-color) 5%,
