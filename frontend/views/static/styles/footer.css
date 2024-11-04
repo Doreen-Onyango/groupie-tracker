@@ -6,6 +6,13 @@ svg {
 	padding: 10px;
 }
 
+.main-footer{
+	height: 100%;
+	padding-top: 160px;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .my-footer {
 	width: 100%;
 	padding: 1rem;
