@@ -321,3 +321,9 @@ header {
 		padding-top: 3em;
 	}
 }
+
+/* disable home button */
+
+.nav-menu #home {
+	display: none;
+}
