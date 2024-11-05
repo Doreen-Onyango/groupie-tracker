@@ -1,8 +1,13 @@
 // Define Base class
 export default class Base {
 	constructor() {
+		this.homelink = document.querySelector("#nav-groupie a");
 		this.setupEventListeners();
 		this.toggleSearch();
+
+		if (window.location.pathname !== "/") {
+			this.homelink.classList.remove("disabled-link");
+		}
 	}
 }
 
@@ -28,6 +33,14 @@ Base.prototype.toggleSearch = function () {
 // Sets up event listeners for the application
 Base.prototype.setupEventListeners = function () {
 	document.addEventListener("keydown", this.handleShortcuts.bind(this));
+	this.homelink.addEventListener("click", this.handleHomelink.bind(this));
+};
+
+// Handle clicks on the home link
+Base.prototype.handleHomelink = function (event) {
+	if (window.location.pathname === "/") {
+		event.preventDefault();
+	}
 };
 
 // Handles keyboard shortcuts events

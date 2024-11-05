@@ -83,6 +83,17 @@
 	width: 15%;
 }
 
+.disabled-link {
+	pointer-events: none;
+	color: var(--tertiary-color);
+	cursor: not-allowed;
+	text-decoration: none;
+}
+
+.nav-logo #nav-groupie a {
+	text-decoration: none;
+}
+
 .nav-logo #nav-groupie h1 {
 	align-items: center;
 	justify-content: space-between;
