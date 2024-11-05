@@ -132,12 +132,12 @@
 }
 
 /* Container for search input and icon */
-/* Initial hidden position before the element flies in */
 .search-input-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 70%;
+	position: relative;
+	min-width: 70%;
 	animation: flyIn 2s ease-in-out;
 }
 
@@ -157,24 +157,15 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-	height: fit-content;
-}
-
-.search-icon {
-	display: block;
-	cursor: pointer;
+	transition: width 0.5s ease-in-out;
 }
 
 .search-icon img {
+	cursor: pointer;
 	margin: 0;
 	padding: 0;
-	max-width: 90px;
-	max-height: 90px;
 	transform: rotate(270deg);
-	transition:
-		transform 0.5s ease,
-		fly 0.5s ease;
+	transition: transform 0.5s ease-in-out;
 }
 
 .search-icon img:hover {
@@ -185,30 +176,32 @@
 	height: 0;
 	width: 0; /* Collapsed width */
 	border-style: none;
+	padding: 10px;
 	font-size: 18px;
 	letter-spacing: 2px;
-	margin: auto 0 auto 5%;
 	outline: none;
 	border-radius: 25px;
-	transition:
-		width 2s ease,
-		border-radius 2s ease;
+	transition: all 0.5s ease-in-out;
 	background-color: transparent;
 	padding-right: 40px;
-	color: var(--text-color);
+	color: #fff;
+}
+
+.search-box .input-search.expanded ~ .search-box {
+	width: 100% !important;
 }
 
 /* Expanded width on click */
 .input-search.expanded {
-	height: 50px;
 	width: 100% !important;
 	border-radius: 0;
 	background-color: transparent;
-	border-bottom: 1px solid var(--tertiary-color);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	transition: all 0.5s ease-in-out;
 }
 
 .searchUnified {
-	/* width: 90%; */
+	width: 90%;
 	padding: 10px 50px 10px 20px;
 	font-size: 1.1rem;
 	border-radius: 25px;
