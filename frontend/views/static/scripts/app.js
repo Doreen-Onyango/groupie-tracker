@@ -229,7 +229,6 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 		this.renderAllArtists(this.artistsData);
 		return;
 	}
-	if (this.activeQueries.length > 3) return;
 
 	let accumulatedResults = [];
 
@@ -704,7 +703,6 @@ ArtistApp.prototype.addSuggestionClick = function (
 
 // Function to add an item to the search summary and handle removal with filtering
 ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
-	if (this.activeQueries.length > 3) return;
 	const summaryContainer = document.getElementById("searchSummary");
 	const item = document.createElement("div");
 	item.className = "searchSummaryItem";
