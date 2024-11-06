@@ -72,3 +72,22 @@ Base.prototype.handleShortcuts = function (event) {
 if (typeof document !== "undefined") {
 	document.addEventListener("DOMContentLoaded", () => new Base());
 }
+
+const themeSwitcher = document.getElementById('themeSwitcher');
+let currentTheme = 'light';
+
+themeSwitcher.addEventListener('click', () => {
+  // Get the current theme from the body data-theme attribute
+  const body = document.body;
+  
+  if (currentTheme === 'light') {
+    body.setAttribute('data-theme', 'dark');
+    currentTheme = 'dark';
+  } else if (currentTheme === 'dark') {
+    body.setAttribute('data-theme', 'blue');
+    currentTheme = 'blue';
+  } else {
+    body.setAttribute('data-theme', 'light');
+    currentTheme = 'light';
+  }
+});
