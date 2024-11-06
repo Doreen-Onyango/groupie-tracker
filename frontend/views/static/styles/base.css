@@ -31,6 +31,42 @@ body {
 	);
 }
 
+button {
+	background-color: var(--primary-color);
+	color: rgb(119, 118, 118);
+	border-radius: 8px;
+  }
+  
+  /* Dark Theme */
+  [data-theme='dark'] {
+	--pale-color: #537692;
+	--text-color: #eef3f9;
+	--primary-color: #eef3f9;
+	--secondary-color: #b3cde4;
+	--tertiary-color: #ddd;
+	--card-color: #1d3f58;
+	--background-color: #001b2e;
+	--code-color: #e74c3c;
+	--shadow-color: rgba(61, 60, 60, 0.89);
+	--border-color: #b3cde4;
+  }
+  
+  /* Blue Theme */
+  [data-theme='blue'] {
+	--pale-color: #0855b1;
+	--text-color: #daeaf7;
+	--primary-color: #daeaf7;
+	--secondary-color: #4fa5d8;
+	--tertiary-color: #ddd;
+	--card-color: #010e54;
+	--background-color: #00022b;
+	--code-color: #e74c3c;
+	--shadow-color: rgba(0, 0, 0, 0.89);
+	--border-color: #4fa5d8;
+  }
+  
+
+
 h1,
 h2,
 h3 {
