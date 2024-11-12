@@ -141,21 +141,6 @@ ArtistApp.prototype.setupEventListeners = function () {
 			handler: this.handleUnifiedSearchInput,
 		},
 		{
-			element: this.domElements.searchByConcert,
-			event: "input",
-			handler: this.handleConcertSearchInput,
-		},
-		{
-			element: this.domElements.searchByCreationDate,
-			event: "input",
-			handler: this.handleCreationDateSearchInput,
-		},
-		{
-			element: this.domElements.searchByAlbumRelease,
-			event: "input",
-			handler: this.handleAlbumReleaseSearchInput,
-		},
-		{
 			element: document.getElementById("nextPage"),
 			event: "click",
 			handler: () => this.changePage(this.currentPage + 1),
