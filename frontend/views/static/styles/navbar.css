@@ -302,6 +302,12 @@
 	box-shadow: 0 2px 10px var(--shadow-color);
 }
 
+#themeSwitcher:hover {
+  box-shadow: 0 4px 12px var(--shadow-color);
+	background-color: var(--pale-color);
+	color: var(--secondary-color);
+}
+
 /* Show hamburger icon on small screens */
 @media (max-width: 768px) {
 	.navbar {
