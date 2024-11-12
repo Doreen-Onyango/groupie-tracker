@@ -286,6 +286,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 
 	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
 	this.renderPaginatedArtists();
+	this.changePage(this.currentPage);
 };
 
 //Sorts an array of objects by the 'id' property.
