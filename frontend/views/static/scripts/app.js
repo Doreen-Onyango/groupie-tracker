@@ -227,7 +227,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 				case "searchByConcert":
 					query.value.forEach((concertValue) => {
 						const concertResult = this.applySearchByConcertFilter(
-							this.filteredData,
+							this.artistsData.data,
 							concertValue
 						);
 						result = [...result, ...concertResult];
@@ -236,16 +236,16 @@ ArtistApp.prototype.applyAllFilters = function () {
 				case "searchByName":
 					query.value.forEach((nameValue) => {
 						const nameResult = this.applySearchByNameFilter(
-							this.filteredData,
+							this.artistsData.data,
 							nameValue
 						);
-						result = [...result, ...nameResult];
+						result = [...result, ...nameResult];					
 					});
 					break;
 				case "searchByMembers":
 					query.value.forEach((memberValue) => {
 						const memberResult = this.applySearchByMembersFilter(
-							this.filteredData,
+							this.artistsData.data,
 							memberValue
 						);
 						result = [...result, ...memberResult];
@@ -254,7 +254,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 				case "searchByAlbumRelease":
 					query.value.forEach((albumValue) => {
 						const albumResult = this.applySearchByAlbumReleaseFilter(
-							this.filteredData,
+							this.artistsData.data,
 							albumValue
 						);
 						result = [...result, ...albumResult];
@@ -263,7 +263,7 @@ ArtistApp.prototype.applyAllFilters = function () {
 				case "searchByCreationDate":
 					query.value.forEach((creationValue) => {
 						const creationResult = this.applySearchByCreationDateFilter(
-							this.filteredData,
+							this.artistsData.data,
 							creationValue
 						);
 						result = [...result, ...creationResult];
@@ -274,30 +274,18 @@ ArtistApp.prototype.applyAllFilters = function () {
 			}
 
 			accumulatedResults = [...accumulatedResults, ...result];
+
+			if (accumulatedResults.length > 0) {
+				this.filteredData = accumulatedResults;
+			}
 		});
 	}
 
-	console.log(this.activeQueries.length);
-	
+	const members = this.applyMembersFilter(this.filteredData);
+	this.filteredData = this.applyRangeFilters(members);
 
-	if (this.activeQueries.length > 0) {
-		console.log("accumulated data: ", accumulatedResults.length);
-		
-		this.filteredData = this.applyMembersFilter(accumulatedResults);
-		this.filteredData = this.applyRangeFilters(this.filteredData);
-
-		this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
-		this.renderPaginatedArtists();
-		console.log("accumulative results: " + accumulatedResults.length);		
-	} else {
-		console.log("normal data: ", this.filteredData.length);
-		this.filteredData = this.applyMembersFilter(this.filteredData);
-		this.filteredData = this.applyRangeFilters(this.filteredData);
-
-		this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
-		this.renderPaginatedArtists();
-		console.log("normal results: " + this.filteredData.length);
-	}
+	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
+	this.renderPaginatedArtists();
 };
 
 //Sorts an array of objects by the 'id' property.
@@ -415,7 +403,7 @@ ArtistApp.prototype.handleUnifiedSearchInput = function () {
 ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 	const uniqueAlbumReleaseYears = [
 		...new Set(
-			this.filteredData
+				this.artistsData.data
 				.map((artist) => artist.firstAlbum)
 				.filter((year) => year != null)
 		),
@@ -448,6 +436,7 @@ ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (
 	filteredData,
 	albumReleaseQuery
 ) {
+	
 	if (!albumReleaseQuery) return filteredData;
 
 	return filteredData.filter((artist) => {
@@ -472,7 +461,7 @@ ArtistApp.prototype.applySearchByCreationDateFilter = function (
 ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 	const uniqueCreationDates = [
 		...new Set(
-			this.filteredData
+			this.artistsData.data
 				.map((artist) => artist.creationDate)
 				.filter((date) => date != null)
 		),
@@ -503,6 +492,9 @@ ArtistApp.prototype.applySearchByNameFilter = function (
 	filteredData,
 	nameQuery
 ) {
+	
+	if (!nameQuery) return filteredData;
+	
 	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
@@ -517,6 +509,8 @@ ArtistApp.prototype.applySearchByMembersFilter = function (
 	filteredData,
 	nameQuery
 ) {
+	if (!nameQuery) return filteredData;
+
 	return filteredData.filter((artist) =>
 		artist.members.some((member) =>
 			member.toLowerCase().includes(nameQuery.toLowerCase())
@@ -527,7 +521,7 @@ ArtistApp.prototype.applySearchByMembersFilter = function (
 //Handles input event for searching by artist name.
 // @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleNameSearchInput = function (query) {
-	const nameSuggestions = this.filteredData
+	const nameSuggestions = 	this.artistsData.data
 		.filter((artist) => artist.name.toLowerCase().includes(query))
 		.map(
 			(artist) =>
@@ -550,7 +544,7 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 ArtistApp.prototype.handleMembersSearchInput = function (query) {
 	const uniqueMembers = new Set();
 
-	const membersSuggestions = this.filteredData
+	const membersSuggestions = 	this.artistsData.data
 		.flatMap((artist) =>
 			artist.members.filter((member) => {
 				const lowerCaseMember = member.toLowerCase();
@@ -586,6 +580,8 @@ ArtistApp.prototype.applySearchByConcertFilter = function (
 	filteredData,
 	concertQuery
 ) {
+	if (!concertQuery) return filteredData;
+	
 	return this.allArtistDetails
 		.filter((artistDetail) => {
 			const locations = artistDetail.data.locations?.locations || [];
@@ -721,6 +717,7 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	closeIcon.textContent = "×";
 
 	closeIcon.addEventListener("click", (e) => {
+		e.preventDefault();
 		this.activeQueries = this.activeQueries
 			.map((query) => {
 				if (query.value.includes(value.toLowerCase().trim())) {
