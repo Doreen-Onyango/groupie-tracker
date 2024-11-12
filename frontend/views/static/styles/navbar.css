@@ -290,6 +290,18 @@
 	display: none; /* Initially hidden */
 }
 
+.theme-switcher {
+	display: flex;
+	justify-content: flex-end;
+	margin: 10px 30px;
+}
+
+#themeSwitcher {
+	cursor: pointer;
+	padding: 6px 10px;
+	box-shadow: 0 2px 10px var(--shadow-color);
+}
+
 /* Show hamburger icon on small screens */
 @media (max-width: 768px) {
 	.navbar {
