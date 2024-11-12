@@ -420,7 +420,13 @@ ArtistApp.prototype.handleEnterKey = function (event) {
 
 		this.filteredData = [ ...accumulatedResults];
 
-		this.renderPaginatedArtists();
+		const data = {
+			data: this.filteredData,
+			message: this.artistsData.message,
+			error: this.artistsData.error,
+		};
+
+		this.renderAllArtists(data);
 		this.addQuery("searchByDirectSearch", query);
 		this.addSearchSummaryItem("searchByDirectSearch", query);
 		this.domElements.unifiedSuggestions.classList.add("hidden");
@@ -676,7 +682,7 @@ ArtistApp.prototype.addQuery = function (type, value) {
 	);
 
 	if (existingQueryIndex === -1) {
-		this.activeQueries.push({ type, value: [value] });
+		this.activeQueries.push({ type, value: [value] });		
 	} else {
 		if (!this.activeQueries[existingQueryIndex].value.includes(value)) {
 			this.activeQueries[existingQueryIndex].value.push(value);
@@ -734,8 +740,11 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	const type = splitId[splitId.length - 1];
 
 	itemText.textContent = `${type}: ${value}`;
+	
+	// Update summary counter with the total count of values in active queries
+	this.summaryCounter = this.activeQueries.reduce((count, query) => count + query.value.length, 0);
+
 	if (this.activeQueries.length > 0) {
-		this.summaryCounter++;
 		this.domElements.searchUnified.placeholder =
 			this.summaryCounter < 2
 				? `added ${this.summaryCounter} item`
@@ -762,7 +771,6 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 		item.remove();
 
 		if (this.activeQueries.length > 0) {
-			this.summaryCounter--;
 			this.domElements.searchUnified.placeholder =
 				this.summaryCounter < 2
 					? `added ${this.summaryCounter} item`
@@ -784,10 +792,14 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 		this.applyAllFilters();
 	});
 
+	// Recalculate summary counter after removal
+	this.summaryCounter = this.activeQueries.reduce((count, query) => count + query.value.length, 0);
+
 	item.appendChild(itemText);
 	item.appendChild(closeIcon);
 	summaryContainer.appendChild(item);
 };
+
 
 //Apply creation dates filter based on years
 // @param {Array} filteredData - the current filtered artist data
