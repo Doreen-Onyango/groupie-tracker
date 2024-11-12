@@ -419,7 +419,7 @@ ArtistApp.prototype.handleUnifiedSearchInput = function () {
 ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 	const uniqueAlbumReleaseYears = [
 		...new Set(
-			this.artistsData.data
+			this.filteredData
 				.map((artist) => artist.firstAlbum)
 				.filter((year) => year != null)
 		),
@@ -476,7 +476,7 @@ ArtistApp.prototype.applySearchByCreationDateFilter = function (
 ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 	const uniqueCreationDates = [
 		...new Set(
-			this.artistsData.data
+			this.filteredData
 				.map((artist) => artist.creationDate)
 				.filter((date) => date != null)
 		),
@@ -531,7 +531,7 @@ ArtistApp.prototype.applySearchByMembersFilter = function (
 //Handles input event for searching by artist name.
 // @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleNameSearchInput = function (query) {
-	const nameSuggestions = this.artistsData.data
+	const nameSuggestions = this.filteredData
 		.filter((artist) => artist.name.toLowerCase().includes(query))
 		.map(
 			(artist) =>
@@ -554,7 +554,7 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 ArtistApp.prototype.handleMembersSearchInput = function (query) {
 	const uniqueMembers = new Set();
 
-	const membersSuggestions = this.artistsData.data
+	const membersSuggestions = this.filteredData
 		.flatMap((artist) =>
 			artist.members.filter((member) => {
 				const lowerCaseMember = member.toLowerCase();
