@@ -74,20 +74,34 @@ if (typeof document !== "undefined") {
 }
 
 const themeSwitcher = document.getElementById('themeSwitcher');
-let currentTheme = 'light';
+let currentTheme = localStorage.getItem('theme') || 'light';
 
-themeSwitcher.addEventListener('click', () => {
-  // Get the current theme from the body data-theme attribute
-  const body = document.body;
-  
+// Apply the saved theme on page load
+const body = document.body;
+body.setAttribute('data-theme', currentTheme);
+
+// Update the themeSwitcher's appearance based on the current theme
+function updateTheme() {
   if (currentTheme === 'light') {
+    body.setAttribute('data-theme', 'light');
+  } else if (currentTheme === 'dark') {
     body.setAttribute('data-theme', 'dark');
+  } else if (currentTheme === 'blue') {
+    body.setAttribute('data-theme', 'blue');
+  }
+}
+
+// Listen for clicks on the theme switcher button
+themeSwitcher.addEventListener('click', () => {
+  if (currentTheme === 'light') {
     currentTheme = 'dark';
   } else if (currentTheme === 'dark') {
-    body.setAttribute('data-theme', 'blue');
     currentTheme = 'blue';
-  } else {
-    body.setAttribute('data-theme', 'light');
+  } else if (currentTheme === 'blue') {
     currentTheme = 'light';
   }
+  
+  // Save the new theme to localStorage
+  localStorage.setItem('theme', currentTheme);
+  updateTheme();
 });
