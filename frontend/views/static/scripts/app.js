@@ -141,6 +141,11 @@ ArtistApp.prototype.setupEventListeners = function () {
 			handler: this.handleUnifiedSearchInput,
 		},
 		{
+			element: this.domElements.searchUnified,
+			event: "keypress",
+			handler: this.handleEnterKey,
+		},
+		{
 			element: document.getElementById("nextPage"),
 			event: "click",
 			handler: () => this.changePage(this.currentPage + 1),
@@ -392,11 +397,35 @@ ArtistApp.prototype.applyRangeFilters = function (data) {
 //Handles input event for the unified search input to show suggestions dropdown.
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase().trim();
+
 	this.handleCreationDateSearchInput(query);
 	this.handleAlbumReleaseSearchInput(query);
 	this.handleConcertSearchInput(query);
 	this.handleMembersSearchInput(query);
 	this.handleNameSearchInput(query);
+};
+
+//Handles input event for the unified search input by applying filters directly.
+ArtistApp.prototype.handleEnterKey = function (event) {
+	const query = this.domElements.searchUnified.value.toLowerCase().trim();
+	if (event.key === "Enter" || event.keyCode === 13) {
+
+		let accumulatedResults = [
+			...this.applySearchByConcertFilter(this.artistsData.data, query),
+			...this.applySearchByNameFilter(this.artistsData.data, query),
+			...this.applySearchByMembersFilter(this.artistsData.data, query),
+			...this.applySearchByAlbumReleaseFilter(this.artistsData.data, query),
+			...this.applySearchByCreationDateFilter(this.artistsData.data, query)
+		];
+
+		this.filteredData = [ ...accumulatedResults];
+
+		this.renderPaginatedArtists();
+		this.addQuery("searchByDirectSearch", query);
+		this.addSearchSummaryItem("searchByDirectSearch", query);
+		this.domElements.unifiedSuggestions.classList.add("hidden");
+		this.domElements.searchUnified.value = "";
+	}
 };
 
 //Handles input event for searching by album release.
