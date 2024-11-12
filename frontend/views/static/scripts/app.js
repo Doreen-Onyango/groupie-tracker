@@ -110,7 +110,7 @@ ArtistApp.prototype.initialize = async function () {
 
 	this.calculateMinMaxYears();
 
-	this.applyAllFilters(this.activeQueries);
+	this.applyAllFilters();
 	if (this.currentPage === 1 && this.domElements.prevPageButton)
 		this.domElements.prevPageButton.classList.add("disabled");
 	this.changePage(this.currentPage);
@@ -209,7 +209,7 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 
 //Applies all active filters (search, members, and range filters)
 // Filters artist cards based on the current state of all filters
-ArtistApp.prototype.applyAllFilters = function (activeQueries) {
+ArtistApp.prototype.applyAllFilters = function () {
 	if (this.artistsData.error) {
 		this.renderAllArtists(this.artistsData);
 		return;
@@ -217,10 +217,10 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 
 	let accumulatedResults = [];
 
-	if (activeQueries.length === 0 || activeQueries.length === undefined) {
+	if (this.activeQueries.length === 0 ) {
 		this.filteredData = [...this.artistsData.data];
 	} else {
-		activeQueries.forEach((query) => {
+		this.activeQueries.forEach((query) => {
 			let result = [];
 
 			switch (query.type) {
@@ -277,16 +277,27 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 		});
 	}
 
-	if (accumulatedResults.length > 0) {
-		this.filteredData = accumulatedResults;
+	console.log(this.activeQueries.length);
+	
+
+	if (this.activeQueries.length > 0) {
+		console.log("accumulated data: ", accumulatedResults.length);
+		
+		this.filteredData = this.applyMembersFilter(accumulatedResults);
+		this.filteredData = this.applyRangeFilters(this.filteredData);
+
+		this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
+		this.renderPaginatedArtists();
+		console.log("accumulative results: " + accumulatedResults.length);		
+	} else {
+		console.log("normal data: ", this.filteredData.length);
+		this.filteredData = this.applyMembersFilter(this.filteredData);
+		this.filteredData = this.applyRangeFilters(this.filteredData);
+
+		this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
+		this.renderPaginatedArtists();
+		console.log("normal results: " + this.filteredData.length);
 	}
-
-	this.filteredData = this.applyMembersFilter(this.filteredData);
-	this.filteredData = this.applyRangeFilters(this.filteredData);
-
-	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
-
-	this.renderPaginatedArtists();
 };
 
 //Sorts an array of objects by the 'id' property.
@@ -676,7 +687,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					suggestionBox.style.display = "none";
 
 					this.addQuery(inputElementId, value.toLowerCase().trim());
-					this.applyAllFilters(this.activeQueries);
+					this.applyAllFilters();
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
@@ -743,7 +754,7 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 			}
 		}
 
-		this.applyAllFilters(this.activeQueries);
+		this.applyAllFilters();
 	});
 
 	item.appendChild(itemText);
@@ -1054,7 +1065,6 @@ ArtistApp.prototype.resetFilters = function () {
 	if (searchIcon) {
 		this.domElements.searchSummary.appendChild(searchIcon);
 	}
-	this.activeQueries = [];
 
 	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
 	this.domElements.toSlider1.value = this.domElements.toSlider1.max;
@@ -1087,7 +1097,7 @@ ArtistApp.prototype.resetFilters = function () {
 		this.domElements.membersFilter.querySelectorAll("input:checked")
 	).forEach((checkbox) => (checkbox.checked = false));
 
-	this.applyAllFilters(this.activeQueries);
+	this.applyAllFilters();
 };
 
 // Creates a new instance of ArtistApp and starts the application
