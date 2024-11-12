@@ -220,6 +220,15 @@ ArtistApp.prototype.applyAllFilters = function () {
 		return;
 	}
 
+	const prevPageButton = document.getElementById("prevPage");
+	const nextPageButton = document.getElementById("nextPage");
+
+	if (nextPageButton.style.display === "none" || prevPageButton.style.display === "none") {
+		nextPageButton.style.display = "flex";
+		prevPageButton.style.display = "flex";
+		this.resetFilters()
+	}
+
 	let accumulatedResults = [];
 
 	if (this.activeQueries.length === 0 ) {
@@ -352,6 +361,13 @@ ArtistApp.prototype.changePage = function (page) {
 		nextPageButton.classList.add("disabled");
 	}
 
+	if (this.filteredData.length === 0 || this.filteredData.length === undefined){
+		nextPageButton.classList.add("disabled");
+		prevPageButton.classList.add("disabled");
+	}
+
+	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
+
 	if (page < 1 || page > this.totalPages) return;
 
 	this.currentPage = page;
@@ -431,6 +447,13 @@ ArtistApp.prototype.handleEnterKey = function (event) {
 		this.addSearchSummaryItem("searchByDirectSearch", query);
 		this.domElements.unifiedSuggestions.classList.add("hidden");
 		this.domElements.searchUnified.value = "";
+
+		const prevPageButton = document.getElementById("prevPage");
+		const nextPageButton = document.getElementById("nextPage");
+
+		// Hide the buttons by setting their display style to none
+		nextPageButton.style.display = "none";
+		prevPageButton.style.display = "none";
 	}
 };
 
