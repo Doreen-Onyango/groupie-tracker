@@ -1,12 +1,9 @@
-/**
- * Renders all artists or displays an error message if there's an issue
- * @param {Object} artistsData - The data object containing artists, message, and error status
- */
+// Renders all artists or displays an error message if there's an issue
+// @param {Object} artistsData - The data object containing artists, message, and error status
 export const renderAllArtists = ({ data, message, error }) => {
-	// const empty = document.querySelector(".artists");
-	// empty.innerHTML = "";
 	const container = document.querySelector("#artistsContainer");
-	const template = document.getElementById("artistCardTemplate"); // Reference the template
+	const template = document.getElementById("artistCardTemplate");
+	const loader = document.querySelector(".loader-container");
 
 	container.innerHTML = error
 		? `<div class="error-message">
@@ -14,15 +11,15 @@ export const renderAllArtists = ({ data, message, error }) => {
 				<p>${message}</p>
 			</div>`
 		: "";
-
-	if (error) return;
+	if (error) {
+		loader.style.display = "none";
+		return;
+	}
 
 	data.forEach((artist) => {
-		// Clone the template content
 		const card = template.content.cloneNode(true);
 
-		// Set artist-specific data
-		const artistCard = card.querySelector(".artist-card");
+		const artistCard = card.querySelector(".artist-card-link");
 		artistCard.setAttribute("data-artist-id", artist.id);
 
 		card.querySelector(".artist-name").textContent = artist.name;
@@ -33,19 +30,18 @@ export const renderAllArtists = ({ data, message, error }) => {
 
 		const membersList = card.querySelector(".artist-members");
 		const memberCount = artist.members.length;
-		const li = document.createElement("li");
+		const p = document.createElement("p");
 
 		if (memberCount > 0) {
 			const membersInWords = numberToWords(memberCount);
-			li.textContent = `Has ${membersInWords} member${
+			p.textContent = `Has ${membersInWords} member${
 				memberCount > 1 ? "s" : ""
 			}`;
 		} else {
-			li.textContent = `Has no members`;
+			p.textContent = `Has no members`;
 		}
-		membersList.appendChild(li);
+		membersList.appendChild(p);
 
-		// If there are members, append each one to the list
 		if (memberCount > 0) {
 			artist.members.forEach((member) => {
 				const memberItem = document.createElement("li");
@@ -63,28 +59,27 @@ export const renderAllArtists = ({ data, message, error }) => {
 		card.querySelector(".artist-firstAlbum-value").textContent =
 			formatDate(artist.firstAlbum) || "Unknown First Album";
 
-		// Append the filled card to the container
 		container.appendChild(card);
 	});
+	loader.style.display = "none";
 };
 
-/**
- * Displays a modal with detailed information about an artist
- * @param {Object} artistData - Contains details about the artist and associated data
- */
+// Displays a modal with detailed information about an artist
+// @param {Object} artistData - Contains details about the artist and associated data
 export function showModal(artistData) {
 	const { data, message, error } = artistData;
 	const modal = document.getElementById("artistDetailsModal");
 	const artistDetailsSection = document.querySelector("#artistDetails");
 
-	// Extract geoLocations directly from data (assuming it's inside the data object)
-	const geoLocations = artistData.geoLocations.data || [];
-
 	setTimeout(() => {
-		initMap(geoLocations);
+		// if (typeof mapboxgl !== "undefined") {
+		mapboxgl.accessToken = token;
+		initializeMap(data);
+		// } else {
+		// 	console.error("Mapbox GL library is not loaded");
+		// }
 	}, 300);
 
-	// Handle error state
 	artistDetailsSection.innerHTML = error
 		? `<div class="error-message">
 				<h2>Oops, there is a network issue!</h2>
@@ -105,12 +100,10 @@ export function showModal(artistData) {
 	};
 }
 
-/**
- * Generates the HTML content for artist details.
- * @param {Object} data - The artist data including artist, locations, concertDates, relations, geoLocations.
- * @param {Array} geoLocations - The geolocation data associated with the artist.
- * @returns {string} - The generated HTML string.
- */
+// Generates the HTML content for artist details.
+// @param {Object} data - The artist data including artist, locations, concertDates, relations, geoLocations.
+// @param {Array} geoLocations - The geolocation data associated with the artist.
+// @returns {string} - The generated HTML string.
 function generateArtistDetailsHTML(data) {
 	const { artist, locations, concertDates, relations } = data;
 	const memberCount = artist.members.length;
@@ -173,80 +166,17 @@ function generateArtistDetailsHTML(data) {
 	</div>`;
 }
 
-/**
- * Initializes a Google Map and adds markers and a polyline to represent artist locations.
- * @param {Array} geoLocations - Array of objects containing latitude, longitude, date, and location name.
- */
-function initMap(geoLocations) {
-	const sortedLocations = sortByDate(geoLocations, "date");
-
-	// Set the center of the map to the first location or default to (0,0)
-	const mapCenter =
-		sortedLocations.length > 0
-			? { lat: sortedLocations[0].latitude, lng: sortedLocations[0].longitude }
-			: { lat: 0, lng: 0 };
-
-	// Initialize the map and attach it to the 'map' element
-	const map = new google.maps.Map(document.getElementById("map"), {
-		zoom: 4,
-		center: mapCenter,
-	});
-
-	// Add markers for each location
-	sortedLocations.forEach((location) => {
-		new google.maps.Marker({
-			position: { lat: location.latitude, lng: location.longitude },
-			map: map,
-			title: location.location,
-		});
-	});
-
-	// Create the path for the polyline based on locations
-	const pathCoordinates = sortedLocations.map((location) => ({
-		lat: location.latitude,
-		lng: location.longitude,
-	}));
-
-	// Check if the pathCoordinates array has enough data to draw the polyline
-	if (pathCoordinates.length > 1) {
-		// Create and set the polyline on the map with arrows
-		const artistPath = new google.maps.Polyline({
-			path: pathCoordinates,
-			geodesic: true,
-			strokeColor: "#FF6347",
-			strokeOpacity: 1.0,
-			strokeWeight: 2,
-			icons: [
-				{
-					icon: {
-						path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-					},
-					offset: "100%", // Position the arrow at the end of the path
-				},
-			],
-		});
-
-		// Display the polyline on the map
-		artistPath.setMap(map);
-	}
-}
-
-/**
- * Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
- * @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
- * @returns {string} - The date string in 'YYYY-MM-DD' format.
- */
+// Converts a date from 'DD-MM-YYYY' to 'YYYY-MM-DD' format for proper parsing.
+// @param {string} dateStr - The date string in 'DD-MM-YYYY' format.
+// @returns {string} - The date string in 'YYYY-MM-DD' format.
 function convertDateFormat(dateStr) {
 	const [day, month, year] = dateStr.split("-");
-	return `${year}-${month}-${day}`; // Return the date in 'YYYY-MM-DD' format
+	return `${year}-${month}-${day}`;
 }
-
-/**
- * Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
- * @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
- * @param {string} dateProperty - The property name that holds the date value in each object.
- * @returns {Array} - The sorted array of objects.
- */
+// Sorts an array of objects by the date property in 'DD-MM-YYYY' format.
+// @param {Array} data - The array of objects to sort. Each object should have a 'date' property.
+// @param {string} dateProperty - The property name that holds the date value in each object.
+// @returns {Array} - The sorted array of objects.
 function sortByDate(data, dateProperty) {
 	return data.sort((a, b) => {
 		const dateA = Date.parse(convertDateFormat(a[dateProperty]));
@@ -255,11 +185,9 @@ function sortByDate(data, dateProperty) {
 	});
 }
 
-/**
- * Converts a given string to title case, where the first letter of each word is capitalized.
- * @param {string} str - The string to be converted to title case.
- * @returns {string} - The title-cased string.
- */
+// Converts a given string to title case, where the first letter of each word is capitalized.
+// @param {string} str - The string to be converted to title case.
+// @returns {string} - The title-cased string.
 function toTitleCase(str) {
 	return str
 		.toLowerCase()
@@ -268,11 +196,8 @@ function toTitleCase(str) {
 		.join(" ");
 }
 
-/**
- *
- * @param {*} num
- * @returns
- */
+// @param {*} num
+// @returns
 function numberToWords(num) {
 	const words = [
 		"zero",
@@ -316,21 +241,17 @@ function numberToWords(num) {
 	return "too many members";
 }
 
-/**
- * Closes the modal and hides the modal content
- * @param {Element} modal - The modal element
- * @param {Element} modalContent - The modal content element
- */
+// Closes the modal and hides the modal content
+// @param {Element} modal - The modal element
+// @param {Element} modalContent - The modal content element
 function closeModal(modal, modalContent) {
 	modal.classList.remove("show");
 	modalContent.classList.remove("show");
 }
 
-/**
- * Formats the location string.
- * @param {string} location - The location string to format.
- * @returns {string} - The formatted location string.
- */
+// Formats the location string.
+// @param {string} location - The location string to format.
+// @returns {string} - The formatted location string.
 function formatLocation(location) {
 	return location
 		.split("-")
@@ -345,11 +266,9 @@ function formatLocation(location) {
 		.join(" in ");
 }
 
-/**
- * Formats the date string into a long date format.
- * @param {string} date - The date string to format.
- * @returns {string} - The formatted date string.
- */
+// Formats the date string into a long date format.
+// @param {string} date - The date string to format.
+// @returns {string} - The formatted date string.
 function formatDate(date) {
 	const [day, month, year] = date.split("-");
 	return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
@@ -360,11 +279,9 @@ function formatDate(date) {
 	});
 }
 
-/**
- * loader
- * Returns the HTML markup for a loader animation.
- * @returns {string} - HTML string for the loader.
- */
+// loader
+// Returns the HTML markup for a loader animation.
+// @returns {string} - HTML string for the loader.
 export const loader = () => {
 	return `
     <div class="loader-container"> 
@@ -375,4 +292,180 @@ export const loader = () => {
       </div>
     </div>
   `;
+};
+
+// declare map variables
+let geoMap;
+const planeIconUrl = "/static/images/airplane.png";
+const token =
+	"pk.eyJ1IjoiYWRpb3pkYW5pZWwiLCJhIjoiY20yb2Z6OHRzMGZ4djJqczM5Mm9ibWI2YyJ9.tssXEtMnVmkJT9NsswMzvA";
+
+// fetch locations coordinates
+async function fetchCoordinates(cityName) {
+	const response = await fetch(
+		`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+			cityName
+		)}.json?access_token=${mapboxgl.accessToken}`
+	);
+	const data = await response.json();
+	if (data.features.length > 0) {
+		const coordinates = data.features[0].center;
+		return { cityName, coordinates };
+	}
+	return null;
+}
+
+// Function to create Bezier curve points
+const bezierCurve = (p1, p2, p3, p4, nPoints) => {
+	const points = [];
+	for (let t = 0; t <= 1; t += 1 / nPoints) {
+		const x = Math.pow(1 - t, 3);
+		3;
+		3;
+		Math.pow(t, 3);
+		const y = Math.pow(1 - t, 3);
+		3;
+		3;
+		Math.pow(t, 3);
+		points.push([x, y]);
+	}
+	return points;
+};
+
+// Draw curved paths between consecutive locations
+const drawCurvedLine = (from, to) => {
+	const midPoint = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2 + 5];
+	return bezierCurve(from, midPoint, midPoint, to, 50);
+};
+
+const initializeMap = async (data) => {
+	geoMap = new mapboxgl.Map({
+		container: "map",
+		style: "mapbox://styles/mapbox/streets-v11",
+		center: [-74.5, 40],
+		zoom: 2,
+	});
+
+	const cityEntries = Object.entries(data.relations.datesLocations);
+	const locationsWithCoordinates = await Promise.all(
+		cityEntries.map(async ([cityName, dates]) => {
+			const locationData = await fetchCoordinates(cityName);
+			return locationData
+				? dates.map((date) => ({
+						date,
+						coordinates: locationData.coordinates,
+						cityName: locationData.cityName,
+					}))
+				: [];
+		})
+	);
+
+	const sortedLocations = locationsWithCoordinates
+		.flat()
+		.sort(
+			(a, b) =>
+				new Date(a.date.split("-").reverse().join("-")) -
+				new Date(b.date.split("-").reverse().join("-"))
+		);
+
+	// Add markers for each location
+	sortedLocations.forEach((location) => {
+		const popupContent = `<strong>${location.cityName}</strong><br/>Date: ${location.date}`;
+		new mapboxgl.Marker({ color: "red" })
+			.setLngLat(location.coordinates)
+			.setPopup(new mapboxgl.Popup().setHTML(popupContent))
+			.addTo(geoMap);
+	});
+
+	const features = [];
+	for (let i = 0; i < sortedLocations.length - 1; i++) {
+		const curve = drawCurvedLine(
+			sortedLocations[i].coordinates,
+			sortedLocations[i + 1].coordinates
+		);
+		features.push({
+			type: "Feature",
+			geometry: {
+				type: "LineString",
+				coordinates: curve,
+			},
+			properties: {},
+		});
+	}
+
+	// Load the curved paths into the geoMap
+	geoMap.on("load", () => {
+		geoMap.addSource("route", {
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: features,
+			},
+		});
+
+		geoMap.addLayer({
+			id: "curved-route",
+			type: "line",
+			source: "route",
+			layout: {
+				"line-cap": "round",
+				"line-join": "round",
+			},
+			paint: {
+				"line-color": "#888",
+				"line-width": 4,
+				"line-opacity": 0.8,
+			},
+		});
+
+		animatePlane(sortedLocations.map((location) => location.coordinates));
+	});
+
+	geoMap.addControl(new mapboxgl.NavigationControl());
+};
+
+// animate artist movement recursively
+const animatePlane = (path) => {
+	let index = 0;
+	const planeMarker = new mapboxgl.Marker({
+		element: createPlaneIcon(planeIconUrl),
+	})
+		.setLngLat(path[0])
+		.addTo(geoMap);
+
+	const movePlane = () => {
+		if (index < path.length - 1) {
+			const [start, end] = [path[index], path[index + 1]];
+			const duration = 3000;
+			let startTime = performance.now();
+
+			const animate = (timestamp) => {
+				const progress = (timestamp - startTime) / duration;
+				if (progress < 1) {
+					const interpolated = [
+						start[0] + (end[0] - start[0]),
+						start[1] + (end[1] - start[1]),
+					];
+					planeMarker.setLngLat(interpolated);
+					requestAnimationFrame(animate);
+				} else {
+					index++;
+					movePlane();
+				}
+			};
+			requestAnimationFrame(animate);
+		} else {
+			planeMarker.remove();
+		}
+	};
+	movePlane();
+};
+
+// creates a plane icon element
+const createPlaneIcon = (url) => {
+	const img = document.createElement("img");
+	img.src = url;
+	img.style.width = "40px";
+	img.style.height = "auto";
+	return img;
 };

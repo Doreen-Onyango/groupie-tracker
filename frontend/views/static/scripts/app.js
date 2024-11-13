@@ -1,5 +1,3 @@
-import { loader } from "./renders.js";
-
 // Declare variables to store module references
 let helpersModule;
 let rendersModule;
@@ -7,11 +5,9 @@ let rendersModule;
 // Load modules dynamically based on the environment
 async function loadModules() {
 	if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
-		// For testing environment
 		helpersModule = await import("./helpers.js");
 		rendersModule = await import("./renders.js");
 	} else {
-		// For production or client-side environment
 		helpersModule = await import("/static/scripts/helpers.js");
 		rendersModule = await import("/static/scripts/renders.js");
 	}
@@ -20,14 +16,10 @@ async function loadModules() {
 // Initialize the app with services after loading modules
 async function initializeApp() {
 	try {
-		// Load required modules
 		await loadModules();
-
-		// Destructure required services from helpers and renders modules
 		const {
 			getAllArtists,
 			getArtistById,
-			getCoordinates,
 			setTooltip,
 			setToggleAccessible,
 			fillSlider,
@@ -37,11 +29,9 @@ async function initializeApp() {
 		const { renderAllArtists, showModal } = rendersModule;
 
 		loadModules().then(() => {
-			// Initialize the ArtistApp with the services
 			const app = new ArtistApp({
 				getAllArtists,
 				getArtistById,
-				getCoordinates,
 				renderAllArtists,
 				showModal,
 				setTooltip,
@@ -56,23 +46,19 @@ async function initializeApp() {
 	}
 }
 
-/**
- * ArtistApp class to handle artist-related functionalities
- */
+//  ArtistApp class to handle artist-related functionalities
 export default class ArtistApp {
 	constructor(services) {
 		this.services = services;
 		this.domElements = {};
 		this.activeQueries = [];
 		this.currentPage = 1;
-		this.itemsPerPage = 10;
+		this.itemsPerPage = 4;
 		this.totalPages = 0;
 		this.summaryCounter = 0;
 
-		// Bind external services to the app
 		this.getAllArtists = services.getAllArtists;
 		this.getArtistById = services.getArtistById;
-		this.getCoordinates = services.getCoordinates;
 		this.renderAllArtists = services.renderAllArtists;
 		this.showModal = services.showModal;
 		this.setTooltip = services.setTooltip;
@@ -81,15 +67,12 @@ export default class ArtistApp {
 		this.controlToSlider = services.controlToSlider;
 		this.controlFromSlider = services.controlFromSlider;
 
-		// Initialize and set up event listeners
 		this.initialize();
 		this.setupEventListeners();
 	}
 }
 
-/**
- * Fetches and displays all artists when the DOM is fully loaded
- */
+//Fetches and displays all artists when the DOM is fully loaded
 ArtistApp.prototype.initialize = async function () {
 	this.domElements = {
 		searchByCreationDate: document.getElementById("searchByCreationDate"),
@@ -114,52 +97,42 @@ ArtistApp.prototype.initialize = async function () {
 		toSlider2: document.getElementById("toSlider2"),
 		resetButton: document.getElementById("resetButton"),
 
-		// hidden data fields
 		searchByName: document.getElementById("searchByName"),
 		searchByMembers: document.getElementById("searchByMembers"),
 		prevPageButton: document.getElementById("prevPage"),
 	};
 
 	this.artistsData = await this.getAllArtists();
-	this.filteredData = [...this.artistsData.data];
+	this.filteredData = this.artistsData?.data ? [...this.artistsData.data] : [];
 	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
 
-	// Fetch artist details and geolocation data
-	const artistDetails = await this.fetchAllArtistDetails();
+	this.allArtistDetails = await this.fetchAllArtistDetails();
 
-	// Merge artist data and geolocation into a single object for each artist
-	this.allArtistDetails = artistDetails.map((detail) => ({
-		...detail.artistData,
-		geoLocations: detail.geoLocations,
-	}));
-
-	// Calculate and set year ranges
 	this.calculateMinMaxYears();
 
-	// Apply filters and display initial data
-	this.applyAllFilters(this.activeQueries);
+	this.applyAllFilters();
 	if (this.currentPage === 1 && this.domElements.prevPageButton)
 		this.domElements.prevPageButton.classList.add("disabled");
+	this.changePage(this.currentPage);
 };
 
-/**
- * Fetches detailed data for all artists
- * @returns {Promise<Array>} - An array of artist details
- */
+//Fetches detailed data for all artists
+// @returns {Promise<Array>} - An array of artist details
 ArtistApp.prototype.fetchAllArtistDetails = async function () {
+	if (this.artistsData.error) {
+		this.renderAllArtists(this.artistsData);
+		return;
+	}
 	const artistDetails = await Promise.all(
 		this.artistsData.data.map(async (artist) => {
 			const artistData = await this.getArtistById(artist.id);
-			const geoLocations = await this.getCoordinates(artist.id);
-			return { artistData, geoLocations };
+			return artistData;
 		})
 	);
 	return artistDetails;
 };
 
-/**
- * Sets up event listeners for artist card clicks, search input, and range filter
- */
+//Sets up event listeners for artist card clicks, search input, and range filter
 ArtistApp.prototype.setupEventListeners = function () {
 	this.addEventListeners([
 		{
@@ -168,19 +141,9 @@ ArtistApp.prototype.setupEventListeners = function () {
 			handler: this.handleUnifiedSearchInput,
 		},
 		{
-			element: this.domElements.searchByConcert,
-			event: "input",
-			handler: this.handleConcertSearchInput,
-		},
-		{
-			element: this.domElements.searchByCreationDate,
-			event: "input",
-			handler: this.handleCreationDateSearchInput,
-		},
-		{
-			element: this.domElements.searchByAlbumRelease,
-			event: "input",
-			handler: this.handleAlbumReleaseSearchInput,
+			element: this.domElements.searchUnified,
+			event: "keypress",
+			handler: this.handleEnterKey,
 		},
 		{
 			element: document.getElementById("nextPage"),
@@ -202,15 +165,43 @@ ArtistApp.prototype.setupEventListeners = function () {
 	document.addEventListener("click", this.hideSuggestionsOnClick.bind(this));
 	document.addEventListener("click", this.handleArtistCardClick.bind(this));
 	document.addEventListener("input", this.applyAllFilters.bind(this));
+	document.addEventListener("keydown", this.handleShortcuts.bind(this));
 };
 
-/**
- * Adds multiple event listeners at once
- */
+//Handles keyboard shortcuts events
+ArtistApp.prototype.handleShortcuts = function (event) {
+	const isCtrl = event.ctrlKey;
+	const isAlt = event.altKey;
+
+	switch (event.key.toLowerCase()) {
+		case "escape":
+			event.preventDefault();
+			this.resetFilters();
+			break;
+
+		case "n":
+			if (isCtrl && isAlt) {
+				event.preventDefault();
+				this.changePage(this.currentPage + 1);
+			}
+			break;
+
+		case "p":
+			if (isCtrl && isAlt) {
+				event.preventDefault();
+				this.changePage(this.currentPage - 1);
+			}
+			break;
+
+		default:
+			break;
+	}
+};
+
+//Adds multiple event listeners at once
 ArtistApp.prototype.addEventListeners = function (listeners) {
 	listeners.forEach(({ element, event, handler }) => {
 		if (element) {
-			// Check if element is not null
 			element.addEventListener(event, handler.bind(this));
 		} else {
 			console.warn("Element not found for event listener:", {
@@ -221,28 +212,36 @@ ArtistApp.prototype.addEventListeners = function (listeners) {
 	});
 };
 
-/**
- * Applies all active filters (search, members, and range filters)
- * Filters artist cards based on the current state of all filters
- */
-ArtistApp.prototype.applyAllFilters = function (activeQueries) {
-	if (!this.artistsData || this.activeQueries.length > 3) return;
+//Applies all active filters (search, members, and range filters)
+// Filters artist cards based on the current state of all filters
+ArtistApp.prototype.applyAllFilters = function () {
+	if (this.artistsData.error) {
+		this.renderAllArtists(this.artistsData);
+		return;
+	}
+
+	const prevPageButton = document.getElementById("prevPage");
+	const nextPageButton = document.getElementById("nextPage");
+
+	if (nextPageButton.style.display === "none" || prevPageButton.style.display === "none") {
+		nextPageButton.style.display = "flex";
+		prevPageButton.style.display = "flex";
+		this.resetFilters()
+	}
 
 	let accumulatedResults = [];
 
-	// If no queries are present, use the full dataset
-	if (activeQueries.length === 0 || activeQueries.length === undefined) {
+	if (this.activeQueries.length === 0 ) {
 		this.filteredData = [...this.artistsData.data];
 	} else {
-		// Iterate over each query type and apply the respective filter for each value in the array
-		activeQueries.forEach((query) => {
+		this.activeQueries.forEach((query) => {
 			let result = [];
 
 			switch (query.type) {
 				case "searchByConcert":
 					query.value.forEach((concertValue) => {
 						const concertResult = this.applySearchByConcertFilter(
-							this.filteredData,
+							this.artistsData.data,
 							concertValue
 						);
 						result = [...result, ...concertResult];
@@ -251,16 +250,16 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 				case "searchByName":
 					query.value.forEach((nameValue) => {
 						const nameResult = this.applySearchByNameFilter(
-							this.filteredData,
+							this.artistsData.data,
 							nameValue
 						);
-						result = [...result, ...nameResult];
+						result = [...result, ...nameResult];					
 					});
 					break;
 				case "searchByMembers":
 					query.value.forEach((memberValue) => {
 						const memberResult = this.applySearchByMembersFilter(
-							this.filteredData,
+							this.artistsData.data,
 							memberValue
 						);
 						result = [...result, ...memberResult];
@@ -269,7 +268,7 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 				case "searchByAlbumRelease":
 					query.value.forEach((albumValue) => {
 						const albumResult = this.applySearchByAlbumReleaseFilter(
-							this.filteredData,
+							this.artistsData.data,
 							albumValue
 						);
 						result = [...result, ...albumResult];
@@ -278,7 +277,7 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 				case "searchByCreationDate":
 					query.value.forEach((creationValue) => {
 						const creationResult = this.applySearchByCreationDateFilter(
-							this.filteredData,
+							this.artistsData.data,
 							creationValue
 						);
 						result = [...result, ...creationResult];
@@ -288,78 +287,107 @@ ArtistApp.prototype.applyAllFilters = function (activeQueries) {
 					break;
 			}
 
-			// Accumulate results from each filter applied to all values of the query
 			accumulatedResults = [...accumulatedResults, ...result];
+
+			if (accumulatedResults.length > 0) {
+				this.filteredData = accumulatedResults;
+			}
 		});
 	}
 
-	// If results exist after applying filters, update filteredData
-	if (accumulatedResults.length > 0) {
-		this.filteredData = accumulatedResults;
-	}
+	const members = this.applyMembersFilter(this.filteredData);
+	this.filteredData = this.applyRangeFilters(members);
 
-	// Apply additional filters and render the results
-	this.filteredData = this.applyMembersFilter(this.filteredData);
-	this.filteredData = this.applyRangeFilters(this.filteredData);
-
-	// Calculate total pages after filtering
 	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
-
-	// Render the paginated data
 	this.renderPaginatedArtists();
+	this.changePage(this.currentPage);
 };
 
-/**
- * Sorts an array of objects by the 'id' property.
- * @param {Array<Object>} items - The array of objects to be sorted.
- * @returns {Array<Object>} - The sorted array.
- */
+//Sorts an array of objects by the 'id' property.
+// @param {Array<Object>} items - The array of objects to be sorted.
+// @returns {Array<Object>} - The sorted array.
 ArtistApp.prototype.sortById = function (items) {
 	return items.sort((a, b) => Number(a.id) - Number(b.id));
 };
 
-/**
- * Renders the artist cards for the current page based on the filtered data
- */
+//Renders the artist cards for the current page based on the filtered data
 ArtistApp.prototype.renderPaginatedArtists = function () {
-	// const container = document.querySelector(".artists");
-	// container.innerHTML = loader();
+	if (typeof this.renderAllArtists !== "function") {
+		console.error("renderAllArtists is not a function:", this.renderAllArtists);
+		return;
+	}
+
+	const uniqueArtists = [];
+	const seenIds = new Set();
+
+	// Pagination logic
 	const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 	const endIndex = startIndex + this.itemsPerPage;
-
 	this.filteredData = this.sortById(this.filteredData);
 
-	const paginatedData = this.filteredData.slice(startIndex, endIndex);
-	if (this.currentPage > this.totalPages) {
-		this.renderFilteredData(this.filteredData);
-	} else {
-		this.renderFilteredData(paginatedData);
+	let count = 0;
+	for (
+		let i = 0;
+		i < this.filteredData.length && count < this.itemsPerPage;
+		i++
+	) {
+		const artist = this.filteredData[i];
+		if (!seenIds.has(artist.id)) {
+			if (i >= startIndex && i < endIndex) {
+				uniqueArtists.push(artist);
+				count++;
+			}
+			seenIds.add(artist.id);
+		}
 	}
+
+	const data = {
+		data: uniqueArtists,
+		message: this.artistsData.message,
+		error: this.artistsData.error,
+	};
+
+	this.renderAllArtists(data);
 };
 
-/**
- * Handles page changes and ensures filtered data is paginated correctly
- */
+//Handles page changes and ensures filtered data is paginated correctly
 ArtistApp.prototype.changePage = function (page) {
-	// Ensure the page is within bounds
-	if (page < 1 || page > this.totalPages) return;
-
-	// Update the current page and render the paginated artists
-	this.currentPage = page;
-	this.renderPaginatedArtists();
-
-	// Update pagination button states
 	const prevPageButton = document.getElementById("prevPage");
 	const nextPageButton = document.getElementById("nextPage");
+	const prevPageNumber = document.getElementById("prevPageNumber");
+	const nextPageNumber = document.getElementById("nextPageNumber");
 
-	// Enable/disable the "Previous" button
+	if (this.artistsData.error) {
+		nextPageButton.classList.add("disabled");
+	}
+
+	if (this.filteredData.length === 0 || this.filteredData.length === undefined){
+		nextPageButton.classList.add("disabled");
+		prevPageButton.classList.add("disabled");
+	}
+
+	this.totalPages = Math.ceil(this.filteredData.length / this.itemsPerPage);
+
+	if (page < 1 || page > this.totalPages) return;
+
+	this.currentPage = page;
+	const prevPagesLeft = this.currentPage - 1;
+	const nextPagesLeft = this.totalPages - this.currentPage;
+	const prevPagesText =
+		prevPagesLeft > 1 || prevPagesLeft === 0 ? "pages left" : "page left";
+	const nextPagesText =
+		nextPagesLeft > 1 || nextPagesLeft === 0 ? "pages left" : "page left";
+
+	prevPageNumber.textContent = `${prevPagesLeft} ${prevPagesText}`;
+	nextPageNumber.textContent = `${nextPagesLeft} ${nextPagesText}`;
+	this.renderPaginatedArtists();
+
 	if (this.currentPage === 1) {
 		prevPageButton.classList.add("disabled");
 	} else {
 		prevPageButton.classList.remove("disabled");
 	}
 
-	// Enable/disable the "Next" button
 	if (this.currentPage === this.totalPages) {
 		nextPageButton.classList.add("disabled");
 	} else {
@@ -367,11 +395,8 @@ ArtistApp.prototype.changePage = function (page) {
 	}
 };
 
-/**
- * Applies range filters (creation date and first album) and returns the filtered data
- */
+//Applies range filters (creation date and first album) and returns the filtered data
 ArtistApp.prototype.applyRangeFilters = function (data) {
-	// Check if data is valid and iterable
 	if (!Array.isArray(data)) {
 		console.error("Invalid data passed to applyRangeFilters:", data);
 		return [];
@@ -382,16 +407,13 @@ ArtistApp.prototype.applyRangeFilters = function (data) {
 	let finalFilteredData = creationDateFilteredData.filter((artist) =>
 		albumReleaseFilteredData.some((a) => a.id === artist.id)
 	);
-	//TODO
-	// add labels for rangefilters this.calculateMinMaxYears(finalFilteredData);
 	return finalFilteredData;
 };
 
-/**
- * Handles input event for the unified search input to show suggestions dropdown.
- */
+//Handles input event for the unified search input to show suggestions dropdown.
 ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	const query = this.domElements.searchUnified.value.toLowerCase().trim();
+
 	this.handleCreationDateSearchInput(query);
 	this.handleAlbumReleaseSearchInput(query);
 	this.handleConcertSearchInput(query);
@@ -399,14 +421,48 @@ ArtistApp.prototype.handleUnifiedSearchInput = function () {
 	this.handleNameSearchInput(query);
 };
 
-/**
- * Handles input event for searching by album release.
- * @param {string} query - The search query entered by the user.
- */
+//Handles input event for the unified search input by applying filters directly.
+ArtistApp.prototype.handleEnterKey = function (event) {
+	const query = this.domElements.searchUnified.value.toLowerCase().trim();
+	if (event.key === "Enter" || event.keyCode === 13) {
+
+		let accumulatedResults = [
+			...this.applySearchByConcertFilter(this.artistsData.data, query),
+			...this.applySearchByNameFilter(this.artistsData.data, query),
+			...this.applySearchByMembersFilter(this.artistsData.data, query),
+			...this.applySearchByAlbumReleaseFilter(this.artistsData.data, query),
+			...this.applySearchByCreationDateFilter(this.artistsData.data, query)
+		];
+
+		this.filteredData = [ ...accumulatedResults];
+
+		const data = {
+			data: this.filteredData,
+			message: this.artistsData.message,
+			error: this.artistsData.error,
+		};
+
+		this.renderAllArtists(data);
+		this.addQuery("searchByDirectSearch", query);
+		this.addSearchSummaryItem("searchByDirectSearch", query);
+		this.domElements.unifiedSuggestions.classList.add("hidden");
+		this.domElements.searchUnified.value = "";
+
+		const prevPageButton = document.getElementById("prevPage");
+		const nextPageButton = document.getElementById("nextPage");
+
+		// Hide the buttons by setting their display style to none
+		nextPageButton.style.display = "none";
+		prevPageButton.style.display = "none";
+	}
+};
+
+//Handles input event for searching by album release.
+// @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 	const uniqueAlbumReleaseYears = [
 		...new Set(
-			this.artistsData.data
+				this.artistsData.data
 				.map((artist) => artist.firstAlbum)
 				.filter((year) => year != null)
 		),
@@ -430,17 +486,16 @@ ArtistApp.prototype.handleAlbumReleaseSearchInput = function (query) {
 	this.addSuggestionClick("albumReleaseSuggestions", "searchByAlbumRelease");
 };
 
-/**
- * Applies the search filter based on the album release year.
- * Filters the artist data to match the input query in the searchByAlbumRelease field.
- * If no query is provided, the function returns the unfiltered data.
- * @param {Array} filteredData - The current filtered artist data
- * @returns {Array} - The filtered artist data by album release year
- */
+//Applies the search filter based on the album release year.
+// Filters the artist data to match the input query in the searchByAlbumRelease field.
+// If no query is provided, the function returns the unfiltered data.
+// @param {Array} filteredData - The current filtered artist data
+// @returns {Array} - The filtered artist data by album release year
 ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (
 	filteredData,
 	albumReleaseQuery
 ) {
+	
 	if (!albumReleaseQuery) return filteredData;
 
 	return filteredData.filter((artist) => {
@@ -448,9 +503,7 @@ ArtistApp.prototype.applySearchByAlbumReleaseFilter = function (
 	});
 };
 
-/**
- * Apply search by creation date filter
- */
+//Apply search by creation date filter
 ArtistApp.prototype.applySearchByCreationDateFilter = function (
 	filteredData,
 	creationDateQuery
@@ -462,10 +515,8 @@ ArtistApp.prototype.applySearchByCreationDateFilter = function (
 	});
 };
 
-/**
- * Handles input event for searching by creation date.
- * @param {string} query - The search query entered by the user.
- */
+//Handles input event for searching by creation date.
+// @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 	const uniqueCreationDates = [
 		...new Set(
@@ -493,32 +544,32 @@ ArtistApp.prototype.handleCreationDateSearchInput = function (query) {
 	this.addSuggestionClick("creationDateSuggestions", "searchByCreationDate");
 };
 
-/**
- * Apply search by name filter
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by artist name
- */
+//Apply search by name filter
+// @param {Array} filteredData - the current filtered artist data
+// @returns {Array} filteredData - the data filtered by artist name
 ArtistApp.prototype.applySearchByNameFilter = function (
 	filteredData,
 	nameQuery
 ) {
+	
+	if (!nameQuery) return filteredData;
+	
 	return filteredData.filter((artist) => {
 		const artistName = artist.name.toLowerCase();
 		return artistName.includes(nameQuery);
 	});
 };
 
-/**
- * Apply search by members filter.
- * @param {Array} filteredData - The current filtered artist data.
- * @param {string} nameQuery - The search query for the member name.
- * @returns {Array} - The data filtered by artist members.
- */
+//Apply search by members filter.
+// @param {Array} filteredData - The current filtered artist data.
+// @param {string} nameQuery - The search query for the member name.
+// @returns {Array} - The data filtered by artist members.
 ArtistApp.prototype.applySearchByMembersFilter = function (
 	filteredData,
 	nameQuery
 ) {
-	// Filter the data by checking if any member of the artist matches the query
+	if (!nameQuery) return filteredData;
+
 	return filteredData.filter((artist) =>
 		artist.members.some((member) =>
 			member.toLowerCase().includes(nameQuery.toLowerCase())
@@ -526,12 +577,10 @@ ArtistApp.prototype.applySearchByMembersFilter = function (
 	);
 };
 
-/**
- * Handles input event for searching by artist name.
- * @param {string} query - The search query entered by the user.
- */
+//Handles input event for searching by artist name.
+// @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleNameSearchInput = function (query) {
-	const nameSuggestions = this.artistsData.data
+	const nameSuggestions = 	this.artistsData.data
 		.filter((artist) => artist.name.toLowerCase().includes(query))
 		.map(
 			(artist) =>
@@ -549,16 +598,12 @@ ArtistApp.prototype.handleNameSearchInput = function (query) {
 	this.addSuggestionClick("nameSuggestions", "searchByName");
 };
 
-/**
- * Handles input event for searching by artist members.
- * @param {string} query - The search query entered by the user.
- */
+//Handles input event for searching by artist members.
+// @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleMembersSearchInput = function (query) {
-	// track uniques to prevent duplicates
 	const uniqueMembers = new Set();
 
-	// Flatten the members from all artists and filter by the search query
-	const membersSuggestions = this.artistsData.data
+	const membersSuggestions = 	this.artistsData.data
 		.flatMap((artist) =>
 			artist.members.filter((member) => {
 				const lowerCaseMember = member.toLowerCase();
@@ -579,7 +624,6 @@ ArtistApp.prototype.handleMembersSearchInput = function (query) {
 		)
 		.join("");
 
-	// Update the suggestions container with the filtered results
 	this.domElements.membersSuggestions.innerHTML = membersSuggestions;
 	this.domElements.membersSuggestions.style.display = membersSuggestions
 		? "block"
@@ -588,15 +632,15 @@ ArtistApp.prototype.handleMembersSearchInput = function (query) {
 	this.addSuggestionClick("membersSuggestions", "searchByMembers");
 };
 
-/**
- * Apply search by concert location filter
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by concert location
- */
+//Apply search by concert location filter
+// @param {Array} filteredData - the current filtered artist data
+// @returns {Array} filteredData - the data filtered by concert location
 ArtistApp.prototype.applySearchByConcertFilter = function (
 	filteredData,
 	concertQuery
 ) {
+	if (!concertQuery) return filteredData;
+	
 	return this.allArtistDetails
 		.filter((artistDetail) => {
 			const locations = artistDetail.data.locations?.locations || [];
@@ -606,17 +650,14 @@ ArtistApp.prototype.applySearchByConcertFilter = function (
 		.map((detail) => detail.data.artist);
 };
 
-/**
- * Handles input event for searching by concert.
- * @param {string} query - The search query entered by the user.
- */
+//Handles input event for searching by concert.
+// @param {string} query - The search query entered by the user.
 ArtistApp.prototype.handleConcertSearchInput = function (data) {
 	const query = data
 		.toLowerCase()
 		.replace(/[^a-z]+/g, "-")
 		.trim();
 
-	// track unique location suggestions
 	const uniqueLocations = new Set();
 
 	const concertSuggestions = this.allArtistDetails
@@ -649,27 +690,22 @@ ArtistApp.prototype.handleConcertSearchInput = function (data) {
 	this.addSuggestionClick("concertSuggestions", "searchByConcert");
 };
 
-/**
- * Hides suggestions when clicking outside of the input fields or suggestion boxes
- */
+//Hides suggestions when clicking outside of the input fields or suggestion boxes
 ArtistApp.prototype.hideSuggestionsOnClick = function (event) {
 	event.stopPropagation();
 	this.domElements.unifiedSuggestions.classList.add("hidden");
 	this.domElements.searchUnified.value = "";
 };
 
-/**
- * Updates or adds a new query to the active queries list.
- * It stores multiple values for any query type (like name, members, concerts, etc.) in an array.
- */
+//Updates or adds a new query to the active queries list.
+// It stores multiple values for any query type (like name, members, concerts, etc.) in an array.
 ArtistApp.prototype.addQuery = function (type, value) {
 	const existingQueryIndex = this.activeQueries.findIndex(
 		(q) => q.type === type
 	);
 
-	// If the query type is new, add it with the value in an array
 	if (existingQueryIndex === -1) {
-		this.activeQueries.push({ type, value: [value] });
+		this.activeQueries.push({ type, value: [value] });		
 	} else {
 		if (!this.activeQueries[existingQueryIndex].value.includes(value)) {
 			this.activeQueries[existingQueryIndex].value.push(value);
@@ -677,11 +713,9 @@ ArtistApp.prototype.addQuery = function (type, value) {
 	}
 };
 
-/**
- * Adds click behavior for selecting a suggestion
- * @param {string} suggestionElementId - The ID of the suggestions dropdown
- * @param {string} inputElementId - The ID of the input field
- */
+//Adds click behavior for selecting a suggestion
+// @param {string} suggestionElementId - The ID of the suggestions dropdown
+// @param {string} inputElementId - The ID of the input field
 ArtistApp.prototype.addSuggestionClick = function (
 	suggestionElementId,
 	inputElementId
@@ -708,7 +742,7 @@ ArtistApp.prototype.addSuggestionClick = function (
 					suggestionBox.style.display = "none";
 
 					this.addQuery(inputElementId, value.toLowerCase().trim());
-					this.applyAllFilters(this.activeQueries);
+					this.applyAllFilters();
 					this.addSearchSummaryItem(inputElementId, value);
 				} else {
 					console.error(`No data attribute found for ${inputElementId}`);
@@ -720,8 +754,6 @@ ArtistApp.prototype.addSuggestionClick = function (
 
 // Function to add an item to the search summary and handle removal with filtering
 ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
-	if (this.activeQueries.length > 3) return;
-	// TODO: add a toast
 	const summaryContainer = document.getElementById("searchSummary");
 	const item = document.createElement("div");
 	item.className = "searchSummaryItem";
@@ -731,20 +763,23 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 	const type = splitId[splitId.length - 1];
 
 	itemText.textContent = `${type}: ${value}`;
+	
+	// Update summary counter with the total count of values in active queries
+	this.summaryCounter = this.activeQueries.reduce((count, query) => count + query.value.length, 0);
+
 	if (this.activeQueries.length > 0) {
-		this.summaryCounter++;
 		this.domElements.searchUnified.placeholder =
 			this.summaryCounter < 2
 				? `added ${this.summaryCounter} item`
 				: `added ${this.summaryCounter} items`;
 	}
 
-	// Create the close icon
 	const closeIcon = document.createElement("span");
 	closeIcon.className = "closeIcon";
 	closeIcon.textContent = "×";
 
 	closeIcon.addEventListener("click", (e) => {
+		e.preventDefault();
 		this.activeQueries = this.activeQueries
 			.map((query) => {
 				if (query.value.includes(value.toLowerCase().trim())) {
@@ -759,7 +794,6 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 		item.remove();
 
 		if (this.activeQueries.length > 0) {
-			this.summaryCounter--;
 			this.domElements.searchUnified.placeholder =
 				this.summaryCounter < 2
 					? `added ${this.summaryCounter} item`
@@ -778,19 +812,21 @@ ArtistApp.prototype.addSearchSummaryItem = function (inputElementId, value) {
 			}
 		}
 
-		this.applyAllFilters(this.activeQueries);
+		this.applyAllFilters();
 	});
+
+	// Recalculate summary counter after removal
+	this.summaryCounter = this.activeQueries.reduce((count, query) => count + query.value.length, 0);
 
 	item.appendChild(itemText);
 	item.appendChild(closeIcon);
 	summaryContainer.appendChild(item);
 };
 
-/**
- * Apply creation dates filter based on years
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by the year range
- */
+
+//Apply creation dates filter based on years
+// @param {Array} filteredData - the current filtered artist data
+// @returns {Array} filteredData - the data filtered by the year range
 ArtistApp.prototype.applyCreationDateFilter = function (filteredData) {
 	const fromValue = parseInt(this.domElements.fromSlider1.value, 10);
 	const toValue = parseInt(this.domElements.toSlider1.value, 10);
@@ -802,11 +838,9 @@ ArtistApp.prototype.applyCreationDateFilter = function (filteredData) {
 	});
 };
 
-/**
- * Apply first album filter based on years
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by the year range
- */
+//Apply first album filter based on years
+// @param {Array} filteredData - the current filtered artist data
+// @returns {Array} filteredData - the data filtered by the year range
 ArtistApp.prototype.applyFirstAlbumFilter = function (filteredData) {
 	const fromValue = parseInt(this.domElements.fromSlider2.value, 10);
 	const toValue = parseInt(this.domElements.toSlider2.value, 10);
@@ -820,11 +854,9 @@ ArtistApp.prototype.applyFirstAlbumFilter = function (filteredData) {
 	});
 };
 
-/**
- * Apply members filter
- * @param {Array} filteredData - the current filtered artist data
- * @returns {Array} filteredData - the data filtered by the number of members
- */
+//Apply members filter
+// @param {Array} filteredData - the current filtered artist data
+// @returns {Array} filteredData - the data filtered by the number of members
 ArtistApp.prototype.applyMembersFilter = function (filteredData) {
 	if (!this.domElements.membersFilter) {
 		console.error("membersFilter element not found");
@@ -844,53 +876,17 @@ ArtistApp.prototype.applyMembersFilter = function (filteredData) {
 	});
 };
 
-/**
- * Removes duplicate artist data and renders the filtered data.
- * @param {Array} filteredData - The current filtered artist data.
- */
-ArtistApp.prototype.renderFilteredData = function (filteredData) {
-	if (typeof this.renderAllArtists !== "function") {
-		console.error("renderAllArtists is not a function:", this.renderAllArtists);
-		return; // Prevent further execution
-	}
-
-	const uniqueArtists = [];
-	const seenIds = new Set();
-
-	filteredData.forEach((artist) => {
-		if (!seenIds.has(artist.id)) {
-			uniqueArtists.push(artist);
-			seenIds.add(artist.id);
-		}
-	});
-
-	// Prepare the data object with deduplicated artists
-	const data = {
-		data: uniqueArtists,
-		message: this.artistsData.message,
-		error: this.artistsData.error,
-	};
-
-	// Render the unique artist data
-	this.renderAllArtists(data);
-};
-
-/**
- * Handles click events on artist cards
- * Retrieves and displays artist details in a modal
- * @param {Event} event - Click event on an artist card
- */
+//Handles click events on artist cards
+// Retrieves and displays artist details in a modal
+// @param {Event} event - Click event on an artist card
 ArtistApp.prototype.handleArtistCardClick = async function (event) {
 	const artistLink = event.target.closest(".artist-card-link");
 	if (!artistLink) return;
 	event.preventDefault();
 
-	const artistId = artistLink
-		.querySelector(".artist-card")
-		.getAttribute("data-artist-id");
+	const artistId = artistLink.getAttribute("data-artist-id");
 	if (!artistId) return;
 
-	// Find the artist details in `allArtistDetails`
 	const artistData = this.allArtistDetails.find(
 		(artist) => artist.data.artist.id === artistId
 	);
@@ -902,10 +898,8 @@ ArtistApp.prototype.handleArtistCardClick = async function (event) {
 	}
 };
 
-/**
- * Calculates the minimum and maximum years for creation dates and album releases
- * @param {Array} artistData - The array of artist data
- */
+//Calculates the minimum and maximum years for creation dates and album releases
+// @param {Array} artistData - The array of artist data
 ArtistApp.prototype.calculateMinMaxYears = function () {
 	if (!this.filteredData || this.filteredData.length === 0) return;
 
@@ -916,14 +910,12 @@ ArtistApp.prototype.calculateMinMaxYears = function () {
 		maxAlbumDate: -Infinity,
 	};
 
-	// Loop through artist data to calculate min/max values
 	this.filteredData.forEach((artist) => {
 		const creationYear = artist.creationDate;
 		const albumYear = artist.firstAlbum
 			? parseInt(artist.firstAlbum.split("-").pop())
 			: null;
 
-		// Update creation date range
 		if (creationYear) {
 			this.yearRanges.minCreationDate = Math.min(
 				this.yearRanges.minCreationDate,
@@ -935,7 +927,6 @@ ArtistApp.prototype.calculateMinMaxYears = function () {
 			);
 		}
 
-		// Update album release date range
 		if (albumYear) {
 			this.yearRanges.minAlbumDate = Math.min(
 				this.yearRanges.minAlbumDate,
@@ -948,7 +939,6 @@ ArtistApp.prototype.calculateMinMaxYears = function () {
 		}
 	});
 
-	// Ensure reasonable defaults if no valid years are found
 	this.yearRanges.minCreationDate =
 		this.yearRanges.minCreationDate === Infinity
 			? 0
@@ -966,17 +956,14 @@ ArtistApp.prototype.calculateMinMaxYears = function () {
 			? new Date().getFullYear()
 			: this.yearRanges.maxAlbumDate;
 
-	// After calculating min and max years, update the sliders
 	this.setRangeFilterDefaults();
 };
 
-/**
- * Updates the slider values by setting the min, max, and current values.
- * @param {HTMLElement} fromSlider - The "from" slider element.
- * @param {HTMLElement} toSlider - The "to" slider element.
- * @param {number} minYear - The minimum year value for the slider.
- * @param {number} maxYear - The maximum year value for the slider.
- */
+//Updates the slider values by setting the min, max, and current values.
+// @param {HTMLElement} fromSlider - The "from" slider element.
+// @param {HTMLElement} toSlider - The "to" slider element.
+// @param {number} minYear - The minimum year value for the slider.
+// @param {number} maxYear - The maximum year value for the slider.
 ArtistApp.prototype.updateSliderValues = function (
 	fromSlider,
 	toSlider,
@@ -992,15 +979,13 @@ ArtistApp.prototype.updateSliderValues = function (
 	toSlider.value = maxYear;
 };
 
-/**
- * Attaches slider events to control the "from" and "to" sliders for interactivity.
- * @param {HTMLElement} fromSlider - The "from" slider element.
- * @param {HTMLElement} toSlider - The "to" slider element.
- * @param {HTMLElement} fromTooltip - The tooltip element for the "from" slider.
- * @param {HTMLElement} toTooltip - The tooltip element for the "to" slider.
- * @param {string} trackColor - The color of the slider track.
- * @param {string} rangeColor - The color of the slider range.
- */
+//Attaches slider events to control the "from" and "to" sliders for interactivity.
+// @param {HTMLElement} fromSlider - The "from" slider element.
+// @param {HTMLElement} toSlider - The "to" slider element.
+// @param {HTMLElement} fromTooltip - The tooltip element for the "from" slider.
+// @param {HTMLElement} toTooltip - The tooltip element for the "to" slider.
+// @param {string} trackColor - The color of the slider track.
+// @param {string} rangeColor - The color of the slider range.
 ArtistApp.prototype.attachSliderEvents = function (
 	fromSlider,
 	toSlider,
@@ -1030,15 +1015,13 @@ ArtistApp.prototype.attachSliderEvents = function (
 		);
 };
 
-/**
- * Initializes the slider visuals by setting the track and range colors, tooltips, and accessibility settings.
- * @param {HTMLElement} fromSlider - The "from" slider element.
- * @param {HTMLElement} toSlider - The "to" slider element.
- * @param {string} trackColor - The color of the slider track.
- * @param {string} rangeColor - The color of the slider range.
- * @param {HTMLElement} fromTooltip - The tooltip element for the "from" slider.
- * @param {HTMLElement} toTooltip - The tooltip element for the "to" slider.
- */
+//Initializes the slider visuals by setting the track and range colors, tooltips, and accessibility settings.
+// @param {HTMLElement} fromSlider - The "from" slider element.
+// @param {HTMLElement} toSlider - The "to" slider element.
+// @param {string} trackColor - The color of the slider track.
+// @param {string} rangeColor - The color of the slider range.
+// @param {HTMLElement} fromTooltip - The tooltip element for the "from" slider.
+// @param {HTMLElement} toTooltip - The tooltip element for the "to" slider.
 ArtistApp.prototype.initializeSliderVisuals = function (
 	fromSlider,
 	toSlider,
@@ -1053,10 +1036,8 @@ ArtistApp.prototype.initializeSliderVisuals = function (
 	this.setTooltip(toSlider, toTooltip);
 };
 
-/**
- * Sets the default values for range filters (creation dates and album releases)
- * Consumes the pre-calculated min/max years and initializes slider visuals.
- */
+//Sets the default values for range filters (creation dates and album releases)
+// Consumes the pre-calculated min/max years and initializes slider visuals.
 ArtistApp.prototype.setRangeFilterDefaults = function () {
 	const {
 		fromSlider1,
@@ -1072,13 +1053,11 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	const { minCreationDate, maxCreationDate, minAlbumDate, maxAlbumDate } =
 		this.yearRanges;
 
-	// Ensure sliders and tooltips exist before setting values
 	if (!fromSlider1 || !toSlider1 || !fromSlider2 || !toSlider2) {
 		console.error("Sliders are not available in the DOM.");
 		return;
 	}
 
-	// Set values for Creation Date Slider
 	this.updateSliderValues(
 		fromSlider1,
 		toSlider1,
@@ -1086,10 +1065,8 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		maxCreationDate
 	);
 
-	// Set values for Album Release Slider
 	this.updateSliderValues(fromSlider2, toSlider2, minAlbumDate, maxAlbumDate);
 
-	// Attach slider events for both sliders
 	this.attachSliderEvents(
 		fromSlider1,
 		toSlider1,
@@ -1107,7 +1084,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		"var(--background-color)"
 	);
 
-	// Initialize slider visuals for Creation Date slider if tooltips exist
 	if (fromTooltip1 && toTooltip1) {
 		this.initializeSliderVisuals(
 			fromSlider1,
@@ -1121,7 +1097,6 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 		console.error("Creation Date tooltips are missing.");
 	}
 
-	// Initialize slider visuals for Album Release slider if tooltips exist
 	if (fromTooltip2 && toTooltip2) {
 		this.initializeSliderVisuals(
 			fromSlider2,
@@ -1136,11 +1111,9 @@ ArtistApp.prototype.setRangeFilterDefaults = function () {
 	}
 };
 
-/**
- * Resets all filters to their default values
- */
+//Resets all filters to their default values
 ArtistApp.prototype.resetFilters = function () {
-	// Reset text inputs
+	if (this.artistsData.error) return;
 	this.domElements.searchUnified.value = "";
 	this.domElements.searchByName.value = "";
 	this.domElements.searchByConcert.value = "";
@@ -1148,25 +1121,20 @@ ArtistApp.prototype.resetFilters = function () {
 	this.domElements.searchByAlbumRelease.value = "";
 	this.activeQueries = [];
 
-	// Reset summary but retain the search icon
 	const searchIcon =
 		this.domElements.searchSummary.querySelector(".search-icon");
 	this.domElements.searchSummary.innerHTML = "";
 	if (searchIcon) {
 		this.domElements.searchSummary.appendChild(searchIcon);
 	}
-	this.activeQueries = [];
 
-	// Reset sliders
 	this.domElements.fromSlider1.value = this.domElements.fromSlider1.min;
 	this.domElements.toSlider1.value = this.domElements.toSlider1.max;
 	this.domElements.fromSlider2.value = this.domElements.fromSlider2.min;
 	this.domElements.toSlider2.value = this.domElements.toSlider2.max;
 
-	// Reset data
 	this.filteredData = [...this.artistsData.data];
 
-	// Reset tooltips and slider visuals
 	this.setTooltip(this.domElements.fromSlider1, this.domElements.fromTooltip1);
 	this.setTooltip(this.domElements.toSlider1, this.domElements.toTooltip1);
 	this.setTooltip(this.domElements.fromSlider2, this.domElements.fromTooltip2);
@@ -1187,17 +1155,14 @@ ArtistApp.prototype.resetFilters = function () {
 		this.domElements.toSlider2
 	);
 
-	// Reset checkboxes
 	Array.from(
 		this.domElements.membersFilter.querySelectorAll("input:checked")
 	).forEach((checkbox) => (checkbox.checked = false));
 
-	this.applyAllFilters(this.activeQueries);
+	this.applyAllFilters();
 };
 
-/**
- * Creates a new instance of ArtistApp and starts the application
- */
+// Creates a new instance of ArtistApp and starts the application
 if (typeof document !== "undefined") {
 	document.addEventListener("DOMContentLoaded", initializeApp);
 }

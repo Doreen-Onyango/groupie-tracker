@@ -3,12 +3,10 @@ const headers = new Headers({
 	"Content-Type": "application/json",
 });
 
-/**
- * Utility function to fetch data from the server
- * @param {string} endpoint - The API endpoint to send the request to
- * @param {Object} [bodyData] - Optional body data to send with the request
- * @returns {Promise<Object>} - The JSON response from the server or an error object
- */
+//   Utility function to fetch data from the server
+//   @param {string} endpoint - The API endpoint to send the request to
+//   @param {Object} [bodyData] - Optional body data to send with the request
+//   @returns {Promise<Object>} - The JSON response from the server or an error object
 const fetchData = async (endpoint, bodyData = {}) => {
 	const options = {
 		method: "POST",
@@ -16,8 +14,11 @@ const fetchData = async (endpoint, bodyData = {}) => {
 		body: JSON.stringify(bodyData),
 	};
 
+	// Add cache-busting parameter
+	const url = `${baseUrl}${endpoint}?cb=${Date.now()}`;
+
 	try {
-		const response = await fetch(`${baseUrl}${endpoint}`, options);
+		const response = await fetch(url, options);
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,12 +34,14 @@ const fetchData = async (endpoint, bodyData = {}) => {
 	}
 };
 
+// export fetch instances
 export const getAllArtists = () => fetchData("getallartists");
 export const getArtistById = (id) =>
 	fetchData("getartistbyid", { artist_id: id });
 export const getCoordinates = (id) =>
 	fetchData("getcoordinates", { artist_id: id });
 
+// manipulate control from slider
 export function controlFromSlider(
 	fromSlider,
 	toSlider,
@@ -58,6 +61,7 @@ export function controlFromSlider(
 	setToggleAccessible(toSlider);
 }
 
+// manipulate contro to slider
 export function controlToSlider(
 	fromSlider,
 	toSlider,
@@ -77,12 +81,14 @@ export function controlToSlider(
 	setToggleAccessible(toSlider);
 }
 
+// converts element values to integers
 function getParsed(currentFrom, currentTo) {
 	const from = parseInt(currentFrom.value, 10);
 	const to = parseInt(currentTo.value, 10);
 	return [from, to];
 }
 
+// set tool tip position
 export function setTooltip(slider, tooltip) {
 	const value = slider.value;
 	tooltip.textContent = `${value}`;
@@ -93,6 +99,7 @@ export function setTooltip(slider, tooltip) {
 	tooltip.style.left = `calc(${percent}% - ${offset}px)`;
 }
 
+// sets the current slider
 export function setToggleAccessible(currentTarget) {
 	const fromSlider1 = document.querySelector("#fromSlider1");
 	const toSlider1 = document.querySelector("#toSlider1");
@@ -116,6 +123,7 @@ export function setToggleAccessible(currentTarget) {
 	}
 }
 
+// fills the range filters with color
 export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
 	const rangeDistance = to.max - to.min;
 	const fromPosition = from.value - to.min;
@@ -129,28 +137,3 @@ export function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
           ${sliderColor} ${(toPosition / rangeDistance) * 100}%,
           ${sliderColor} 100%)`;
 }
-
-// TODO: set data change listeners
-
-// // Getter and Setter for filteredData
-// get filteredData() {
-// 	return this._filteredData;
-// }
-
-// set filteredData(value) {
-// 	this._filteredData = value;
-// 	// Automatically trigger calculation when data is updated
-// 	this.calculateMinMaxYears(); // This is where the calculation is triggered
-// }
-
-// data = new Proxy([...this.artistsData.data], {
-// 	set: (target, property, value) => {
-// 		target[property] = value;
-// 		// Ensure calculateMinMaxYears is only called when the array is modified
-// 		if (property === "length" || property in target) {
-// 			this.calculateMinMaxYears(); // Recalculate year ranges
-// 			this.renderFilteredData(target); // Ensure data is re-rendered
-// 		}
-// 		return true;
-// 	},
-// });

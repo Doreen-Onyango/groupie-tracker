@@ -1,3 +1,4 @@
+// animate sections in the about page
 document.addEventListener("DOMContentLoaded", (event) => {
 	const sections = document.querySelectorAll("section");
 
@@ -21,7 +22,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		observer.observe(section);
 	});
 
-	// Add hover effect to list items
 	const listItems = document.querySelectorAll("li");
 	listItems.forEach((item) => {
 		item.addEventListener("mouseenter", () => {
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		});
 	});
 
-	// Add hover effect to list items
 	const navItems = document.querySelectorAll(".navItem");
 	navItems.forEach((item) => {
 		item.addEventListener("mouseenter", () => {

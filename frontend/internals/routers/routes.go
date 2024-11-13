@@ -8,6 +8,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/models"
 )
 
+// initialize the rooutes struct
 type Routes struct {
 	app  *models.App
 	repo *handlers.Repo
@@ -41,7 +42,13 @@ var allowedRoutes = map[string]bool{
 // RouteChecker is a middleware that checks allowed routes
 func (r *Routes) RouteChecker(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		if strings.HasPrefix(req.URL.Path, "/static/") || strings.HasPrefix(req.URL.Path, "/api/download-ascii") {
+		if strings.HasPrefix(req.URL.Path, "/static/") {
+			referer := req.Header.Get("Referer")
+
+			if !isValidReferer(referer) {
+				r.repo.ForbiddenHandler(w, req)
+				return
+			}
 			next.ServeHTTP(w, req)
 			return
 		}
@@ -53,4 +60,12 @@ func (r *Routes) RouteChecker(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, req)
 	})
+}
+
+// Check if the referer is from your own site
+func isValidReferer(referer string) bool {
+	if referer == "" {
+		return false
+	}
+	return strings.Contains(referer, "localhost:8080")
 }

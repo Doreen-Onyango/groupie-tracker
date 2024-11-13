@@ -1,4 +1,4 @@
-# frontend-service.dockerfile
+# backend-service.dockerfile
 FROM golang:1.22.2 AS builder
 
 WORKDIR /app
@@ -16,7 +16,7 @@ WORKDIR /root/
 
 COPY --from=builder /app/main /root/main
 
-EXPOSE 8080
+EXPOSE 4000
 
 CMD ["/root/main"]
 

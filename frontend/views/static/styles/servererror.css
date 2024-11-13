@@ -5,3 +5,19 @@
 	align-items: center;
 	height: 90vh;
 }
+
+.suggestions-dropdown {
+	display: none;
+}
+.searchUnified {
+	display: none;
+}
+.unified-suggestions {
+	display: none;
+}
+.input-search {
+	display: none;
+}
+.search-icon img {
+	display: none;
+}

@@ -8,6 +8,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/handlers"
 )
 
+// test api routes
 func TestApis_ApiRoutes(t *testing.T) {
 	type fields struct {
 		repo *handlers.Repo

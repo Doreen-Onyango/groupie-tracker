@@ -2,6 +2,17 @@
 
 The backend of this project is responsible for fetching data from APIs, handling requests, and processing responses. It manages the server, routing, middleware, and data management with a thread-safe singleton pattern for state management.
 
+## Usage
+
+This backend runs independently as a microservice. It runs a dedicated api server. To run the backend and access the apis from anywhere, use the following command;
+
+`go run cmd/api_server.go`
+
+## Testing
+Navigate to the required directory and run the following command.
+
+`go test -v`
+
 ## The packages in this directory include: 
 
 1. **Server**
@@ -72,7 +83,7 @@ Key Functionality include:
 
 8. **Response**
 
-he Response package provides utilities for handling JSON-based HTTP responses. It manages error handling, response formatting, and content types using the JSONRes struct and related methods.
+The Response package provides utilities for handling JSON-based HTTP responses. It manages error handling, response formatting, and content types using the JSONRes struct and related methods.
 
 Key Functionality include:
 

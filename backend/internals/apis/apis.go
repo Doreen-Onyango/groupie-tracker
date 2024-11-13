@@ -7,6 +7,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/middlewares"
 )
 
+// Initialize api
 type Apis struct {
 	repo *handlers.Repo
 }
@@ -16,8 +17,6 @@ func NewApis(repo *handlers.Repo) *Apis {
 	return &Apis{repo}
 }
 
-//	sets up the HTTP routes for the API.
-//
 // creates and registers routes for the API endpoints if a repo is initialized
 func (m *Apis) ApiRoutes() http.Handler {
 	if m.repo == nil {
@@ -27,13 +26,13 @@ func (m *Apis) ApiRoutes() http.Handler {
 
 	mux.HandleFunc("/api/getallartists", m.repo.GetAllArtists)
 	mux.HandleFunc("/api/getartistbyid", m.repo.GetArtistById)
-	mux.HandleFunc("/api/getcoordinates", m.repo.GetConcertLocation)
 
 	routes := middlewares.RouteChecker(mux)
 
 	return middlewares.CORSMiddleware(routes)
 }
 
+// create a default route for testing
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Default handler response"))

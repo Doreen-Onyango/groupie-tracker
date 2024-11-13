@@ -17,7 +17,7 @@ WORKDIR /root/
 COPY --from=builder /app/main /root/main
 COPY ./views /root/views
 
-EXPOSE 8080
+EXPOSE 4000
 
 CMD ["/root/main"]
 

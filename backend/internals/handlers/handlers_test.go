@@ -12,6 +12,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-api/internals/responses"
 )
 
+// test get all artists
 func TestGetAllArtists_Success(t *testing.T) {
 	mockResponse := &models.MockResponseData{
 		Artists: []models.Artist{

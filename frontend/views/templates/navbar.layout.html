@@ -7,8 +7,99 @@
 {{end}} {{define "navbar"}}
 <div class="navbar">
 	<div class="nav-logo">
-		<div id="nav-groupie">Groupie Tracker</div>
+		<div id="nav-groupie"> <a class="disabled-link" href="/"><h1>Groupie Tracker</h1></a></div>
 	</div>
+
+	<!-- UnifiedSearchBar -->
+	<div class="search-input-container">
+		<div class="search-box">
+			<input
+				id="searchUnified"
+				type="text"
+				class="input-search"
+				placeholder="Search for artists, concerts, performed locations, and album releases..."
+			/>
+		</div>
+
+		<div
+			class="search-icon"
+			onclick="toggleSearch()"
+		>
+			<img
+				src="/static/images/icon-search.png"
+				alt="Search Icon"
+			/>
+		</div>
+
+		<!-- Suggestions dropdowns for Unified search -->
+		<div
+			class="unified-suggestions hidden"
+			id="unifiedSuggestions"
+		>
+			<!-- artist nameSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="nameSuggestions"
+				></div>
+			</div>
+
+			<!-- artist membersSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="membersSuggestions"
+				></div>
+			</div>
+
+			<!-- concertSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="concertSuggestions"
+				></div>
+			</div>
+
+			<!-- creationDateSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="creationDateSuggestions"
+				></div>
+			</div>
+
+			<!-- albumReleaseSuggestions -->
+			<div class="suggestion-category">
+				<div
+					class="suggestion-items"
+					id="albumReleaseSuggestions"
+				></div>
+			</div>
+		</div>
+		<!-- end of suggestions dropdowns for Unified search -->
+	</div>
+	<!-- end of UnifiedSearch -->
+
+	<!-- nav-menu -->
+	<div class="nav-menu">
+		<ul>
+			<li id="home">
+				<a
+					class="navItem"
+					href="/"
+					>Home</a
+				>
+			</li>
+			<li id="about">
+				<a
+					class="navItem"
+					href="/about"
+					>About</a
+				>
+			</li>
+		</ul>
+	</div>
+
 	<!-- Hamburger Icon -->
 	<div id="hamburger">
 		<input
@@ -51,24 +142,10 @@
 			</li>
 		</ul>
 	</div>
-	<!-- nav-menu -->
-	<div class="nav-menu">
-		<ul>
-			<li id="home">
-				<a
-					class="navItem"
-					href="/"
-					>Home</a
-				>
-			</li>
-			<li id="about">
-				<a
-					class="navItem"
-					href="/about"
-					>About</a
-				>
-			</li>
-		</ul>
-	</div>
 </div>
+	<!-- Icon to switch between themes -->
+	<div class="theme-switcher">
+		<button id="themeSwitcher">Switch Theme</button>
+	</div>
 {{end}}
+

@@ -5,6 +5,7 @@ import (
 	"github.com/Doreen-Onyango/groupie-tracker-client/internals/renders"
 )
 
+// initialize repo struct
 type Repo struct {
 	app *models.App
 	res *renders.Renders
