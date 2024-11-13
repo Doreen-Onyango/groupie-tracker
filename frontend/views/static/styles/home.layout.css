@@ -26,58 +26,75 @@ header {
 	align-items: center;
 }
 
+/* General styling for the reset button (SVG) */
 #resetButton {
-	min-width: 80px;
-	min-height: 80px;
-	cursor: pointer;
-	transition:
-		transform 0.5s ease-in-out,
-		filter 0.5s ease-in-out;
+    min-width: 80px;
+    min-height: 80px;
+    cursor: pointer;
+    display: inline-block;
+    visibility: visible;
+    transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
 }
 
-/* Style for the main path */
+/* Style for the main paths (fill and stroke colors set) */
 #resetButton #path2,
 #resetButton #path6 {
-	fill: var(--background-color);
-	stroke: var(--secondary-color);
-	stroke-width: 0;
-	transition: all 0.3s ease-in-out;
+    fill: var(--background-color);
+    stroke: var(--secondary-color);
+    stroke-width: 0;
+    transition: all 0.3s ease-in-out;
 }
 
 /* Style for the inner paths */
 #resetButton #path3,
 #resetButton #path7 {
-	fill: var(--pale-color);
-	fill-opacity: 0.643137;
-	stroke: var(--border-color);
-	stroke-width: 0;
-	transition: all 0.3s ease-in-out;
+    fill: var(--pale-color);
+    fill-opacity: 0.643137;
+    stroke: var(--border-color);
+    stroke-width: 0;
+    transition: all 0.3s ease-in-out;
 }
 
 /* Hover effect to change color */
 #resetButton:hover #path2,
 #resetButton:hover #path6 {
-	fill: var(--secondary-color);
-	stroke: var(--background-color)
+    fill: var(--secondary-color);
+    stroke: var(--background-color);
 }
 
 #resetButton:hover #path3,
 #resetButton:hover #path7 {
-	fill: var(--background-color);
-	fill-opacity: 1;
+    fill: var(--background-color);
+    fill-opacity: 1;
 }
 
 /* Active state (e.g., on click) */
 #resetButton:active #path2,
 #resetButton:active #path6 {
-	fill: var(--code-color);
-	stroke: var(--tertiary-color);
+    fill: var(--code-color);
+    stroke: var(--tertiary-color);
 }
 
 #resetButton:active #path3,
 #resetButton:active #path7 {
-	fill: var(--code-color);
-	fill-opacity: 1;
+    fill: var(--code-color);
+    fill-opacity: 1;
+}
+
+/* Ensure visibility even if the SVG is "disabled" */
+#resetButton[disabled] {
+    pointer-events: none;
+    fill: var(--tertiary-color);
+    stroke: var(--pale-color);
+    cursor: not-allowed;
+}
+
+/* Add a fallback to ensure all elements inside SVG are visible */
+#resetButton path,
+#resetButton circle,
+#resetButton rect {
+    visibility: visible !important;
+    display: inherit;
 }
 
 
