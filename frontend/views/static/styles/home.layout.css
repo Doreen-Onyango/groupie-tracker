@@ -26,77 +26,55 @@ header {
 	align-items: center;
 }
 
-/* General styling for the reset button (SVG) */
+/* General styling for the reset button (normal button) */
 #resetButton {
-    min-width: 80px;
-    min-height: 80px;
-    cursor: pointer;
+    background-color: var(--background-color);
+    border: 2px solid var(--secondary-color);
+    color: var(--text-color); 
+    padding: 12px 24px;
+    font-size: 16px; 
+    font-weight: bold; 
+    cursor: pointer; 
     display: inline-block;
+    border-radius: 8px; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
     visibility: visible;
-    transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
 }
 
-/* Style for the main paths (fill and stroke colors set) */
-#resetButton #path2,
-#resetButton #path6 {
-    fill: var(--background-color);
-    stroke: var(--secondary-color);
-    stroke-width: 0;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Style for the inner paths */
-#resetButton #path3,
-#resetButton #path7 {
-    fill: var(--pale-color);
-    fill-opacity: 0.643137;
-    stroke: var(--border-color);
-    stroke-width: 0;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Hover effect to change color */
-#resetButton:hover #path2,
-#resetButton:hover #path6 {
-    fill: var(--secondary-color);
-    stroke: var(--background-color);
-}
-
-#resetButton:hover #path3,
-#resetButton:hover #path7 {
-    fill: var(--background-color);
-    fill-opacity: 1;
+/* Hover effect to change button background color */
+#resetButton:hover {
+    background-color: var(--secondary-color);
+    color: var(--background-color); 
+    transform: scale(1.05);
 }
 
 /* Active state (e.g., on click) */
-#resetButton:active #path2,
-#resetButton:active #path6 {
-    fill: var(--code-color);
-    stroke: var(--tertiary-color);
+#resetButton:active {
+    background-color: var(--code-color);
+    color: var(--tertiary-color); 
+    transform: scale(0.98); 
 }
 
-#resetButton:active #path3,
-#resetButton:active #path7 {
-    fill: var(--code-color);
-    fill-opacity: 1;
-}
-
-/* Ensure visibility even if the SVG is "disabled" */
+/* Disabled state (e.g., when the button is disabled) */
 #resetButton[disabled] {
+    background-color: var(--tertiary-color);
+    color: var(--pale-color);
+    border-color: var(--pale-color); 
+    cursor: not-allowed; 
     pointer-events: none;
-    fill: var(--tertiary-color);
-    stroke: var(--pale-color);
-    cursor: not-allowed;
 }
 
-/* Add a fallback to ensure all elements inside SVG are visible */
-#resetButton path,
-#resetButton circle,
-#resetButton rect {
-    visibility: visible !important;
-    display: inherit;
+/* Style for the reset button text */
+#resetButton span {
+    display: block;
+    transition: all 0.3s ease;
 }
 
+/* Optional: Ensure text is properly centered inside the button */
+#resetButton {
+    text-align: center;
+    line-height: 1.5;
+}
 
 .searchSummary {
 	display: flex;
