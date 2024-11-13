@@ -17,7 +17,8 @@ type JSONRes struct {
 func NewJSONRes() *JSONRes {
 	return &JSONRes{}
 }
-//  prepare and send a JSON response indicating an error
+
+// prepare and send a JSON response indicating an error
 func (m *JSONRes) ErrJSON(w http.ResponseWriter, err error, status ...int) error {
 	statuscode := http.StatusBadRequest
 	if len(status) > 0 {
@@ -33,7 +34,7 @@ func (m *JSONRes) ErrJSON(w http.ResponseWriter, err error, status ...int) error
 	return m.WriteJSON(w, *m, statuscode)
 }
 
-//  read and decode a JSON request body into a specified data structure
+// read and decode a JSON request body into a specified data structure
 func (m *JSONRes) ReadJSON(w http.ResponseWriter, r *http.Request, data any) error {
 	if r.Header.Get("Content-Type") != "application/json" {
 		return errors.New("wrong request format")

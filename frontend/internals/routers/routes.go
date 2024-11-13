@@ -41,32 +41,31 @@ var allowedRoutes = map[string]bool{
 
 // RouteChecker is a middleware that checks allowed routes
 func (r *Routes) RouteChecker(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-        if strings.HasPrefix(req.URL.Path, "/static/") {
-            referer := req.Header.Get("Referer")
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if strings.HasPrefix(req.URL.Path, "/static/") {
+			referer := req.Header.Get("Referer")
 
-            if !isValidReferer(referer) {
+			if !isValidReferer(referer) {
 				r.repo.ForbiddenHandler(w, req)
-                return
-            }
-            next.ServeHTTP(w, req)
-            return
-        }
+				return
+			}
+			next.ServeHTTP(w, req)
+			return
+		}
 
+		if _, ok := allowedRoutes[req.URL.Path]; !ok {
+			r.repo.NotFoundHandler(w, req)
+			return
+		}
 
-        if _, ok := allowedRoutes[req.URL.Path]; !ok {
-            r.repo.NotFoundHandler(w, req)
-            return
-        }
-
-        next.ServeHTTP(w, req)
-    })
+		next.ServeHTTP(w, req)
+	})
 }
 
 // Check if the referer is from your own site
 func isValidReferer(referer string) bool {
-    if referer == "" {
-        return false
-    }
-    return strings.Contains(referer, "localhost:8080")
+	if referer == "" {
+		return false
+	}
+	return strings.Contains(referer, "localhost:8080")
 }
