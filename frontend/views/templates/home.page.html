@@ -1,23 +1,8 @@
 {{template "base" . }} {{ define "homecss"}}
-<link
-	rel="stylesheet"
-	href="/static/styles/home.layout.css"
-	type="text/css"
-/>
-<link
-	rel="stylesheet"
-	href="/static/styles/renders.css"
-	type="text/css"
-/>
-<link
-	rel="stylesheet"
-	href="/static/styles/filters.css"
-	type="text/css"
-/>
-<link
-			href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css"
-			rel="stylesheet"
-/>
+<link rel="stylesheet" href="/static/styles/home.layout.css" type="text/css" />
+<link rel="stylesheet" href="/static/styles/renders.css" type="text/css" />
+<link rel="stylesheet" href="/static/styles/filters.css" type="text/css" />
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet" />
 {{end}} {{define "title"}} Home {{end}} {{define "content"}}
 <div class="home-container">
 	<header>
@@ -27,48 +12,70 @@
 
 		<!-- searchSummary -->
 		<div class="searchSummaryContainer">
-			<div
-				class="searchSummary"
-				id="searchSummary"
-			></div>
+			<div class="searchSummary" id="searchSummary"></div>
 
-		<!-- Reset Button -->
-		<img
-			src="/static/images/reset.svg"
-			alt="Reset Button"
-			class="reset-icon"
-			title="Reset your search"
-			id="resetButton"
-		>
-		</img>
+			<!-- Reset Button -->
+			<svg width="30" height="40" viewBox="0 0 7.937499 10.583332" version="1.1" class="reset-icon"
+				title="Reset your search" id="resetButton" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+				xmlns:svg="http://www.w3.org/2000/svg">
+				<defs id="defs1" />
+				<g id="layer1">
+					<g id="g8" transform="matrix(0.86428508,0,0,0.86948687,0.12987501,0.26781472)">
+						<g id="g5" transform="matrix(0.96680806,0,0,1,6.3392896,0.88264492)">
+							<path class="path1"
+								d="m -6.2767095,3.3279529 c 0,0 0.8466794,0.3311049 0.9204293,0.033087 C -5.0837237,2.259658 -3.9496222,1.189858 -2.8074567,0.83264996 -1.8390233,0.529776 -0.73376159,0.94336156 0.19003776,1.3631123 0.43590344,1.4748274 1.0882152,1.9109955 0.82111301,1.8711632 -1.5041688,1.5243999 -2.6589162,1.8599556 -2.8732347,1.9407714 c -0.2204807,0.08314 -1.8633681,1.1090997 -1.6159898,1.903912 0.075835,0.2436542 0.7391175,0.1994252 0.7391175,0.1994252 l -1.5390572,0.929832 z"
+								id="path2" />
+							<path class="path2"
+								d="M 0.85749047,1.8259564 C 1.3124672,2.1838057 1.5421572,2.5369066 1.6033012,2.9951021 1.7059701,3.7644726 0.98895808,3.7030488 0.82473632,3.3454575 -0.14879757,1.225597 -4.0043065,2.4639095 -2.9021632,1.9450333 -2.1165253,1.5751642 -0.15851851,1.0268427 0.85749047,1.8259564 Z"
+								id="path3" />
+						</g>
+						<g id="g7" transform="matrix(-0.96680806,0,0,-1,2.5547567,9.8380551)">
+							<path class="path3"
+								d="m -6.2767095,3.3279529 c 0,0 0.8466794,0.3311049 0.9204293,0.033087 C -5.0837237,2.259658 -3.9496222,1.189858 -2.8074567,0.83264996 -1.8390233,0.529776 -0.73376159,0.94336156 0.19003776,1.3631123 0.43590344,1.4748274 1.0882152,1.9109955 0.82111301,1.8711632 -1.5041688,1.5243999 -2.6589162,1.8599556 -2.8732347,1.9407714 c -0.2204807,0.08314 -1.8633681,1.1090997 -1.6159898,1.903912 0.075835,0.2436542 0.7391175,0.1994252 0.7391175,0.1994252 l -1.5390572,0.929832 z"
+								id="path6" />
+							<path class="path4"
+								d="M 0.85749047,1.8259564 C 1.3124672,2.1838057 1.5421572,2.5369066 1.6033012,2.9951021 1.7059701,3.7644726 0.98895808,3.7030488 0.82473632,3.3454575 -0.14879757,1.225597 -4.0043065,2.4639095 -2.9021632,1.9450333 -2.1165253,1.5751642 -0.15851851,1.0268427 0.85749047,1.8259564 Z"
+								id="path7" />
+						</g>
+					</g>
+				</g>
+			</svg>
 		</div>
 		<!-- end of searchSummary -->
-					<!-- members filter -->
+		<!-- members filter -->
 		{{ block "membersFilter" .}}{{end}}
 		<!-- end -->
 
 		<div class="range-filters">
-		<!-- range filters -->
-		{{ block "range_concertDate" .}} {{end}}
-		{{ block "range_firstAlbum" .}} {{end}}
-		<!-- end of range filters -->
+			<!-- range filters -->
+			{{ block "range_concertDate" .}} {{end}}
+			{{ block "range_firstAlbum" .}} {{end}}
+			<!-- end of range filters -->
 		</div>
 	</header>
 
 	<div class="artists">
 		<!-- Pagination Controls -->
-		 <div class="paginationControls">
+		<div class="paginationControls">
 			<!-- Page Number -->
-		 <div class="prevPageNumber">
-      <span id="prevPageNumber">0 pages more</span>
-     </div>
-     <!-- end of Page Number -->
+			<div class="prevPageNumber">
+				<span id="prevPageNumber">0 pages more</span>
+			</div>
+			<!-- end of Page Number -->
 
-		<!-- Pagination controls -->
-		<img id="prevPage" class="pagination-button" disabled src="/static/images/prevPage.svg" alt="Previous">
-		 </div>
+			<!-- Pagination controls -->
+			<svg id="prevPage" class="pagination-button" width="30" height="40" viewBox="0 0 7.937499 10.583332"
+				version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+				<defs id="defs1" />
+				<g id="layer1">
+					<path class="arrow-path"
+						d="M 6.4886903,0.28847398 C 6.8972137,-0.32275261 7.2129358,0.72256276 7.2129358,0.72256276 L 3.0588066,5.3156192 7.629833,10.093285 c 0,0 -0.4939426,0.753812 -0.8795667,0.199481 C 4.3616071,6.858944 -1.7114476,6.0201448 0.90567561,4.8278455 3.9603465,3.4361877 4.8081637,2.8028796 6.4886903,0.28847398 Z"
+						id="path1" />
+				</g>
+			</svg>
+		</div>
 
-			<!-- loader -->
+		<!-- loader -->
 		<div class="loader-container">
 			<div class="loader">
 				<div class="dot dot-lower"></div>
@@ -81,18 +88,25 @@
 		<!-- artist cards -->
 		{{block "artistCard" .}}{{end}}
 		<!-- end -->
-		 <!-- Pagination controls -->
-		 <div class="paginationControls">
-			  <!-- Page Number -->
-		 <div class="nextPageNumber">
-      <span id="nextPageNumber">13 pages more</span>
-     </div>
-     <!-- end of Page Number -->
-		<!-- nextPage controls -->
-		<img id="nextPage" class="pagination-button" src="/static/images/nextPage.svg" alt="Next">
+		<!-- Pagination controls -->
+		<div class="paginationControls">
+			<!-- Page Number -->
+			<div class="nextPageNumber">
+				<span id="nextPageNumber">13 pages more</span>
+			</div>
+			<!-- end of Page Number -->
+			<!-- nextPage controls -->
+			<svg id="nextPage" class="pagination-button" width="30" height="40" viewBox="0 0 7.937499 10.583332"
+				version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+				<defs id="defs1" />
+				<g id="layer1">
+					<path class="arrow-path"
+						d="M 1.4184349,0.28847398 C 1.0099115,-0.32275261 0.69418942,0.72256276 0.69418942,0.72256276 L 4.8483186,5.3156192 0.2772922,10.093285 c 0,0 0.49394266,0.753812 0.8795667,0.199481 C 3.5455181,6.858944 9.6185728,6.0201448 7.0014496,4.8278455 3.9467787,3.4361877 3.0989615,2.8028796 1.4184349,0.28847398 Z"
+						id="path1" />
+				</g>
+			</svg>
+		</div>
 
-		 </div>
-		
 		<!-- modal -->
 		{{ block "modalTemplate" .}}{{end}}
 		<!-- end -->
