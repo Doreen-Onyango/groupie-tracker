@@ -27,17 +27,59 @@ header {
 }
 
 #resetButton {
-	width: 60px;
+	min-width: 80px;
+	min-height: 80px;
 	cursor: pointer;
 	transition:
 		transform 0.5s ease-in-out,
 		filter 0.5s ease-in-out;
 }
 
-#resetButton:hover {
-	filter: drop-shadow(0px 2px 8px var(--shadow-color));
-	transform: rotate(45deg);
+/* Style for the main path */
+#resetButton #path2,
+#resetButton #path6 {
+	fill: var(--background-color);
+	stroke: var(--secondary-color);
+	stroke-width: 0;
+	transition: all 0.3s ease-in-out;
 }
+
+/* Style for the inner paths */
+#resetButton #path3,
+#resetButton #path7 {
+	fill: var(--pale-color);
+	fill-opacity: 0.643137;
+	stroke: var(--border-color);
+	stroke-width: 0;
+	transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect to change color */
+#resetButton:hover #path2,
+#resetButton:hover #path6 {
+	fill: var(--secondary-color);
+	stroke: var(--background-color)
+}
+
+#resetButton:hover #path3,
+#resetButton:hover #path7 {
+	fill: var(--background-color);
+	fill-opacity: 1;
+}
+
+/* Active state (e.g., on click) */
+#resetButton:active #path2,
+#resetButton:active #path6 {
+	fill: var(--code-color);
+	stroke: var(--tertiary-color);
+}
+
+#resetButton:active #path3,
+#resetButton:active #path7 {
+	fill: var(--code-color);
+	fill-opacity: 1;
+}
+
 
 .searchSummary {
 	display: flex;
@@ -88,8 +130,7 @@ header {
 	text-align: center;
 }
 
-.prevPageNumber,
-.nextPageNumber {
+.prevPageNumber {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -102,7 +143,6 @@ header {
 	width: 5%;
 }
 
-#nextPage,
 #prevPage {
 	display: block;
 	max-width: 80px;
@@ -120,6 +160,41 @@ header {
 #prevPage.disabled {
 	cursor: not-allowed;
 	opacity: 0.3;
+}
+
+/* General styling for the pagination button */
+.pagination-button {
+	min-width: 60px;
+	min-height: 80px;
+}
+
+/* Style for the arrow path */
+.arrow-path {
+	fill: var(--background-color);
+	fill-opacity: 1;
+	stroke: var(--secondary-color);
+	stroke-width: 0.1;
+	stroke-opacity: 1;
+	transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect for the arrow path */
+.pagination-button:hover .arrow-path {
+	fill: var(--border-color);
+	stroke: var(--background-color)
+}
+
+/* Active state (e.g., when clicked) */
+.pagination-button:active .arrow-path {
+	fill: var(--code-color);
+	stroke: var(--tertiary-color);
+}
+
+/* Disabled state */
+.pagination-button[disabled] .arrow-path {
+	fill: var(--tertiary-color);
+	stroke: var(--pale-color);
+	cursor: not-allowed;
 }
 
 /* Pagination button styling */
@@ -201,30 +276,36 @@ header {
 }
 
 @keyframes lower {
+
 	0%,
 	30% {
 		transform: scale(0);
 	}
+
 	100% {
 		transform: scale(2);
 	}
 }
 
 @keyframes middle {
+
 	0%,
 	50% {
 		transform: scale(0);
 	}
+
 	100% {
 		transform: scale(2);
 	}
 }
 
 @keyframes upper {
+
 	0%,
 	70% {
 		transform: scale(0);
 	}
+
 	100% {
 		transform: scale(2);
 	}
@@ -232,30 +313,36 @@ header {
 
 /* load animations speed*/
 @keyframes lower {
+
 	0%,
 	30% {
 		transform: scale(0);
 	}
+
 	100% {
 		transform: scale(2);
 	}
 }
 
 @keyframes middle {
+
 	0%,
 	50% {
 		transform: scale(0);
 	}
+
 	100% {
 		transform: scale(2);
 	}
 }
 
 @keyframes upper {
+
 	0%,
 	70% {
 		transform: scale(0);
 	}
+
 	100% {
 		transform: scale(2);
 	}
@@ -275,8 +362,7 @@ header {
 }
 
 /* Adjust for mobile responsiveness */
-@media screen and (max-width: 768px) {
-}
+@media screen and (max-width: 768px) {}
 
 @media screen and (max-width: 580px) {
 	.artists {
@@ -296,6 +382,7 @@ header {
 		flex-direction: column;
 		align-items: center;
 	}
+
 	.paginationControls {
 		position: relative;
 	}
