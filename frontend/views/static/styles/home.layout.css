@@ -1,20 +1,7 @@
 /* Home page styles */
-.home-page {
-	position: relative;
-	margin-right: 8%;
-	margin-bottom: 0px;
-}
-
-.home-page #home-groupie {
-	position: absolute;
-	left: -220px;
-	top: -40px;
-}
-
-.home-page #home-tracker {
-	position: absolute;
-	right: 90px;
-	top: -8px;
+.home-container {
+	min-width: 100%;
+	padding: 20px;
 }
 
 header {
@@ -22,47 +9,128 @@ header {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 1em;
 	width: 100%;
 }
 
-/* Container for search input and icon */
-.search-container {
+.search-input-container {
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	width: 90%;
-	margin-left: 13%;
+	justify-content: center;
+	transition: all 1s ease;
 }
 
+.searchSummaryContainer {
+	display: flex;
+	margin: auto;
+	justify-content: center;
+	align-items: center;
+}
+
+/* General styling for the reset button (normal button) */
 #resetButton {
-	z-index: 250;
-	margin-bottom: -20px;
-	width: 60px;
-	cursor: pointer;
-	z-index: 20;
-	display: inline-block;
-	transition:
-		transform 0.5s ease-in-out,
-		filter 0.5s ease-in-out;
+    background-color: var(--background-color);
+    border: 2px solid var(--secondary-color);
+    color: var(--text-color); 
+    padding: 12px 24px;
+    font-size: 16px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    display: inline-block;
+    border-radius: 8px; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    visibility: visible;
 }
 
+/* Hover effect to change button background color */
 #resetButton:hover {
-	filter: drop-shadow(0px 2px 8px var(--shadow-color));
-	transform: rotate(45deg);
+    background-color: var(--secondary-color);
+    color: var(--background-color); 
+    transform: scale(1.05);
 }
 
-.range-filters {
+/* Active state (e.g., on click) */
+#resetButton:active {
+    background-color: var(--code-color);
+    color: var(--tertiary-color); 
+    transform: scale(0.98); 
+}
+
+/* Disabled state (e.g., when the button is disabled) */
+#resetButton[disabled] {
+    background-color: var(--tertiary-color);
+    color: var(--pale-color);
+    border-color: var(--pale-color); 
+    cursor: not-allowed; 
+    pointer-events: none;
+}
+
+/* Style for the reset button text */
+#resetButton span {
+    display: block;
+    transition: all 0.3s ease;
+}
+
+/* Optional: Ensure text is properly centered inside the button */
+#resetButton {
+    text-align: center;
+    line-height: 1.5;
+}
+
+.searchSummary {
 	display: flex;
-	flex-wrap: wrap;
+	font-size: 12px;
+	padding-right: 2%;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+}
+
+.searchSummaryItem {
+	display: flex;
+	background-color: var(--pale-color);
+	color: var(--background-color);
+	line-height: 1.2em;
+	padding: 5px 8px;
+	border-radius: 5px;
+	max-width: 120px;
+	max-height: 35px;
+	box-shadow: 0 2px 4px var(--shadow-color);
+	overflow: hidden;
+}
+
+.searchSummaryItem p {
+	margin: 0;
+	padding: 0;
+}
+
+.closeIcon {
+	cursor: pointer;
+	color: var(--code-color);
+	font-weight: bold;
+	font-size: 1.4em;
+	margin-left: 5px;
+}
+
+.hidden {
+	display: none;
+}
+
+.paginationControls {
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-	padding: 25px 10px;
-	margin-top: -4.8em;
-	border: 1px solid var(--background-color);
-	border-radius: 20px;
-	max-height: 180px;
+	max-width: 80px;
+	margin: 0;
+	text-align: center;
+}
+
+.prevPageNumber {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-right: 10px;
 }
 
 #pagination {
@@ -70,9 +138,10 @@ header {
 	width: 5%;
 }
 
-#nextPage {
-	display: inline-block;
-	width: 10%;
+#prevPage {
+	display: block;
+	max-width: 80px;
+	min-height: 80px;
 	padding: 0;
 	margin-right: 30px;
 	cursor: pointer;
@@ -82,26 +151,45 @@ header {
 		opacity 0.5s ease;
 }
 
-#nextPage.disabled {
-	cursor: not-allowed;
-	opacity: 0.3;
-}
-
-#prevPage {
-	display: inline-block;
-	width: 10%;
-	padding: 0;
-	margin-left: 30px;
-	cursor: pointer;
-	opacity: 1;
-	transition:
-		background-color 0.5s ease,
-		opacity 0.5s ease;
-}
-
+#nextPage.disabled,
 #prevPage.disabled {
 	cursor: not-allowed;
 	opacity: 0.3;
+}
+
+/* General styling for the pagination button */
+.pagination-button {
+	min-width: 60px;
+	min-height: 80px;
+}
+
+/* Style for the arrow path */
+.arrow-path {
+	fill: var(--background-color);
+	fill-opacity: 1;
+	stroke: var(--secondary-color);
+	stroke-width: 0.1;
+	stroke-opacity: 1;
+	transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect for the arrow path */
+.pagination-button:hover .arrow-path {
+	fill: var(--border-color);
+	stroke: var(--background-color)
+}
+
+/* Active state (e.g., when clicked) */
+.pagination-button:active .arrow-path {
+	fill: var(--code-color);
+	stroke: var(--tertiary-color);
+}
+
+/* Disabled state */
+.pagination-button[disabled] .arrow-path {
+	fill: var(--tertiary-color);
+	stroke: var(--pale-color);
+	cursor: not-allowed;
 }
 
 /* Pagination button styling */
@@ -120,7 +208,7 @@ header {
 	background-color: var(--pale-color);
 	transition: background-color 0.5s ease;
 	box-shadow: 0px 2px 8px var(--shadow-color);
-	border-radius: 20px;
+	border-radius: 50px;
 	transform: translateX(5px);
 }
 
@@ -140,77 +228,165 @@ header {
 	min-height: 430px;
 }
 
-/* Adjust for mobile responsiveness */
-@media screen and (max-width: 1015px) {
-	.home-page #home-groupie {
-		left: -180px;
+/* loader styles */
+.loader-container {
+	width: 100%;
+	display: grid;
+	place-items: center;
+	margin: 25%;
+	padding: 10%;
+}
+
+.loader {
+	width: 90px;
+	aspect-ratio: 1 / 1;
+}
+
+.dot {
+	margin: auto;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	position: absolute;
+	inset: 0;
+	box-shadow: 2px 4px 10px 6px var(--shadow-color);
+	animation: 2s ease infinite alternate;
+}
+
+.dot-lower {
+	width: 90px;
+	animation-name: lower;
+	background: var(--background-color);
+}
+
+.dot-middle {
+	width: 60px;
+	animation-name: middle;
+	background: var(--pale-color);
+}
+
+.dot-upper {
+	width: 30px;
+	animation-name: upper;
+	background: var(--tertiary-color);
+}
+
+@keyframes lower {
+
+	0%,
+	30% {
+		transform: scale(0);
 	}
 
-	.home-page #home-tracker {
-		right: 50px;
+	100% {
+		transform: scale(2);
 	}
 }
 
-/* Adjust for mobile responsiveness */
-@media screen and (max-width: 768px) {
-	#resetButton {
-		display: inline-block;
-		position: absolute;
-		transform: rotate(90deg);
-		height: 60px;
-		right: 180px;
-		top: 10px;
-		background-color: var(--pale-color);
-		border-radius: 50%;
-		padding: 0;
-		background-size: 60%;
-		background-position: center;
-		background-repeat: no-repeat;
-		box-shadow: 0px 2px 8px var(--shadow-color);
+@keyframes middle {
+
+	0%,
+	50% {
+		transform: scale(0);
 	}
 
-	#resetButton:hover {
-		transform: rotate(180deg);
+	100% {
+		transform: scale(2);
 	}
 }
+
+@keyframes upper {
+
+	0%,
+	70% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(2);
+	}
+}
+
+/* load animations speed*/
+@keyframes lower {
+
+	0%,
+	30% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(2);
+	}
+}
+
+@keyframes middle {
+
+	0%,
+	50% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(2);
+	}
+}
+
+@keyframes upper {
+
+	0%,
+	70% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(2);
+	}
+}
+
+/* Faster animations with correct properties */
+.element-lower {
+	animation: lower 0.3s linear infinite;
+}
+
+.element-middle {
+	animation: middle 0.3s linear infinite;
+}
+
+.element-upper {
+	animation: upper 0.3s linear infinite;
+}
+
+/* Adjust for mobile responsiveness */
+@media screen and (max-width: 768px) {}
 
 @media screen and (max-width: 580px) {
-	.range-filters {
-		max-height: 290px;
-	}
-
 	.artists {
 		align-items: flex-start;
 	}
 
-	.pagination-button {
+	.paginationControls {
+		position: sticky;
+		display: inline-block;
 		max-width: 60px;
+		top: 40%;
 	}
 }
 
-@media screen and (max-width: 454px) {
-	.range-filters {
-		margin-top: -8em;
-		max-height: 15%;
+@media screen and (max-width: 380px) {
+	.artists {
+		flex-direction: column;
+		align-items: center;
 	}
-}
 
-@media screen and (max-width: 328px) {
-	.range-filters {
-		margin-top: -10em;
+	.paginationControls {
+		position: relative;
 	}
 }
 
 @media screen and (max-width: 320px) {
-	.search-container {
-		flex-direction: column;
-		width: 100%;
-	}
-
-	.range-filters {
-		margin-top: 0;
-		border: none;
-	}
+	/* .search-container {
+		margin-bottom: 20px;
+	} */
 }
 
 @media screen and (max-width: 280px) {
@@ -229,8 +405,10 @@ header {
 	#artistsContainer {
 		padding-top: 3em;
 	}
+}
 
-	.range-filters {
-		min-width: 240px;
-	}
+/* disable home button */
+
+.nav-menu #home {
+	display: none;
 }

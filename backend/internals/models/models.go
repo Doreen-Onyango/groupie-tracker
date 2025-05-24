@@ -6,14 +6,17 @@ import (
 	"sync"
 )
 
+// initialize mainApi struct
 type MainApi struct {
 	baseUrl string
 }
 
+// instantiate main api
 func NewMainApi() *MainApi {
 	return &MainApi{"https://groupietrackers.herokuapp.com/api/"}
 }
 
+// initialize concerts struct
 type Concerts struct {
 	ID           string   `json:"id"`
 	ConcertDates []string `json:"dates"`
@@ -51,6 +54,7 @@ func (c *Concerts) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize relation struct
 type Relation struct {
 	ID             int                 `json:"id"`
 	DatesLocations map[string][]string `json:"datesLocations"`
@@ -81,6 +85,7 @@ func (r *Relation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize location struct
 type Locations struct {
 	ID        string   `json:"id"`
 	Locations []string `json:"locations"`
@@ -114,6 +119,7 @@ func (l *Locations) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize artist struct
 type Artist struct {
 	ID           string   `json:"id"`
 	Image        string   `json:"image"`
@@ -165,44 +171,21 @@ func (a *Artist) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// initialize response data struct
 type ResponseData struct {
-	Artists      map[string]Artist
-	Locations    map[string]Locations     `json:"locations"`
-	Concerts     map[string]Concerts      `json:"concertDates"`
-	Relations    map[string]Relation      `json:"relations"`
-	GeoLocations map[string][]GeoLocation `json:"geoLocation"`
-	mu           sync.RWMutex
+	Artists   map[string]Artist
+	Locations map[string]Locations `json:"locations"`
+	Concerts  map[string]Concerts  `json:"concertDates"`
+	Relations map[string]Relation  `json:"relations"`
+	mu        sync.RWMutex
 }
 
 // efficient data storage and retrieval for an application that likely deals with artists
 func NewResponseData() *ResponseData {
 	return &ResponseData{
-		Artists:      make(map[string]Artist),
-		Locations:    make(map[string]Locations),
-		Concerts:     make(map[string]Concerts),
-		Relations:    make(map[string]Relation),
-		GeoLocations: make(map[string][]GeoLocation),
+		Artists:   make(map[string]Artist),
+		Locations: make(map[string]Locations),
+		Concerts:  make(map[string]Concerts),
+		Relations: make(map[string]Relation),
 	}
-}
-
-// Google api response structure
-type GeocodeResponse struct {
-	Results []struct {
-		Geometry struct {
-			Location struct {
-				Lat float64 `json:"lat"`
-				Lng float64 `json:"lng"`
-			} `json:"location"`
-		} `json:"geometry"`
-	} `json:"results"`
-	Status string `json:"status"`
-}
-
-// GeoLocation struct with geolocation data
-type GeoLocation struct {
-	ArtistID  string  `json:"id"`
-	Location  string  `json:"location"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-	Date      string  `json:"date"`
 }

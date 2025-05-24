@@ -10,6 +10,7 @@ import (
 	"sync"
 )
 
+// initialize app struct
 type App struct {
 	Api     *MainApi
 	Res     *ResponseData
@@ -17,6 +18,7 @@ type App struct {
 	Err     error
 }
 
+// declare gloabal variables
 var (
 	instance   *App
 	once       sync.Once
@@ -93,11 +95,13 @@ func GetProjectRoute(paths ...string) string {
 	return filepath.Join(allPaths...)
 }
 
+// initialize mock response data for testing
 type MockResponseData struct {
 	Artists []Artist
 	Error   bool
 }
 
+// mock get all artists
 func (m *MockResponseData) GetAllArtist() ([]Artist, error) {
 	if m.Error {
 		return nil, errors.New("mock network error")
@@ -105,6 +109,7 @@ func (m *MockResponseData) GetAllArtist() ([]Artist, error) {
 	return m.Artists, nil
 }
 
+// mock get artists by id
 func (m *MockResponseData) GetArtistById(id string) (Artist, error) {
 	for _, artist := range m.Artists {
 		if artist.ID == id {

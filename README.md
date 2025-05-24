@@ -1,12 +1,15 @@
 # Groupie-Tracker
 
-This project is a web application that fetches data from an API and transforms it into data that is easy to read. The data is decoded to a visually appealing information and easy for the client to interact with. The API consists of four parts namely: artists, locations, dates and relations. It clearly shows how data is fetched and decoded. 
+This project is a web application that fetches data from an API and transforms it into data that is easy to read. The data is decoded to a visually appealing information and easy for the client to interact with. The API consists of four parts namely: artists, locations, dates and relations. It clearly shows how data is fetched and decoded.
+
+[Deployed here](https://groupie-tracker-artists.up.railway.app/)
 
 ## Features
-This project consists of:
+
+Not all of the features have been implemented as at now. Most of the features are still experimental and under development. However, this project consists of:
 
 **1. Backend.**
-This is where the data from the API is fetched. 
+This is where the data from the API is fetched.
 
 - [Server](https://github.com/Doreen-Onyango/groupie-tracker/blob/main/backend/cmd/api_server.go) is where the initialization of other structs used in the entire project is done and then configuration of the routes is created. and finally the server that listens to the specific port 4000 is created.
 
@@ -20,9 +23,9 @@ This is where the data from the API is fetched.
 
 - [Fetch_Data](https://github.com/Doreen-Onyango/groupie-tracker/blob/main/backend/internals/models/fetch_data.go) Data retrieval from URL is done here and unmarshaling of artist's data and the processing of the data for easy accesibility.
 
-- [Models](https://github.com/Doreen-Onyango/groupie-tracker/blob/main/backend/internals/models/models.go)  The function ensures that only one instance of App is created throughout the application's lifecycle. the method CreateTemplateCache() is called on it to presumably set up or load template data.
+- [Models](https://github.com/Doreen-Onyango/groupie-tracker/blob/main/backend/internals/models/models.go) The function ensures that only one instance of App is created throughout the application's lifecycle. the method CreateTemplateCache() is called on it to presumably set up or load template data.
 
-- [Response](https://github.com/Doreen-Onyango/groupie-tracker/blob/main/backend/internals/responses/response.go)  This code defines a utility for handling JSON-based HTTP responses in a structured way. The JSONRes struct encapsulates error handling and message formatting, while methods like ErrJSON, ReadJSON, and WriteJSON provide convenient ways to read JSON requests and send JSON responses, all while managing content types, error handling, and response formatting efficiently. This structure is particularly useful for building APIs where consistent JSON responses are required.
+- [Response](https://github.com/Doreen-Onyango/groupie-tracker/blob/main/backend/internals/responses/response.go) This code defines a utility for handling JSON-based HTTP responses in a structured way. The JSONRes struct encapsulates error handling and message formatting, while methods like ErrJSON, ReadJSON, and WriteJSON provide convenient ways to read JSON requests and send JSON responses, all while managing content types, error handling, and response formatting efficiently. This structure is particularly useful for building APIs where consistent JSON responses are required.
 
 **2. Frontend.**
 
@@ -38,72 +41,64 @@ This is where the data from the API is fetched.
 
 - [views](https://github.com/Doreen-Onyango/groupie-tracker/tree/main/frontend/views) This is where all the images, scripts, styles and templates are created. it ensure the visualization of the web application and user friendly interface is created here.
 
-
 ## Installation
 
-The backend of this project is purely written in Go. Ensure you have Go installed in your machine. To clone this repo: 
+The backend of this project is purely written in Go. Ensure you have Go installed in your machine. To clone this repo:
 
-```
-git clone https://github.com/Doreen-Onyango/groupie-tracker
-```
-
-
-
+`git clone https://learn.zone01kisumu.ke/git/doonyango/groupie-tracker.git`
 
 ## Usage
 
-Navigate to the project directory and navigate to the backend directory then the cmd directory for you to run the backend.
+This project has been dockerized. You need docker installed before you can effectively run this project.
 
+```Sh
+cd groupie-tracker
+docker-compose down
+docker-compose build
+docker-compose up -d
 ```
-cd groupie-tracker/backend/cmd/
-go run .
-```
-The above command will start the backend server. Take a breath, we are not done yet. Open another terminal and navigate to the cmd directory to run the frontend.By doing this, ensure the backend is also running... boom!!! it dispays data.
 
-```
-cd groupie-tracker/frontend/cmd/
-go run .
-```
+- You can also manually fire up the backend with: `cd backend/cmd && go run api_server.go`. This is subject to change with frequent updates.
+- Then manually fire up the frontend with: `cd frontend/cmd && go run server.go`. This is subject to change with frequent updates.
+
+**Note:** Once on the page you can navigate through the pages and different areas using the following keyboard shortcuts:
+
+1. About page = Ctrl + Alt + A
+2. Home page = Ctrl + Alt + H
+3. Reset = Esc
+4. Reload = Ctrl + R
+5. Next page = Ctrl + Alt + N
+6. Previous page = Ctrl + Alt + P
 
 ## Test
-This project has test files that tests the functionality of the functions. To run the tests enter the following command in the backend and frontend directories one at time.
-```
-go test -v
-```
 
+This project has test files that tests the functionality of the functions. To run the tests enter the following command in the backend and frontend directories one at time.
+
+Navigate into the package that tests are found and run: `go test`
 
 ## Implementation
-Below is a function that fetches data from the APIs provided. Data retrieval from URL is done here and unmarshaling of artist's data and the processing of the data for easy accesibility.
 
-```go
-func (a *MainApi) fetchData(apitype string) ([]byte, error) {
-	baseUrl := a.baseUrl
-	if apitype != "artists" {
-		baseUrl = apitype
-	} else {
-		baseUrl = fmt.Sprintf("%s%s", baseUrl, apitype)
-	}
+This project is divided into two microservices.
 
-	res, err := http.Get(baseUrl)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
+**The Backend Microservice**
+This microservice is built using _Singleton Design Pattern_. It has a single state that depends on the fetched data.
+This fetches data from the main provided api. It breaks it down and further builds different data structures that can be easily retrieved.
+This microservice further fetches location coodinates from google api and ties them to the corresponding location.
 
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	return body, nil
-}
-{...
-}
-```
+**The Frontend Microservice**
+This microservice is built using _Observe Design Pattern_. The microservice listens to different events and changes state accordingly.
+This fetches data from the _backend microservice_ using a restful API request - response structure.
+It further serves the response in home page as per user request.
+This microservice also fetches passed location coodinates maps from google for rendering purposes.
+The purpose of this frontend microservice is to serve the collected artists data in a more user-friendly way.
 
 ## Contribution
-This project is public and open to contributions. Create pull requests if need be. 
+
+This project is public and open to contributions. Create pull requests if need be.
 
 ## Authours
+
 This project is maintained by:
+
 1. [Adioz Daniel](https://github.com/Adiozdaniel)
 2. [Doreen Onyango](https://github.com/Doreen-Onyango)

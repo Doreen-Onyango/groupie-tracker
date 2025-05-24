@@ -6,67 +6,20 @@
 	box-sizing: border-box;
 }
 
-/* Container for search input and icon */
-.search-input-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	width: 70%;
-	margin-left: -15%;
-	max-width: 1200px;
-}
-
-.searchUnified {
-	width: 90%;
-	padding: 10px 50px 10px 20px;
-	font-size: 1.1rem;
-	border-radius: 25px;
-	border: 2px solid var(--background-color);
-	outline: none;
-	background-color: #ddd;
-	box-shadow: 0px 2px 8px var(--shadow-color);
-	transition:
-		box-shadow 0.3s ease-in-out,
-		border-color 0.3s ease-in-out;
-}
-
-.searchUnified:focus {
-	border-color: var(--background-color);
-	box-shadow: 0px 4px 12px var(--shadow-color);
-}
-
-/* Style the search icon */
-.search-icon {
-	margin-top: -20px;
-	margin-right: 15px;
-	width: 20px;
-	height: 20px;
-	cursor: pointer;
-}
-
-.search-icon img {
-	width: 200%;
-	height: 200%;
-	transform: rotate(270deg);
-	transition: transform 0.5s ease;
-}
-
-.search-icon img:hover {
-	transform: rotate(90deg);
-}
-
 /* Add hover effect for the entire .membersFilter container */
 .membersFilter {
+	width: 60%;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 5px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 2%;
 	font-size: 0.8em;
 	padding: 3px 10px;
 	color: var(--background-color);
 	margin: 10px;
-	background-color: var(--tertiary-color);
+	margin-bottom: 20px;
+	background-color: var(--pale-color);
 	border-radius: 10px;
 	box-shadow: 0px 2px 8px var(--shadow-color);
 	transition:
@@ -147,33 +100,30 @@
 	border-color: var(--background-color);
 }
 
+.range-filters {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px;
+	width: 60%;
+}
+
 .range_firstAlbum,
 .range_concertDate {
 	width: 45%;
-	margin: 70px auto;
+	margin: auto;
 	border: 1px solid var(--_marker-border-clr);
 	border-radius: 8px;
-	padding: 60px 25px 15px 25px;
+	padding-top: 20px;
 	position: relative;
-}
-
-.range_firstAlbum::before,
-.range_concertDate::before {
-	content: "From";
-	position: absolute;
-	top: -22px;
-	left: 0;
-	font-size: 0.8em;
-	color: var(--_marker-border-clr);
-	background: none;
 }
 
 .range_firstAlbum::after,
 .range_concertDate::after {
 	content: "To";
 	position: absolute;
-	top: -20%;
-	right: 10%;
+	top: -90%;
+	right: 20%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
 	font-weight: normal;
@@ -191,8 +141,8 @@
 .range_labels::before {
 	content: "From";
 	position: absolute;
-	top: -20%;
-	left: 10%;
+	top: -90%;
+	left: 20%;
 	font-size: 0.8rem;
 	color: var(--_marker-border-clr);
 	font-weight: normal;
@@ -204,10 +154,9 @@
 .range_concertDate[data-label]::before {
 	content: attr(data-label);
 	position: absolute;
-	top: -20px;
+	top: -150%;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--background-color);
 	padding: 10px;
 	font-size: 1rem;
 	color: var(--text-color);
@@ -296,226 +245,108 @@ input[type="range"] {
 	pointer-events: none;
 }
 
-.unified-suggestions {
-	display: flex;
-	width: 100%;
-	flex-direction: column;
-	border-radius: 4px;
-	box-shadow: 0 4px 8px var(--shadow-color);
-	top: 20em;
-	padding: 3px 30px;
-	z-index: 200;
-}
-
-.suggestion-category {
-	margin-bottom: 10px;
-}
-
-.suggestion-items {
-	max-height: 150px;
-	overflow-y: auto;
-}
-
-.suggestion-item {
-	padding: 10px;
-	border-radius: 20px;
-	cursor: pointer;
-	border-bottom: 1px solid var(--tertiary-color);
-	color: var(--background-color);
-}
-
-.suggestion-item[data-label]::after {
-	content: " - " attr(data-label);
-	color: var(--code-color);
-	font-size: 0.9em;
-	margin-left: 5px;
-}
-
-.suggestion-item:hover {
-	background-color: var(--pale-color);
-}
-
-.unified-suggestions::-webkit-scrollbar {
-	width: 8px;
-}
-
-.unified-suggestions::-webkit-scrollbar-thumb {
-	background-color: var(--shadow-color);
-	border-radius: 4px;
-}
-
-.suggestions-dropdown {
-	position: relative;
-	background-color: var(--tertiary-color);
-	border: 1px solid var(--pale-color);
-	max-height: 150px;
-	overflow-y: auto;
-	display: none; /* Initially hidden */
-}
-
-.searchSummaryContainer {
-	display: flex;
-	flex-direction: row-reverse;
-	position: absolute;
-	right: 60px;
-	margin: 5px;
-}
-
-.searchSummary {
-	display: flex;
-	font-size: 12px;
-	padding-right: 2%;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 10px;
-}
-
-.searchSummaryItem {
-	display: flex;
-	background-color: var(--pale-color);
-	color: var(--background-color);
-	line-height: 1.2em;
-	padding: 5px 8px;
-	border-radius: 5px;
-	max-width: 80px;
-	max-height: 35px;
-	box-shadow: 0 2px 4px var(--shadow-color);
-	overflow: hidden;
-}
-
-.search-container img {
-	padding: 0;
-}
-
-.searchSummaryItem p {
-	margin: 0;
-	padding: 0;
-}
-
-.closeIcon {
-	cursor: pointer;
-	color: var(--code-color);
-	font-weight: bold;
-	font-size: 1.4em;
-	margin-left: 5px;
-}
-
-.hidden {
-	display: none;
-}
-
-/* Adjust for mobile responsiveness */
-@media screen and (max-width: 868px) {
-	.search-container .home-page {
-		left: 3%;
-	}
-
-	.search-container img {
-		right: -3%;
-	}
-}
-
 /* Adjust for mobile responsiveness */
 @media screen and (max-width: 768px) {
-	.search-input-container {
-		width: 100%;
-	}
-
-	.search-container img {
-		display: none;
-	}
-
 	.membersFilter {
 		gap: 3px;
 		font-size: 0.8em;
 		padding: 0.2% 0%;
 	}
 
-	.search-container .home-page {
-		display: none;
+	.range-filters {
+		flex-direction: column;
+		gap: 20px;
+		margin: 20px;
 	}
 
-	.search-container img {
-		right: -7%;
+	.range_firstAlbum,
+	.range_concertDate {
+		width: 85%;
+		margin-top: 10px;
+		border: 1px solid var(--pale-color);
+		border-radius: 2px;
+	}
+
+	.range_firstAlbum {
+		margin-top: 30px;
+	}
+
+	.range_labels::before,
+	.range_labels::before {
+		content: "From";
+		position: absolute;
+		top: -90%;
+		left: 15%;
+	}
+
+	.range_concertDate::after,
+	.range_firstAlbum::after {
+		content: "To";
+		position: absolute;
+		top: -95%;
+		right: 15%;
+	}
+
+	.range_firstAlbum[data-label]::before,
+	.range_concertDate[data-label]::before {
+		left: 50%;
+		top: -170%;
 	}
 }
 
 /* Adjust for mobile responsiveness */
 @media screen and (max-width: 712px) {
-	.search-container .home-page {
-		margin-left: 10%;
-	}
+	/*  */
 }
 
 @media screen and (max-width: 580px) {
-	.range_concertDate {
-		width: 80%;
-		margin: 70px auto 0 auto;
-	}
-
-	.range_firstAlbum {
-		width: 80%;
-		margin: 25px auto 0 auto;
+	.nav-logo {
+		font-size: 10px;
 	}
 }
 
 @media screen and (max-width: 454px) {
-	.range_concertDate {
-		width: 90%;
-		margin-top: 30%;
-	}
-
-	.range_firstAlbum {
-		width: 90%;
-	}
 }
 
 @media screen and (max-width: 412px) {
-	.range_concertDate {
-		margin-top: 40%;
-	}
 }
 
-@media screen and (max-width: 328px) {
-	.range_concertDate {
-		margin-top: 60%;
-	}
-}
-
-@media screen and (max-width: 320px) {
-	.search-input-container {
-		margin-bottom: 10px;
-	}
-
-	.range_concertDate {
-		margin-top: 10%;
-		width: 100%;
-	}
-
-	.range_firstAlbum {
-		width: 100%;
-	}
-
+@media screen and (max-width: 348px) {
 	.membersFilter {
-		margin-top: 80px;
+		margin: 20px;
+	}
+
+	.range_firstAlbum,
+	.range_concertDate {
+		width: 75%;
+	}
+}
+
+@media screen and (max-width: 312px) {
+	.membersFilter {
+		max-width: 80%;
+	}
+
+	.range_firstAlbum,
+	.range_concertDate {
+		width: 65%;
+	}
+
+	.range_labels::before,
+	.range_labels::before {
+		left: 30%;
+	}
+
+	.range_concertDate::after,
+	.range_firstAlbum::after {
+		right: 30%;
+	}
+
+	.range_firstAlbum[data-label]::before,
+	.range_concertDate[data-label]::before {
+		top: -50%;
 	}
 }
 
 @media screen and (max-width: 280px) {
-	.search-input-container {
-		width: 110%;
-	}
-
-	.range_concertDate {
-		margin-top: 10%;
-		min-width: 110%;
-	}
-
-	.range_firstAlbum {
-		min-width: 110%;
-	}
-
-	.membersFilter {
-		margin-top: 80px;
-	}
 }

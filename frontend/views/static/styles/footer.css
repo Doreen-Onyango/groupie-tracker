@@ -6,12 +6,18 @@ svg {
 	padding: 10px;
 }
 
+.main-footer{
+	height: 100%;
+	padding-top: 190px;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .my-footer {
 	width: 100%;
-	padding: 1em;
+	padding: 1rem;
 	text-align: center;
 	display: flex;
-	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-evenly;
 	background-color: var(--background-color);

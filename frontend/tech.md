@@ -68,3 +68,21 @@ In Vs Code setting
 
 install the jsdom
 `npm install --save-dev jsdom`
+
+Build Services: `docker-compose build`
+Start the services: `docker-compose up`
+Stop Services: `docker-compose down`
+Check the logs: `docker-compose logs`
+
+or compiled
+
+```shell
+sudo docker-compose down
+sudo docker-compose build
+sudo docker-compose up -d
+```
+
+check the files:
+`sudo docker ps`
+
+`sudo docker exec groupie-tracker-backend-services-1 ls -la /root/.env`

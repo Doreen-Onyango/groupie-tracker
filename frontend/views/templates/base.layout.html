@@ -18,26 +18,24 @@
 			type="text/css"
 		/>
 
-		{{block "navbarcss" .}} {{end}} {{block "homecss" .}} {{end}} {{block "aboutcss" .}} {{end}} {{block
-		"notfoundcss" .}}{{end}} {{block "footercss" .}} {{end}}
+		{{block "navbarcss" .}} {{end}} {{block "homecss" .}} {{end}} {{block
+		"aboutcss" .}} {{end}} {{block "notfoundcss" .}}{{end}} {{block "footercss"
+		.}} {{end}}
 		<title>Groupie-Tracker | {{block "title" .}}{{end}}</title>
 	</head>
 	<body>
-		<div class="base-wrapper">
-			{{block "navbar" .}} {{end}} {{block "content" .}} {{end}} {{block "footer"
-			.}} {{end}}
-		</div>
-		<script src="/static/scripts/animation.js" type="module"></script>
+		<!-- <div class="base-wrapper"> -->
+			{{block "navbar" .}} {{end}} {{block "content" .}} {{end}} {{block
+			"footer" .}} {{end}}
+		<!-- </div> -->
 		<script
-		type="module"
-		src="/static/scripts/app.js"
-	></script>
-	<!-- google map secured api -->
-	<script
-		async
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq5mzpJrW8v5fuummRIScHEv3pY62iQ2g&callback=console.debug&libraries=maps,marker&v=beta"
-		defer
-	></script>
+			src="/static/scripts/animation.js"
+			type="module"
+		></script>
+		<script
+			src="/static/scripts/base.js"
+			type="module"
+		></script>
 	</body>
 </html>
 {{ end }}

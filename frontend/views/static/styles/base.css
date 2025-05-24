@@ -1,5 +1,6 @@
-/* base.css */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap");
+* {
+	box-sizing: border-box;
+}
 
 :root {
 	--pale-color: #c799f4a4;
@@ -19,21 +20,52 @@ body {
 	color: var(--text-color);
 	padding: 0;
 	margin: 0;
-}
-
-.base-wrapper {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
-	overflow: hidden;
-	height: 100vh;
+	flex: 1;
+	/* height: 100vh; */
 	background: linear-gradient(
 		180deg,
 		var(--pale-color) 5%,
 		var(--background-color) 100%
 	);
 }
+
+button {
+	background-color: var(--primary-color);
+	color: rgb(119, 118, 118);
+	border-radius: 8px;
+  }
+  
+  /* Dark Theme */
+  [data-theme='dark'] {
+	--pale-color: #537692;
+	--text-color: #eef3f9;
+	--primary-color: #eef3f9;
+	--secondary-color: #b3cde4;
+	--tertiary-color: #ddd;
+	--card-color: #1d3f58;
+	--background-color: #001b2e;
+	--code-color: #e74c3c;
+	--shadow-color: rgba(61, 60, 60, 0.89);
+	--border-color: #b3cde4;
+  }
+  
+  /* Blue Theme */
+  [data-theme='blue'] {
+	--pale-color: #0855b1;
+	--text-color: #daeaf7;
+	--primary-color: #daeaf7;
+	--secondary-color: #4fa5d8;
+	--tertiary-color: #ddd;
+	--card-color: #010e54;
+	--background-color: #00022b;
+	--code-color: #e74c3c;
+	--shadow-color: rgba(108, 103, 103, 0.89);
+	--border-color: #4fa5d8;
+  }
+  
+
 
 h1,
 h2,
